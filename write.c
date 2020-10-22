@@ -27,11 +27,11 @@ int main() {
         if(char_file != '>') {
 
             xml_tag = concatenateCharInString(xml_tag, char_file);
-            printf("%s\n", xml_tag);
+            //printf("%s\n", xml_tag);
         }else if(char_file == '>') {
 
             xml_tag = concatenateCharInString(xml_tag, char_file);
-            printf("%s\n", xml_tag);
+            //printf("%s\n", xml_tag);
             break;
         }
 
@@ -53,8 +53,9 @@ int main() {
 
 char* concatenateCharInString(char* s, char char_file) {
 
-    printf("%lu", strlen(s));
-    char* new_string = malloc(sizeof(char) * strlen(s) + 1);
+    //printf("%lu", strlen(s));
+    printf("%c", char_file);
+    char* new_string = malloc(sizeof(char) * strlen(s) + 2);
     strncpy(new_string, s, strlen(s));
     new_string[strlen(s)] = char_file;
     new_string[strlen(s)+1] = '\0';
@@ -98,9 +99,7 @@ int verifyBaliseXML(char* s) {
     char final_s[strlen(s)];
     int count_final_s=0;
     for(int i=0; i< strlen(s); i++) {
-        if(s[i] == '<') {
-            flag=1;
-        }else if(s[i] == '"' && count_guillemet == 1){
+        if(s[i] == '"' && count_guillemet%2 == 1){
             flag=1;
             count_guillemet +=1;
         }else if(final_s[count_final_s-1] == 'l' && s[i] == ' '){
@@ -132,7 +131,7 @@ int verifyBaliseXML(char* s) {
     printf("%s\n", final_s);
 
 
-    if(strcmp(final_s,"<?xml version=\"1.0?\">") == 0) {
+    if(strcmp(final_s,"<?xml version=\"1.0\"?>") == 0) {
         return 1;
     }else {
         return 0;
