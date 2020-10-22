@@ -7,6 +7,7 @@ int closeFile(FILE* pt_fichier);
 int readBaliseXml(char char_file);
 char* concatenateCharInString(char* s, char char_file);
 int verifyBaliseXML(char* s);
+int verifyBaliseXML2(char* s);
 
 int main() {
 
@@ -39,11 +40,29 @@ int main() {
     }
 
     // verif validation balise xml
-    good_balise_xml = verifyBaliseXML(xml_tag);
+    good_balise_xml = verifyBaliseXML2(xml_tag);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml");
         return -1;
     }
+
+    //boucle pour extraire toutes les balises
+    /*char_file = fgetc(pt_fichier);
+    while(char_file != EOF) {
+
+        if(char_file != '>') {
+
+            xml_tag = concatenateCharInString(xml_tag, char_file);
+            //printf("%s\n", xml_tag);
+        }else if(char_file == '>') {
+
+            xml_tag = concatenateCharInString(xml_tag, char_file);
+            //printf("%s\n", xml_tag);
+            break;
+        }
+
+        char_file = fgetc(pt_fichier);
+    }*/
 
 
 
@@ -92,8 +111,186 @@ int closeFile(FILE* pt_fichier) {
     return 1;
 }
 
-int verifyBaliseXML(char* s) {
+int verifyBaliseXML2(char* s) {
+    //^(' '|'\n')*<?xml(' '|'\n')+version="1.0"(' '|'\n')+(encoding="UTF-8")?(' '|'\n')*?>(' '|'\n')*$
     printf("\nbalise xml -> %s\n", s);
+    char first_bloc[] = "<?xml";
+    char secound_bloc[] = "version=\"1.0\"";
+    char third_bloc[] = "encoding=\"UTF-8\"";
+    char fourth_bloc[] = "?>";
+    int bloc_count = 0;
+
+    int valid = 1;
+    char final_s[strlen(s)];
+
+    int count_final_s=0;
+    int i;
+    // présence d'espace ou retour chariot avant la balise
+    for(i=0; i<strlen(s);i++) {
+
+        if(s[i] != ' ' && s[i] != '\n'){
+            break;
+        }
+    }
+    printf("\ntour i -> %d\n", i);
+
+    if(strlen(s) < i+strlen(first_bloc)){
+        return 0;
+    }
+    printf("\nlimite -> %lu\n", i+strlen(first_bloc));
+    // verification premier_bloc
+    for(;i<strlen(s);i++) {
+
+        if(s[i] == first_bloc[bloc_count]) {
+            printf("%c", s[i]);
+            bloc_count+=1;
+        }else {
+            printf("pomme \n%c", s[i]);
+            valid = 0;
+            break;
+        }
+        if(bloc_count == strlen(first_bloc)){
+            i++;
+            break;
+        }
+
+    }
+    printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+    
+    // bloc espace retour
+    int count_for = 0;
+    for(;i<strlen(s);i++) {
+        
+        printf("i -> %c\n", s[i]);
+        if(count_for == 0 && (s[i] == ' ' || s[i] == '\n')){
+            count_for++;
+            continue;
+        }else if(count_for == 0){
+            valid = 0;
+            break;
+        }
+
+        if(s[i] != ' ' && s[i] != '\n'){
+            break;
+        }
+    }
+
+    printf("\ntour i -> %d\n", i);
+    if(valid == 0){
+        return 0;
+    }
+
+    // 2eme bloc
+    bloc_count = 0;
+    for(;i<strlen(s);i++){
+
+        if(s[i] == secound_bloc[bloc_count]) {
+            //printf("%c", s[i]);
+            bloc_count+=1;
+        }else {
+            //printf("pomme \n%c", s[i]);
+            valid = 0;
+            break;
+        }
+        if(bloc_count == strlen(secound_bloc)){
+            i++;
+            break;
+        }
+    }
+
+    printf("\ntour i -> %d\n", i);
+    if(valid == 0){
+        return 0;
+    }
+
+    // bloc espace retour
+    count_for = 0;
+    int contain_space_backslach=0;
+    for(;i<strlen(s);i++) {
+        
+        printf("i -> %c\n", s[i]);
+        if(count_for == 0 && (s[i] == ' ' || s[i] == '\n')){
+            count_for +=1;
+            contain_space_backslach +=1;
+            continue;
+        }else if(count_for == 0){
+            
+            break;
+        }
+
+        if(s[i] != ' ' && s[i] != '\n'){
+            break;
+        }
+    }
+
+    printf("\nthird tour i -> %d\n", i);
+    
+
+    // third bloc not required
+    if(contain_space_backslach == 1 && s[i] == 'e'){
+        bloc_count = 0;
+        for(;i<strlen(s);i++){
+
+            if(s[i] == third_bloc[bloc_count]) {
+                //printf("%c", s[i]);
+                bloc_count+=1;
+            }else {
+                //printf("pomme \n%c", s[i]);
+                valid = 0;
+                break;
+            }
+            if(bloc_count == strlen(third_bloc)){
+                i++;
+                break;
+            }
+        }
+
+        printf("\ntour i -> %d\n", i);
+        if(valid == 0){
+            return 0;
+        }
+
+         // présence espace ou retour chariot après balise
+        for(;i<strlen(s);i++) {
+    
+            if(s[i] != ' ' && s[i] != '\n'){
+                break;
+            }
+        }
+    }
+
+    bloc_count = 0;
+    for(;i<strlen(s);i++){
+
+        if(s[i] == fourth_bloc[bloc_count]) {
+            //printf("%c", s[i]);
+            bloc_count+=1;
+        }else {
+            //printf("pomme \n%c", s[i]);
+            valid = 0;
+            break;
+        }
+        if(bloc_count == strlen(third_bloc)){
+            i++;
+            break;
+        }
+    }
+
+    printf("\ntour i -> %d\n", i);
+    if(valid == 0){
+        return 0;
+    }
+
+
+    return 1;
+
+}
+
+int verifyBaliseXML(char* s) {
     int flag = 1;
     int count_guillemet = 0;
     char final_s[strlen(s)];
@@ -114,6 +311,9 @@ int verifyBaliseXML(char* s) {
         }
 
         printf("tour %d, carrac %c flag %d\n", i, s[i], flag);
+        if(s[i] == '\n'){
+            continue;
+        }
         if(flag == 1 && s[i] == ' '){
             s[i] = '%';
         }else if(flag == 1 && s[i] != ' '){
@@ -136,19 +336,4 @@ int verifyBaliseXML(char* s) {
     }else {
         return 0;
     }
-}
-
-int readBaliseXml(char char_file) {
-
-    int* enterInXml = malloc(sizeof(int));
-    enterInXml = 0;
-    if(enterInXml == 0 && char_file == ' '){
-        return 0;
-    }else if(enterInXml == 0 && char_file == '<'){
-        *enterInXml = 1;
-        return 0;
-    }else if(enterInXml == 0 && char_file != '<'){
-        return -1;
-    }
-    return 0;
 }
