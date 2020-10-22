@@ -1,0 +1,9 @@
+ <       ?xml   version="1.0?"                                                                                   >
+<message>
+    <nom>Pomme</nom>
+    <prenom>jean</prenom>
+    <adresse>
+        <cp>95120</cp>
+        <ville>Taverny</ville>
+    </adresse>
+</message>
