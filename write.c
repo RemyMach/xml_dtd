@@ -8,9 +8,10 @@ int readBaliseXml(char char_file);
 char* concatenateCharInString(char* s, char char_file);
 int verifyBaliseXML(char* s);
 int verifyBaliseXML2(char* s);
-int regexSpaceBackSlachMultiple(char* s,int* i);
-void regexSpaceBackSlachPlus(char* s,int* i);
-
+int regexSpaceBackSlachPlus(char* s,int* i);
+void regexSpaceBackSlachPlusProofNotRequired(char* s,int* i, int* proof);
+void regexSpaceBackSlachMultiple(char* s,int* i);
+int regexRequiredBloc(char* s,int* i, char* bloc);
 
 int main() {
 
@@ -93,7 +94,7 @@ int closeFile(FILE* pt_fichier) {
     return 1;
 }
 
-int regexSpaceBackSlachMultiple(char* s,int* i){
+int regexSpaceBackSlachPlus(char* s,int* i){
 
     printf("c'est i -> %d\n", *i);
     int count_for = 0;
@@ -117,7 +118,29 @@ int regexSpaceBackSlachMultiple(char* s,int* i){
     return valid;
 }
 
-void regexSpaceBackSlachPlus(char* s,int* i) {
+void regexSpaceBackSlachPlusProofNotRequired(char* s,int* i, int* proof){
+
+    int count_for = 0;
+    *proof = 0;
+    for(;*i<strlen(s);*i+=1) {
+        
+        //printf("i -> %c\n", s[*i]);
+        if(count_for == 0 && (s[*i] == ' ' || s[*i] == '\n')){
+            count_for +=1;
+            *proof +=1;
+            continue;
+        }else if(count_for == 0){
+            
+            break;
+        }
+
+        if(s[*i] != ' ' && s[*i] != '\n'){
+            break;
+        }
+    }
+}
+
+void regexSpaceBackSlachMultiple(char* s,int* i) {
 
     for(;*i<strlen(s);*i+=1) {
     
@@ -125,6 +148,29 @@ void regexSpaceBackSlachPlus(char* s,int* i) {
             break;
         }
     }
+}
+
+int regexRequiredBloc(char* s,int* i, char* bloc) {
+
+    int valid=1;
+    int bloc_count=0;
+    for(;*i<strlen(s);*i+=1) {
+
+        if(s[*i] == bloc[bloc_count]) {
+            printf("%c", s[*i]);
+            bloc_count+=1;
+        }else {
+            printf("pomme \n%c", s[*i]);
+            valid = 0;
+            break;
+        }
+        if(bloc_count == strlen(bloc)){
+            *i+=1;
+            break;
+        }
+    }
+
+    return valid;
 }
 
 
@@ -135,40 +181,22 @@ int verifyBaliseXML2(char* s) {
     char secound_bloc[] = "version=\"1.0\"";
     char third_bloc[] = "encoding=\"UTF-8\"";
     char fourth_bloc[] = "?>";
-    int bloc_count = 0;
-    int count_for = 0;
 
     int valid = 1;
-    char final_s[strlen(s)];
-
-    int count_final_s=0;
     int i = 0;
+
     // présence d'espace ou retour chariot avant la balise
-    regexSpaceBackSlachPlus(s, &i);
-    
+    regexSpaceBackSlachMultiple(s, &i);
+
     printf("\ntour i -> %d\n", i);
 
     if(strlen(s) < i+strlen(first_bloc)){
         return 0;
     }
     printf("\nlimite -> %lu\n", i+strlen(first_bloc));
+    
     // verification premier_bloc
-    for(;i<strlen(s);i++) {
-
-        if(s[i] == first_bloc[bloc_count]) {
-            printf("%c", s[i]);
-            bloc_count+=1;
-        }else {
-            printf("pomme \n%c", s[i]);
-            valid = 0;
-            break;
-        }
-        if(bloc_count == strlen(first_bloc)){
-            i++;
-            break;
-        }
-
-    }
+    valid = regexRequiredBloc(s,&i, first_bloc);
     printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
@@ -176,7 +204,7 @@ int verifyBaliseXML2(char* s) {
     }
 
     // bloc espace retour
-    valid = regexSpaceBackSlachMultiple(s,&i);
+    valid = regexSpaceBackSlachPlus(s,&i);
 
     printf("\ntour i -> %d\n", i);
     if(valid == 0){
@@ -184,22 +212,7 @@ int verifyBaliseXML2(char* s) {
     }
 
     // 2eme bloc
-    bloc_count = 0;
-    for(;i<strlen(s);i++){
-
-        if(s[i] == secound_bloc[bloc_count]) {
-            //printf("%c", s[i]);
-            bloc_count+=1;
-        }else {
-            //printf("pomme \n%c", s[i]);
-            valid = 0;
-            break;
-        }
-        if(bloc_count == strlen(secound_bloc)){
-            i++;
-            break;
-        }
-    }
+    valid = regexRequiredBloc(s,&i, secound_bloc);
 
     printf("\ntour i -> %d\n", i);
     if(valid == 0){
@@ -207,46 +220,16 @@ int verifyBaliseXML2(char* s) {
     }
 
     // bloc espace retour
-    count_for = 0;
     int contain_space_backslach=0;
-    for(;i<strlen(s);i++) {
-        
-        printf("i -> %c\n", s[i]);
-        if(count_for == 0 && (s[i] == ' ' || s[i] == '\n')){
-            count_for +=1;
-            contain_space_backslach +=1;
-            continue;
-        }else if(count_for == 0){
-            
-            break;
-        }
-
-        if(s[i] != ' ' && s[i] != '\n'){
-            break;
-        }
-    }
+    regexSpaceBackSlachPlusProofNotRequired(s,&i, &contain_space_backslach);
 
     printf("\nthird tour i -> %d\n", i);
     
 
     // third bloc not required
     if(contain_space_backslach == 1 && s[i] == 'e'){
-        bloc_count = 0;
-        for(;i<strlen(s);i++){
-
-            if(s[i] == third_bloc[bloc_count]) {
-                //printf("%c", s[i]);
-                bloc_count+=1;
-            }else {
-                //printf("pomme \n%c", s[i]);
-                valid = 0;
-                break;
-            }
-            if(bloc_count == strlen(third_bloc)){
-                i++;
-                break;
-            }
-        }
+        
+        valid = regexRequiredBloc(s,&i, third_bloc);
 
         printf("\ntour i -> %d\n", i);
         if(valid == 0){
@@ -254,26 +237,11 @@ int verifyBaliseXML2(char* s) {
         }
 
          // présence espace ou retour chariot après balise
-        regexSpaceBackSlachPlus(s, &i);
+        regexSpaceBackSlachMultiple(s, &i);
     }
 
     // dernier bloc
-    bloc_count = 0;
-    for(;i<strlen(s);i++){
-
-        if(s[i] == fourth_bloc[bloc_count]) {
-            //printf("%c", s[i]);
-            bloc_count+=1;
-        }else {
-            //printf("pomme \n%c", s[i]);
-            valid = 0;
-            break;
-        }
-        if(bloc_count == strlen(third_bloc)){
-            i++;
-            break;
-        }
-    }
+    valid = regexRequiredBloc(s,&i, fourth_bloc);
 
     printf("\ntour i -> %d\n", i);
     if(valid == 0){
