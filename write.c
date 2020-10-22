@@ -8,6 +8,9 @@ int readBaliseXml(char char_file);
 char* concatenateCharInString(char* s, char char_file);
 int verifyBaliseXML(char* s);
 int verifyBaliseXML2(char* s);
+int regexSpaceBackSlachMultiple(char* s,int* i);
+void regexSpaceBackSlachPlus(char* s,int* i);
+
 
 int main() {
 
@@ -45,27 +48,6 @@ int main() {
         printf("problème avec la balise xml");
         return -1;
     }
-
-    //boucle pour extraire toutes les balises
-    /*char_file = fgetc(pt_fichier);
-    while(char_file != EOF) {
-
-        if(char_file != '>') {
-
-            xml_tag = concatenateCharInString(xml_tag, char_file);
-            //printf("%s\n", xml_tag);
-        }else if(char_file == '>') {
-
-            xml_tag = concatenateCharInString(xml_tag, char_file);
-            //printf("%s\n", xml_tag);
-            break;
-        }
-
-        char_file = fgetc(pt_fichier);
-    }*/
-
-
-
 
     return 0;
 }
@@ -111,6 +93,41 @@ int closeFile(FILE* pt_fichier) {
     return 1;
 }
 
+int regexSpaceBackSlachMultiple(char* s,int* i){
+
+    printf("c'est i -> %d\n", *i);
+    int count_for = 0;
+    int valid = 1;
+    for(;*i<strlen(s);*i+=1) {
+        
+        printf("i -> %c\n", s[*i]);
+        if(count_for == 0 && (s[*i] == ' ' || s[*i] == '\n')){
+            count_for++;
+            continue;
+        }else if(count_for == 0){
+            valid = 0;
+            break;
+        }
+
+        if(s[*i] != ' ' && s[*i] != '\n'){
+            break;
+        }
+    }
+
+    return valid;
+}
+
+void regexSpaceBackSlachPlus(char* s,int* i) {
+
+    for(;*i<strlen(s);*i+=1) {
+    
+        if(s[*i] != ' ' && s[*i] != '\n'){
+            break;
+        }
+    }
+}
+
+
 int verifyBaliseXML2(char* s) {
     //^(' '|'\n')*<?xml(' '|'\n')+version="1.0"(' '|'\n')+(encoding="UTF-8")?(' '|'\n')*?>(' '|'\n')*$
     printf("\nbalise xml -> %s\n", s);
@@ -119,19 +136,16 @@ int verifyBaliseXML2(char* s) {
     char third_bloc[] = "encoding=\"UTF-8\"";
     char fourth_bloc[] = "?>";
     int bloc_count = 0;
+    int count_for = 0;
 
     int valid = 1;
     char final_s[strlen(s)];
 
     int count_final_s=0;
-    int i;
+    int i = 0;
     // présence d'espace ou retour chariot avant la balise
-    for(i=0; i<strlen(s);i++) {
-
-        if(s[i] != ' ' && s[i] != '\n'){
-            break;
-        }
-    }
+    regexSpaceBackSlachPlus(s, &i);
+    
     printf("\ntour i -> %d\n", i);
 
     if(strlen(s) < i+strlen(first_bloc)){
@@ -160,24 +174,9 @@ int verifyBaliseXML2(char* s) {
     if(valid == 0){
         return 0;
     }
-    
-    // bloc espace retour
-    int count_for = 0;
-    for(;i<strlen(s);i++) {
-        
-        printf("i -> %c\n", s[i]);
-        if(count_for == 0 && (s[i] == ' ' || s[i] == '\n')){
-            count_for++;
-            continue;
-        }else if(count_for == 0){
-            valid = 0;
-            break;
-        }
 
-        if(s[i] != ' ' && s[i] != '\n'){
-            break;
-        }
-    }
+    // bloc espace retour
+    valid = regexSpaceBackSlachMultiple(s,&i);
 
     printf("\ntour i -> %d\n", i);
     if(valid == 0){
@@ -255,14 +254,10 @@ int verifyBaliseXML2(char* s) {
         }
 
          // présence espace ou retour chariot après balise
-        for(;i<strlen(s);i++) {
-    
-            if(s[i] != ' ' && s[i] != '\n'){
-                break;
-            }
-        }
+        regexSpaceBackSlachPlus(s, &i);
     }
 
+    // dernier bloc
     bloc_count = 0;
     for(;i<strlen(s);i++){
 
@@ -285,9 +280,7 @@ int verifyBaliseXML2(char* s) {
         return 0;
     }
 
-
     return 1;
-
 }
 
 int verifyBaliseXML(char* s) {
