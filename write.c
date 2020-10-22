@@ -20,34 +20,17 @@ int main() {
 
     int char_file = fgetc(pt_fichier);
     char* xml_tag = malloc(sizeof(char));
-    //char tmp_xml_tag[100];
 
     // boucle balise xml
     while(char_file != EOF) {
 
         if(char_file != '>') {
 
-            //free(tmp_xml_tag);
-            //tmp_xml_tag = malloc(sizeof(char) * strlen(xml_tag));
-            //strcpy(tmp_xml_tag, xml_tag);
-            //tmp_xml_tag[strlen(xml_tag)] = '\0';
-
-            //free(xml_tag);
-            //xml_tag = malloc(sizeof(char));
             xml_tag = concatenateCharInString(xml_tag, char_file);
-
             printf("%s\n", xml_tag);
         }else if(char_file == '>') {
 
-            //free(tmp_xml_tag);
-            //tmp_xml_tag = malloc(sizeof(char) * strlen(xml_tag));
-            //strcpy(tmp_xml_tag, xml_tag);
-            //tmp_xml_tag[strlen(xml_tag)] = '\0';
-
-            //free(xml_tag);
-            //xml_tag = malloc(sizeof(char));
             xml_tag = concatenateCharInString(xml_tag, char_file);
-
             printf("%s\n", xml_tag);
             break;
         }
@@ -109,21 +92,26 @@ int closeFile(FILE* pt_fichier) {
 }
 
 int verifyBaliseXML(char* s) {
-    int flag = 0;
+    printf("\nbalise xml -> %s\n", s);
+    int flag = 1;
     int count_guillemet = 0;
     char final_s[strlen(s)];
     int count_final_s=0;
     for(int i=0; i< strlen(s); i++) {
         if(s[i] == '<') {
             flag=1;
-        }else if(s[i] == '"' && count_guillemet==1){
+        }else if(s[i] == '"' && count_guillemet == 1){
             flag=1;
             count_guillemet +=1;
-        }else if(s[i-1] == 'l' && s[i] == ' '){
+        }else if(final_s[count_final_s-1] == 'l' && s[i] == ' '){
            flag=1; 
            final_s[count_final_s] = s[i];
            count_final_s += 1;
            continue;
+        }else if(s[i] == '"'){
+            count_guillemet +=1;
+        }else if(s[i] != ' ') {
+            flag = 0;
         }
 
         printf("tour %d, carrac %c flag %d\n", i, s[i], flag);
