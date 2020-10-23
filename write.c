@@ -16,6 +16,7 @@ int regexSpaceBackSlachOnly(char* s,int* i);
 int verifTagSynthaxe(char* s);
 int regexBracketPlus(char* s,int* i);
 int regexBracketOne(char* s, int* i);
+int regexBracketNumberSpecialMultiple(char *s,int* i);
 
 int main() {
 
@@ -284,7 +285,30 @@ int regexBracketOne(char* s,int* i) {
     return valid;
 }
 
+int regexBracketNumberSpecialMultiple(char *s,int* i) {
 
+    int valid = 1;
+    char special_characters[] = "éèùàç.:-_";
+    for(;*i<strlen(s);*i+=1) {
+
+        if(s[*i] == ' ') {
+            break;
+        }else if( s[*i] < 48 || s[*i] > 122 || (s[*i] > 90 && s[*i] < 97) || (s[*i] > 57 && s[*i] < 65) ) {
+            int present = 0;
+            for(int e = 0;e<strlen(special_characters); e+=1) {
+                if(s[*i] == special_characters[e]) {
+                    present = 1;
+                }
+            }
+            if(present == 0) {
+                valid=0;
+                break;
+            }
+        }
+    }
+
+    return valid;
+}
 
 int verifyBaliseXML(char* s) {
     //^(' '|'\n')*<?xml(' '|'\n')+version="1.0"(' '|'\n')+(encoding="UTF-8")?(' '|'\n')*?>(' '|'\n')*$
@@ -387,7 +411,16 @@ int verifTagSynthaxe(char* s) {
         return 0;
     }
 
+    //vérifie le premier charactère après <
     valid = regexBracketOne(s,&i);
+    printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+
+    //vérifie les carractère qui forme le nom de la balise à part le premier
+    valid = regexBracketNumberSpecialMultiple(s, &i);
     printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
