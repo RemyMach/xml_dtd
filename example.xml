@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?> <message date="12" sexe="homme" tete="carre">
+<?xml version="1.0" encoding="UTF-8"?> <message name="">
     <nom>Pomme</nom>
     <prenom>jean</prenom>
     <adresse>
         <cp>95120</cp>
         <ville>Taverny</ville>
     </adresse>"
-</messa<ge>
+</message>
