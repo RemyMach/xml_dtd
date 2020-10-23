@@ -14,51 +14,70 @@ int regexRequiredBloc(char* s,int* i, char* bloc);
 int verifyOnlySpaceOrBackSlach(char* s);
 int regexSpaceBackSlachOnly(char* s,int* i);
 int verifTagSynthaxe(char* s);
+int verifTagCloseSynthaxe(char* s);
 int regexBracketPlus(char* s,int* i);
 int regexBracketOne(char* s, int* i);
 int regexBracketNumberSpecialMultiple(char *s,int* i, char delimiter1, char delimiter2, char delimiter3, char* special_characters);
 char* getCarracTagXml(FILE* pt_fichier);
 char* getCarracTag(FILE* pt_fichier);
-char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter);
+char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter,int verifyCarrac);
+int readAllOtherTags(FILE* pt_fichier);
+char* getCarracTagClose(FILE* pt_fichier);
 
-char* getCarracTag(FILE* pt_fichier) {
+int readAllOtherTags(FILE* pt_fichier) {
+    
+    int char_file= fgetc(pt_fichier);
+    int char_file_next;
+    int valid = 1;
+    //printf("premier carrac -> %c", char_file);
+    int tour = 0;
+    // on fait revenir le pointeur un rank en arrière
+    while(char_file != EOF){
 
-    char* root_tag = malloc(sizeof(char));
-    int count_guillemet=0;
-    int count_crochet_open=0;
-    int char_file = fgetc(pt_fichier);
-    //printf("getCarrac -> %c\n", char_file);
-    while(char_file != EOF) {
-        printf("%c", char_file);
-        if(char_file == '<') {
-            count_crochet_open +=1;
-            if(count_crochet_open == 2){
-                printf("vous ne pouvez pas utilisez le carractère < après %s", root_tag);
-                return NULL;
+        if(tour%2 == 0){
+            fseek(pt_fichier, -1, SEEK_CUR);
+            getCarracBeforeDelimiter(pt_fichier, '<', 1);
+        }else{
+            char_file = fgetc(pt_fichier);
+            char_file_next = fgetc(pt_fichier);
+            printf("\n%c%c\n", char_file, char_file_next);
+            fseek(pt_fichier, -1, SEEK_CUR);
+            fseek(pt_fichier, -1, SEEK_CUR);
+            if(char_file == '<' && char_file_next == '/') {
+                //balise fermante
+                char* close_tag = malloc(sizeof(char));
+                close_tag = getCarracTagClose(pt_fichier);
+
+                //verif de la balise close tag
+                valid = verifTagCloseSynthaxe(close_tag);
+                if(valid == 0) {
+                    printf("problème avec la balise close tag");
+                    return -1;
+                }
                 break;
-            }else{
-                printf("%d", 1);
-                root_tag = concatenateCharInString(root_tag, char_file);
-            }
-        }else if(char_file != '>') {
-            if(char_file == '"') {
-                count_guillemet+=1;
-            }
-            printf("%d", 2);
-            root_tag = concatenateCharInString(root_tag, char_file);
-        }else if(char_file == '>' && count_guillemet%2 == 0){
-            printf("%d", 3);
-            root_tag = concatenateCharInString(root_tag, char_file);
-            break;
-        }else {
-            printf("%d", 4);
-            root_tag = concatenateCharInString(root_tag, char_file);
-        }
-        //printf("la chaine ->%s", root_tag);
-        char_file = fgetc(pt_fichier);
-    }
+            }else if(char_file == '<') {
+                //open tag
+                char* open_tag = malloc(sizeof(char));
+                open_tag = getCarracTag(pt_fichier);
 
-    return root_tag;
+                //verif de la balise open tag
+                valid = verifTagSynthaxe(open_tag);
+                if(valid == 0) {
+                    printf("problème avec la balise open tag");
+                    return -1;
+                }
+            }else{
+                //chaine de carractère 
+            }
+        }
+        tour+=1;
+        if(tour == 2){
+            printf("%c", char_file);
+            break;
+        }
+
+    }
+    return 1;
 }
 
 int main() {
@@ -87,7 +106,7 @@ int main() {
     
     // de la fin de la balise XML au début de la balise root '<'
     char* xml_tag_next_tag = malloc(sizeof(char));
-    xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<');
+    xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
 
     //verif que avant la balise root on a pas autre chose que espace et backSlash
     valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
@@ -110,6 +129,9 @@ int main() {
         printf("problème avec la balise xml");
         return -1;
     }
+
+
+    valid = readAllOtherTags(pt_fichier);
 
     return 0;
 }
@@ -262,7 +284,7 @@ int regexBracketPlus(char* s,int* i) {
 int regexBracketOne(char* s,int* i) {
 
     int valid=1;
-    printf("carrac -> %c", s[*i]);
+    //printf("carrac -> %c", s[*i]);
     if(s[*i] < 65 || s[*i] > 122){
         valid=0;
     }else if(s[*i] > 90 && s[*i] < 97){
@@ -272,7 +294,7 @@ int regexBracketOne(char* s,int* i) {
     return valid;
 }
 
-int regexBracketNumberSpecialMultiple(char *s,int* i, char delimiter1, char delimiter2, char delimiter3, char* special_characters) {
+int regexBracketNumberSpecialMultiple(char* s,int* i, char delimiter1, char delimiter2, char delimiter3, char* special_characters) {
 
     int valid = 1;
     for(;*i<strlen(s);*i+=1) {
@@ -393,7 +415,7 @@ int verifTagSynthaxe(char* s) {
 
     // verification premier_bloc
     valid = regexRequiredBloc(s,&i, first_bloc);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
         return 0;
@@ -401,7 +423,7 @@ int verifTagSynthaxe(char* s) {
 
     //vérifie le premier charactère après <
     valid = regexBracketOne(s,&i);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
         return 0;
@@ -410,14 +432,14 @@ int verifTagSynthaxe(char* s) {
     //vérifie les carractère qui forme le nom de la balise à part le premier
     char special_characters1[] = "éèùàç.:-_";
     valid = regexBracketNumberSpecialMultiple(s, &i,' ', '\n','>', special_characters1);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
         return 0;
     }
 
     //on verifie si le carractère ferme la balise > alors fin de balise
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
     if(s[i] == '>'){
         printf("balise valide\n");
         return 1;
@@ -427,7 +449,7 @@ int verifTagSynthaxe(char* s) {
     regexSpaceBackSlachMultiple(s, &i);
 
     //on verifie si le carractère ferme la balise > alors fin de balise
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
     if(s[i] == '>'){
         printf("balise valide\n");
         return 1;
@@ -435,7 +457,7 @@ int verifTagSynthaxe(char* s) {
 
     //le prochain carractère doit-être la première lettre de l'attribut
     valid = regexBracketOne(s,&i);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
         return 0;
@@ -444,7 +466,7 @@ int verifTagSynthaxe(char* s) {
     //vérifie les carractère qui forme le nom de l'attribut
     char special_characters2[] = "éèùàç.-_";
     valid = regexBracketNumberSpecialMultiple(s, &i,'=', -1, -1, special_characters2);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
     // faire passer au carractère après le égale
     i+=1;
 
@@ -454,7 +476,7 @@ int verifTagSynthaxe(char* s) {
 
     //vérifie les guillements
     valid = regexRequiredBloc(s,&i, attribut_bloc);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
 
     if(valid == 0){
         return 0;
@@ -463,7 +485,7 @@ int verifTagSynthaxe(char* s) {
     //vérifie les carractère qui forme la valeur de l'attribut
     char special_characters3[] = "éèùàç.-_>!?;\%ù*\\$°()§^ê£";
     valid = regexBracketNumberSpecialMultiple(s, &i,'"', -1, -1, special_characters3);
-    printf("\ntour i -> %d\n", i);
+    //printf("\ntour i -> %d\n", i);
     // faire passer au carractère après le égale
     i+=1;
 
@@ -480,6 +502,57 @@ int verifTagSynthaxe(char* s) {
     }
 
     
+    return 1;
+}
+
+int verifTagCloseSynthaxe(char* s) {
+    int i=0;
+    int valid;
+    char first_bloc[] = "</";
+    char secound_bloc[] = ">";
+
+    // verification premier_bloc
+    valid = regexRequiredBloc(s,&i, first_bloc);
+    //printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+
+    //vérifie le premier charactère après </
+    valid = regexBracketOne(s,&i);
+    //printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+
+    //vérifie les carractère qui forme le nom de la balise à part le premier
+    char special_characters1[] = "éèùàç.:-_";
+    valid = regexBracketNumberSpecialMultiple(s, &i,' ', '\n','>', special_characters1);
+    //printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+
+    //on verifie si le carractère ferme la balise > alors fin de balise
+    //printf("\ntour i -> %d\n", i);
+    if(s[i] == '>'){
+        printf("balise valide\n");
+        return 1;
+    }
+
+    // présence espace ou retour chariot après balise
+    regexSpaceBackSlachMultiple(s, &i);
+
+    //on verifie si le carractère ferme la balise > alors fin de balise
+    //printf("\ntour i -> %d\n", i);
+    if(s[i] == '>'){
+        printf("balise valide\n");
+        return 1;
+    }
+
     return 1;
 }
 
@@ -508,15 +581,32 @@ char* getCarracTagXml(FILE* pt_fichier) {
     return xml_tag;
 }
 
-char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter) {
+char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter, int verifyCarrac) {
 
+    char special_characters3[] = "éèùàç.-_>!?;\%ù*\\$°()§^ê£";
+    int present = 0;
     char* xml_tag_next_tag = malloc(sizeof(char));
     int char_file = fgetc(pt_fichier);
-    printf("ici %c\n",char_file);
+    //printf("ici %c\n",char_file);
     while(char_file != EOF) {
 
         if(char_file != delimiter) {
-            printf("%d", 0);
+            if(verifyCarrac == 1) {
+                if(char_file == ' ' || char_file == '\n'){
+
+                }else if( (char_file >= 97 && char_file <= 122) || (char_file >= 65 && char_file <= 90 ) || (char_file >= 48 && char_file < 57) ) {
+                    break;
+                }else{
+                    for(int e = 0;e<strlen(special_characters3); e+=1) {
+                        if(char_file == special_characters3[e]) {
+                            present = 1;
+                        }
+                    }
+                    if(present==1) {
+                        break;
+                    }
+                }
+            }
             xml_tag_next_tag = concatenateCharInString(xml_tag_next_tag, char_file);
         }else {
             break;
@@ -526,7 +616,61 @@ char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter) {
     // on fait revenir le pointeur un rank en arrière
     fseek(pt_fichier, -1, SEEK_CUR);
 
-    printf("dernier -> %c", char_file);
-
     return xml_tag_next_tag;
+}
+
+char* getCarracTag(FILE* pt_fichier) {
+
+    char* root_tag = malloc(sizeof(char));
+    int count_guillemet=0;
+    int count_crochet_open=0;
+    int char_file = fgetc(pt_fichier);
+    //printf("getCarrac -> %c\n", char_file);
+    while(char_file != EOF) {
+        printf("%c", char_file);
+        if(char_file == '<') {
+            count_crochet_open +=1;
+            if(count_crochet_open == 2){
+                printf("vous ne pouvez pas utilisez le carractère < après %s", root_tag);
+                return NULL;
+                break;
+            }else{
+                root_tag = concatenateCharInString(root_tag, char_file);
+            }
+        }else if(char_file != '>') {
+            if(char_file == '"') {
+                count_guillemet+=1;
+            }
+            root_tag = concatenateCharInString(root_tag, char_file);
+        }else if(char_file == '>' && count_guillemet%2 == 0){
+            root_tag = concatenateCharInString(root_tag, char_file);
+            break;
+        }else {
+            root_tag = concatenateCharInString(root_tag, char_file);
+        }
+        //printf("la chaine ->%s", root_tag);
+        char_file = fgetc(pt_fichier);
+    }
+
+    return root_tag;
+}
+
+char* getCarracTagClose(FILE* pt_fichier) {
+
+    char* close_tag = malloc(sizeof(char));
+    int char_file = fgetc(pt_fichier);
+    //printf("getCarrac -> %c\n", char_file);
+    while(char_file != EOF) {
+        printf("%c", char_file);
+        if(char_file != '>') {
+            close_tag = concatenateCharInString(close_tag, char_file);
+        }else {
+            close_tag = concatenateCharInString(close_tag, char_file);
+            break;
+        }
+        //printf("la chaine ->%s", root_tag);
+        char_file = fgetc(pt_fichier);
+    }
+
+    return close_tag;
 }
