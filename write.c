@@ -7,15 +7,19 @@ int closeFile(FILE* pt_fichier);
 int readBaliseXml(char char_file);
 char* concatenateCharInString(char* s, char char_file);
 int verifyBaliseXML(char* s);
-int verifyBaliseXML2(char* s);
 int regexSpaceBackSlachPlus(char* s,int* i);
 void regexSpaceBackSlachPlusProofNotRequired(char* s,int* i, int* proof);
 void regexSpaceBackSlachMultiple(char* s,int* i);
 int regexRequiredBloc(char* s,int* i, char* bloc);
+int verifyOnlySpaceOrBackSlach(char* s);
+int regexSpaceBackSlachOnly(char* s,int* i);
+int verifTagSynthaxe(char* s);
+int regexBracketPlus(char* s,int* i);
+int regexBracketOne(char* s, int* i);
 
 int main() {
 
-    int good_balise_xml;
+    int good_balise_xml, valid;
 
     // ouverture du fichier en lecture
     FILE* pt_fichier = openFile("example.xml");
@@ -44,8 +48,77 @@ int main() {
     }
 
     // verif validation balise xml
-    good_balise_xml = verifyBaliseXML2(xml_tag);
+    good_balise_xml = verifyBaliseXML(xml_tag);
     if(good_balise_xml == 0){
+        printf("problème avec la balise xml");
+        return -1;
+    }
+
+    
+    // de la fin de la balise XML au début de la balise root '<'
+    char* xml_tag_next_tag = malloc(sizeof(char));
+    char_file = fgetc(pt_fichier);
+    while(char_file != EOF) {
+
+        if(char_file != '<') {
+            printf("%d", 0);
+            xml_tag_next_tag = concatenateCharInString(xml_tag_next_tag, char_file);
+        }else {
+            break;
+        }
+        char_file = fgetc(pt_fichier);
+    }
+    //printf("%s\n", xml_tag_next_tag);
+    //printf("la %c\n", char_file);
+    //verif que avant la balise root on a pas autre chose que espace et backSlash
+    valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
+    if(valid == 0) {
+        printf("problème avec la balise xml");
+        return -1;
+    }
+    *xml_tag_next_tag = NULL;
+    free(xml_tag_next_tag);
+
+    //on prend la première balise avec tous ses attributs
+    char* root_tag = malloc(sizeof(char));
+    printf("%p\n", root_tag);
+    int count_guillemet=0;
+    int count_crochet_open=0;
+    while(char_file != EOF) {
+        //printf("%c", char_file);
+        if(char_file == '<') {
+            count_crochet_open +=1;
+            if(count_crochet_open == 2){
+                printf("vous ne pouvez pas utilisez le carractère < après %s", root_tag);
+                return -1;
+                break;
+            }else{
+                printf("%d", 1);
+                root_tag = concatenateCharInString(root_tag, char_file);
+            }
+        }else if(char_file != '>') {
+            if(char_file == '"') {
+                count_guillemet+=1;
+            }
+            printf("%d", 2);
+            root_tag = concatenateCharInString(root_tag, char_file);
+        }else if(char_file == '>' && count_guillemet%2 == 0){
+            printf("%d", 3);
+            root_tag = concatenateCharInString(root_tag, char_file);
+            break;
+        }else {
+            printf("%d", 4);
+            root_tag = concatenateCharInString(root_tag, char_file);
+        }
+        printf("la chaine ->%s", root_tag);
+        char_file = fgetc(pt_fichier);
+    }
+
+    //printf("root_tag -> %s\n", root_tag);
+
+    //verif de la balise root
+    valid = verifTagSynthaxe(root_tag);
+    if(valid == 0) {
         printf("problème avec la balise xml");
         return -1;
     }
@@ -56,7 +129,7 @@ int main() {
 char* concatenateCharInString(char* s, char char_file) {
 
     //printf("%lu", strlen(s));
-    printf("%c", char_file);
+    //printf("%c", char_file);
     char* new_string = malloc(sizeof(char) * strlen(s) + 2);
     strncpy(new_string, s, strlen(s));
     new_string[strlen(s)] = char_file;
@@ -152,6 +225,7 @@ void regexSpaceBackSlachMultiple(char* s,int* i) {
 
 int regexRequiredBloc(char* s,int* i, char* bloc) {
 
+    //printf("ça bloque -> %c\n", s[*i+1]);
     int valid=1;
     int bloc_count=0;
     for(;*i<strlen(s);*i+=1) {
@@ -160,7 +234,7 @@ int regexRequiredBloc(char* s,int* i, char* bloc) {
             printf("%c", s[*i]);
             bloc_count+=1;
         }else {
-            printf("pomme \n%c", s[*i]);
+            //printf("pomme \n%c", s[*i]);
             valid = 0;
             break;
         }
@@ -173,8 +247,46 @@ int regexRequiredBloc(char* s,int* i, char* bloc) {
     return valid;
 }
 
+int regexSpaceBackSlachOnly(char* s, int* i){
+    int valid = 1;
+    for(;*i<strlen(s);*i+=1) {
+    
+        if(s[*i] != ' ' && s[*i] != '\n'){
+            valid = 0;
+            *i+=1;
+            break;
+        }
+    }
 
-int verifyBaliseXML2(char* s) {
+    return valid;
+}
+
+int regexBracketPlus(char* s,int* i) {
+
+    char special_characters[] = "éèùàç.:-_";
+    for(;*i<strlen(s);*i+=1) {
+
+        //if(s[i] >)
+    }
+    return 0;
+}
+
+int regexBracketOne(char* s,int* i) {
+
+    int valid=1;
+    printf("carrac -> %c", s[*i]);
+    if(s[*i] < 65 || s[*i] > 122){
+        valid=0;
+    }else if(s[*i] > 90 && s[*i] < 97){
+        valid=0;
+    }
+    *i+=1;
+    return valid;
+}
+
+
+
+int verifyBaliseXML(char* s) {
     //^(' '|'\n')*<?xml(' '|'\n')+version="1.0"(' '|'\n')+(encoding="UTF-8")?(' '|'\n')*?>(' '|'\n')*$
     printf("\nbalise xml -> %s\n", s);
     char first_bloc[] = "<?xml";
@@ -251,50 +363,36 @@ int verifyBaliseXML2(char* s) {
     return 1;
 }
 
-int verifyBaliseXML(char* s) {
-    int flag = 1;
-    int count_guillemet = 0;
-    char final_s[strlen(s)];
-    int count_final_s=0;
-    for(int i=0; i< strlen(s); i++) {
-        if(s[i] == '"' && count_guillemet%2 == 1){
-            flag=1;
-            count_guillemet +=1;
-        }else if(final_s[count_final_s-1] == 'l' && s[i] == ' '){
-           flag=1; 
-           final_s[count_final_s] = s[i];
-           count_final_s += 1;
-           continue;
-        }else if(s[i] == '"'){
-            count_guillemet +=1;
-        }else if(s[i] != ' ') {
-            flag = 0;
-        }
+int verifyOnlySpaceOrBackSlach(char* s){
+    //^(' ')*$
+    int i=0;
+    int valid;
+    valid = regexSpaceBackSlachOnly(s,&i);
 
-        printf("tour %d, carrac %c flag %d\n", i, s[i], flag);
-        if(s[i] == '\n'){
-            continue;
-        }
-        if(flag == 1 && s[i] == ' '){
-            s[i] = '%';
-        }else if(flag == 1 && s[i] != ' '){
-            final_s[count_final_s] = s[i];
-            count_final_s += 1;
-        }else{
-            flag=0;
-            final_s[count_final_s] = s[i];
-            count_final_s += 1;
-        }
-    }
-    final_s[count_final_s] = '\0';
+    return valid;
 
-    printf("%s\n", s);
-    printf("%s\n", final_s);
+}
 
+int verifTagSynthaxe(char* s) {
+    int i=0;
+    int valid;
+    char first_bloc[] = "<";
+    printf("chaine ->%s\n", s);
 
-    if(strcmp(final_s,"<?xml version=\"1.0\"?>") == 0) {
-        return 1;
-    }else {
+    // verification premier_bloc
+    valid = regexRequiredBloc(s,&i, first_bloc);
+    printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
         return 0;
     }
+
+    valid = regexBracketOne(s,&i);
+    printf("\ntour i -> %d\n", i);
+
+    if(valid == 0){
+        return 0;
+    }
+
+    return 1;
 }
