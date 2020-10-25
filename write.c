@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structure.h"
 
 FILE* openFile(char* filePath);
 int closeFile(FILE* pt_fichier);
@@ -26,8 +27,12 @@ char* getCarracTagClose(FILE* pt_fichier);
 char* getCarracText(FILE* pt_fichier);
 int readAllOtherTags(FILE* pt_fichier);
 
+// gcc -o write write.c structure.c
 int main() {
 
+    LinkedListTag* head = intialisation("message");
+    printf("%s\n", head->name);
+    return 1;
     int good_balise_xml, valid;
 
     // ouverture du fichier en lecture

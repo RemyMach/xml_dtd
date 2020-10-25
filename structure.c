@@ -1,22 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structure.h"
 
-typedef struct LinkedListAttribute {
-    char* key;
-    char* value;
-    struct LinkedListAttribute* nextAttribute;
-}LinkedListAttribute;
+// typedef struct LinkedListAttribute {
+//     char* key;
+//     char* value;
+//     struct LinkedListAttribute* nextAttribute;
+// }LinkedListAttribute;
 
-typedef struct LinkedListTag {
-    int close;
-    char* name;
-    char* text;
-    struct LinkedListTag* parentTag;
-    struct LinkedListTag* childTags;
-    struct LinkedListTag* brotherTags;
-    struct LinkedListAttribute* attribute;
-}LinkedListTag;
+// typedef struct LinkedListTag {
+//     int close;
+//     char* name;
+//     char* text;
+//     struct LinkedListTag* parentTag;
+//     struct LinkedListTag* childTags;
+//     struct LinkedListTag* brotherTags;
+//     struct LinkedListAttribute* attribute;
+// }LinkedListTag;
 
 LinkedListTag* intialisation(char* name) {
 
@@ -204,7 +205,7 @@ void printAttribute(LinkedListAttribute* firstAttribute) {
     }
 }
 
-void printTags(LinkedListTag* head){
+void printTags(LinkedListTag* head) {
 
     printf("<%s>\n", head->name);
 
@@ -250,7 +251,7 @@ void printTags(LinkedListTag* head){
     }
 }
 
-int main() {
+/*int main() {
 
     LinkedListTag* head = intialisation("message");
     addLinkedListAttribute("name", "jean de la message", head);
@@ -292,6 +293,6 @@ int main() {
 
     //LinkedListTag* current = searchCurrentTag(head);
     //printf("%s\n", current->name);
-    printTags(head);
+    /*printTags(head);
     return 0;
-}
+}*/
