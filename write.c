@@ -26,6 +26,62 @@ char* getCarracTagClose(FILE* pt_fichier);
 char* getCarracText(FILE* pt_fichier);
 int readAllOtherTags(FILE* pt_fichier);
 
+int main() {
+
+    int good_balise_xml, valid;
+
+    // ouverture du fichier en lecture
+    FILE* pt_fichier = openFile("example.xml");
+    if(pt_fichier == NULL) {
+        return -1;
+    }
+    char* xml_tag = malloc(sizeof(char));
+    int char_file;
+
+    //get les carractère qu'il faut pour la balise xml
+    xml_tag = getCarracTagXml(pt_fichier);
+
+    // verif validation balise xml
+    good_balise_xml = verifyBaliseXML(xml_tag);
+    if(good_balise_xml == 0){
+        printf("problème avec la balise xml");
+        return -1;
+    }
+    *xml_tag = NULL;
+    free(xml_tag);
+    
+    // de la fin de la balise XML au début de la balise root '<'
+    char* xml_tag_next_tag = malloc(sizeof(char));
+    xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
+
+    //verif que avant la balise root on a pas autre chose que espace et backSlash
+    valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
+    if(valid == 0) {
+        printf("problème avec la balise xml");
+        return -1;
+    }
+    *xml_tag_next_tag = NULL;
+    free(xml_tag_next_tag);
+
+    //on prend la première balise avec tous ses attributs
+    char* root_tag = malloc(sizeof(char));
+    root_tag = getCarracTag(pt_fichier);
+
+    //printf("root_tag -> %s\n", root_tag);
+
+    //verif de la balise root
+    valid = verifTagSynthaxe(root_tag);
+    if(valid == 0) {
+        printf("problème avec la balise xml");
+        return -1;
+    }
+
+
+    valid = readAllOtherTags(pt_fichier);
+
+    return 0;
+}
+
 int readAllOtherTags(FILE* pt_fichier) {
     
     int char_file= fgetc(pt_fichier);
@@ -102,62 +158,6 @@ int readAllOtherTags(FILE* pt_fichier) {
 
     }
     return 1;
-}
-
-int main() {
-
-    int good_balise_xml, valid;
-
-    // ouverture du fichier en lecture
-    FILE* pt_fichier = openFile("example.xml");
-    if(pt_fichier == NULL) {
-        return -1;
-    }
-    char* xml_tag = malloc(sizeof(char));
-    int char_file;
-
-    //get les carractère qu'il faut pour la balise xml
-    xml_tag = getCarracTagXml(pt_fichier);
-
-    // verif validation balise xml
-    good_balise_xml = verifyBaliseXML(xml_tag);
-    if(good_balise_xml == 0){
-        printf("problème avec la balise xml");
-        return -1;
-    }
-    *xml_tag = NULL;
-    free(xml_tag);
-    
-    // de la fin de la balise XML au début de la balise root '<'
-    char* xml_tag_next_tag = malloc(sizeof(char));
-    xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
-
-    //verif que avant la balise root on a pas autre chose que espace et backSlash
-    valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
-    if(valid == 0) {
-        printf("problème avec la balise xml");
-        return -1;
-    }
-    *xml_tag_next_tag = NULL;
-    free(xml_tag_next_tag);
-
-    //on prend la première balise avec tous ses attributs
-    char* root_tag = malloc(sizeof(char));
-    root_tag = getCarracTag(pt_fichier);
-
-    //printf("root_tag -> %s\n", root_tag);
-
-    //verif de la balise root
-    valid = verifTagSynthaxe(root_tag);
-    if(valid == 0) {
-        printf("problème avec la balise xml");
-        return -1;
-    }
-
-
-    valid = readAllOtherTags(pt_fichier);
-
-    return 0;
 }
 
 char* concatenateCharInString(char* s, char char_file) {
@@ -435,6 +435,7 @@ int verifTagSynthaxe(char* s) {
     char first_bloc[] = "<";
     char secound_bloc[] = ">";
     char attribut_bloc[] = "\"";
+    int tour = 0;
     //printf("chaine ->%s\n", s);
 
     // verification premier_bloc
@@ -463,6 +464,59 @@ int verifTagSynthaxe(char* s) {
     }
 
     //ici il faut mettre un top while
+    int space_for_attribut = 0;
+    while(s[i] != '>'){
+
+        if(tour%2==0) {
+            space_for_attribut = 0;
+            // présence espace ou retour chariot après balise
+            space_for_attribut = regexSpaceBackSlachPlus(s, &i);
+        }else {
+            if(space_for_attribut != 1) {
+                return 0;
+            }
+            //le prochain carractère doit-être la première lettre de l'attribut
+            valid = regexBracketOne(s,&i);
+            //printf("\ntour i -> %d\n", i);
+
+            if(valid == 0){
+                return 0;
+            }
+
+            //vérifie les carractère qui forme le nom de l'attribut
+            char special_characters2[] = "éèùàç.-_";
+            valid = regexBracketNumberSpecialMultiple(s, &i,'=', -1, -1, special_characters2);
+            //printf("\ntour i -> %d\n", i);
+            // faire passer au carractère après le égale
+            i+=1;
+            if(valid == 0){
+                return 0;
+            }
+
+            //vérifie les guillements
+            valid = regexRequiredBloc(s,&i, attribut_bloc);
+            //printf("\ntour i -> %d\n", i);
+
+            if(valid == 0){
+                return 0;
+            }
+
+            //vérifie les carractère qui forme la valeur de l'attribut
+            char special_characters3[] = "éèùàç.-_>!?;\%ù*\\$°()§^ê£ \n";
+            valid = regexBracketNumberSpecialMultiple(s, &i,'"', -1, -1, special_characters3);
+            //printf("\ntour i -> %d\n", i);
+            // faire passer au carractère après le égale
+            i+=1;
+
+            if(valid == 0){
+                return 0;
+            }
+        }
+
+        tour+=1;
+    }
+
+    return 1;
 
     //on verifie si le carractère ferme la balise > alors fin de balise
     //printf("\ntour i -> %d\n", i);
@@ -579,7 +633,7 @@ int verifTagCloseSynthaxe(char* s) {
         return 1;
     }
 
-    return 1;
+    return 0;
 }
 
 int verifyTextSynthaxe(char* s) {

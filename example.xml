@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?> <message name=""><nom> Pom<me/nom>
+<?xml version="1.0" encoding="UTF-8"?>
+<message  name="jean de la pomme" value="histoire">
+    <nom name="jean de la pomme" value="histoire" tom="histoire">Pomme</nom>
+    <adresse>
+        <cp>95120</cp>
+        <ville>Taverny</ville>
+    </adresse>
     <prenom>jean</prenom>
     <adresse>
         <cp>95120</cp>
