@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message  name="jean de la pomme" value="histoire">
-    <nom name="jean de la pomme" value="histoire" tom="histoire">Pomme</nom>
+<message  face="jean de la pomme" value="histoire">
+    <nom name="" value="2" tom="3">Pomme</nom>
     <adresse>
-        <cp>95120</cp>
+        <cp>96059120</cp>
+        <type>
+            <maison>pavillon</maison>
+        </type>
         <ville>Taverny</ville>
     </adresse>
     <prenom>jean</prenom>
     <adresse>
-        <cp>95120</cp>
+        <cp>95059120</cp>
         <ville>Taverny</ville>
     </adresse>
 </message>

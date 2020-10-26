@@ -31,6 +31,7 @@ LinkedListTag* intialisation(char* name) {
     ll->childTags = NULL;
     ll->brotherTags = NULL;
     ll->attribute = NULL;
+    printf("ll->name %s\n", ll->name);
 
     return ll;
 }
@@ -40,8 +41,12 @@ LinkedListTag* searchCurrentTag(LinkedListTag* head) {
     if(head->close == 1) {
         return -1;
     }else if(head->childTags == NULL) {
+        //printf("head childTags NULL -> %d\n", head->childTags);
         return head;
     }
+    //printf("head childTags -> %d\n", head->childTags);
+
+    //printf("ouloulou %d\n", head->childTags);
     int pass = 0;
     LinkedListTag* current = head;
     LinkedListTag* nextTag = head->childTags;
@@ -114,7 +119,9 @@ void addLinkedListTags(char* name, char* text, int close, LinkedListTag* parent,
     //ajout de la liaison sur la balise aprent
     ll->parentTag = parent;
 
-    // ajout de la liasion sur la balise d'avant
+    ll->childTags = NULL;
+
+    // ajout de la liaison sur la balise d'avant
     if(parent->childTags == NULL) {
         parent->childTags = ll;
     }else {
@@ -133,7 +140,7 @@ void addLinkedListTags(char* name, char* text, int close, LinkedListTag* parent,
 void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
 
     LinkedListTag* currentTag = searchCurrentTag(head);
-    printf("voici la balise %s\n", currentTag->name);
+
     LinkedListAttribute* newAttribut = malloc(sizeof(LinkedListAttribute));
     newAttribut->key = malloc(sizeof(char) * strlen(key));
     newAttribut->key = key;
@@ -197,7 +204,6 @@ void addLinkedListBrother(char* name, char* text, LinkedListTag* brotherBefore, 
 
 void printAttribute(LinkedListAttribute* firstAttribute) {
 
-
     while(firstAttribute != NULL){
 
         printf("\tattribut / Key: %s -> Value: %s\n", firstAttribute->key, firstAttribute->value);
@@ -222,7 +228,6 @@ void printTags(LinkedListTag* head) {
     int pass=0;
     int flagChildToParent = 0;
     while(child != NULL){
-
         if(flagChildToParent != 1) {
             printf("<%s>\n", child->name);
             if(child->text != NULL) {
@@ -233,7 +238,6 @@ void printTags(LinkedListTag* head) {
                 printAttribute(child->attribute);
             }
         }
-
         if(child->childTags == NULL || flagChildToParent == 1){
             flagChildToParent = 0;
             printf("</%s>\n", child->name);
@@ -257,16 +261,16 @@ void printTags(LinkedListTag* head) {
     addLinkedListAttribute("name", "jean de la message", head);
     addLinkedListAttribute("value", "histoire de message", head);
     
-    addLinkedListTags("nom", NULL,0, head, NULL);
+    addLinkedListTags("nom", NULL,0, searchCurrentTag(head), NULL);
     addLinkedListAttribute("name", "jean de la pomme", head);
     addLinkedListAttribute("value", "histoire", head);
     closeTag("nom", searchCurrentTag(head));
 
-    addLinkedListTags("prenom",NULL,0, head, NULL);
+    addLinkedListTags("prenom",NULL,0, searchCurrentTag(head), NULL);
     addTextToLinkedListTag("jean", head);
     closeTag("prenom", searchCurrentTag(head));
 
-    addLinkedListTags("adresse",NULL,0, head, NULL);
+    addLinkedListTags("adresse",NULL,0, searchCurrentTag(head), NULL);
     addLinkedListTags("cp", NULL,0, searchCurrentTag(head), NULL);
     addTextToLinkedListTag("95120", head);
     closeTag("cp", searchCurrentTag(head));
