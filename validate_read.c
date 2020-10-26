@@ -2,48 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "structure.h"
+#include "validate_read.h"
 
-FILE* openFile(char* filePath);
-int closeFile(FILE* pt_fichier);
-int readBaliseXml(char char_file);
-char* concatenateCharInString(char* s, char char_file);
-int verifyBaliseXML(char* s);
-int regexSpaceBackSlachPlus(char* s,int* i);
-void regexSpaceBackSlachPlusProofNotRequired(char* s,int* i, int* proof);
-void regexSpaceBackSlachMultiple(char* s,int* i);
-int regexRequiredBloc(char* s,int* i, char* bloc);
-int verifyOnlySpaceOrBackSlach(char* s);
-int regexSpaceBackSlachOnly(char* s,int* i);
-int verifTagSynthaxe(char* s);
-int verifTagCloseSynthaxe(char* s);
-int verifyTextSynthaxe(char* s);
-int regexBracketPlus(char* s,int* i);
-int regexBracketOne(char* s, int* i);
-int regexBracketNumberSpecialMultiple(char *s,int* i, char delimiter1, char delimiter2, char delimiter3, char* special_characters);
-char* getCarracTagXml(FILE* pt_fichier);
-char* getCarracTag(FILE* pt_fichier);
-char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter,int verifyCarrac);
-char* getCarracTagClose(FILE* pt_fichier);
-char* getCarracText(FILE* pt_fichier);
-int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head);
-
-void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head);
-char* extractTagName(char* s, int* i);
-void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head);
-char* extractTagAttributeKey(char* s, int* i);
-char* extractTagAttributeValue(char* s, int* i);
-
-void extractText_ADD(char* s, LinkedListTag* head);
-
-int extractTagName_close(char* s, LinkedListTag* head);
-
-// gcc -o write write.c structure.c
-int main() {
-
+int validateRead(LinkedListTag* head, char* pathFile) {
     int good_balise_xml, valid;
 
     // ouverture du fichier en lecture
-    FILE* pt_fichier = openFile("example.xml");
+    FILE* pt_fichier = openFile(pathFile);
     if(pt_fichier == NULL) {
         return -1;
     }
@@ -92,14 +57,16 @@ int main() {
     int i = 0;
     char* root_tag_name_or_attribute;
     root_tag_name_or_attribute = extractTagName(root_tag, &i);
-    LinkedListTag* head = intialisation(root_tag_name_or_attribute);
-
-
+    head->name = NULL;
+    free(head->name);
+    head->name = malloc(sizeof(char)*strlen(root_tag_name_or_attribute)+1);
+    strncpy(head->name, root_tag_name_or_attribute, strlen(root_tag_name_or_attribute));
+    head->name[strlen(root_tag_name_or_attribute)] = '\0';
+    
     //on extrait les attribut et on les ajoute.
     extractTagAttribute_ADD(root_tag, &i, head);
     *root_tag = NULL;
     free(root_tag);
-    printTags(head);
 
     printf("\n---------------------------------------\n");
     valid = readAllOtherTags(pt_fichier, head);
@@ -108,8 +75,6 @@ int main() {
         return -1;
     }
 
-    printTags(head);
-
     printf("\n---------------------------------------\n");
     valid = verifyAllTagsClosed(head);
     if(valid == 0) {
@@ -117,11 +82,14 @@ int main() {
         return -1;
     }
 
-    return 0;
+    return 1;
 }
+
+// gcc -o write write.c structure.c
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
 
+    printf("head %s\n", head->name);
     printf("ouloulou %d\n", head->childTags);
     
     int char_file= fgetc(pt_fichier);

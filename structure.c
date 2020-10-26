@@ -3,22 +3,6 @@
 #include <string.h>
 #include "structure.h"
 
-// typedef struct LinkedListAttribute {
-//     char* key;
-//     char* value;
-//     struct LinkedListAttribute* nextAttribute;
-// }LinkedListAttribute;
-
-// typedef struct LinkedListTag {
-//     int close;
-//     char* name;
-//     char* text;
-//     struct LinkedListTag* parentTag;
-//     struct LinkedListTag* childTags;
-//     struct LinkedListTag* brotherTags;
-//     struct LinkedListAttribute* attribute;
-// }LinkedListTag;
-
 LinkedListTag* intialisation(char* name) {
 
     LinkedListTag* ll = malloc(sizeof(LinkedListTag));
@@ -146,6 +130,7 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
     newAttribut->key = key;
     newAttribut->value = malloc(sizeof(char) * strlen(value));
     newAttribut->value = value;
+    newAttribut->nextAttribute = NULL;
 
     if(currentTag->attribute == NULL) {
         currentTag->attribute = newAttribut;
@@ -158,7 +143,6 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
 
         attribute = attribute->nextAttribute;
     }
-
     attribute->nextAttribute = newAttribut;
     printf("nom -> %s et value %s\n", attribute->nextAttribute->key, attribute->nextAttribute->value);
 }
@@ -271,7 +255,7 @@ int verifyAllTagsClosed(LinkedListTag* head) {
     while(child != NULL){
 
         if(flagChildToParent != 1) {
-            printf("\tje dois apparaitre le nombre de balise -1 pour tout vérifier\n");
+        //printf("\tje dois apparaitre le nombre de balise -1 pour tout vérifier\n");
             if(child->close != 1) {
                 return -1;
             }
