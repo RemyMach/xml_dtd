@@ -23,3 +23,4 @@ void addTextToLinkedListTag(char* text, LinkedListTag* head);
 void addLinkedListBrother(char* name, char* text, LinkedListTag* brotherBefore, LinkedListTag* brotherAfter);
 void printAttribute(LinkedListAttribute* firstAttribute);
 void printTags(LinkedListTag* head);
+int verifyAllTagsClosed(LinkedListTag* head);

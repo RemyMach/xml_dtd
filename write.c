@@ -26,103 +26,16 @@ char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter,int verifyCarrac
 char* getCarracTagClose(FILE* pt_fichier);
 char* getCarracText(FILE* pt_fichier);
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head);
+
 void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head);
 char* extractTagName(char* s, int* i);
 void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head);
 char* extractTagAttributeKey(char* s, int* i);
 char* extractTagAttributeValue(char* s, int* i);
 
-void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head) {
+void extractText_ADD(char* s, LinkedListTag* head);
 
-    int i = 0;
-    //LinkedListTag* newNode = malloc(sizeof(LinkedListTag));
-    char* tag_name;
-    tag_name = extractTagName(s, &i);
-    printf("tag_name -> %s\n", tag_name);
-    addLinkedListTags(tag_name, NULL,0, searchCurrentTag(head), NULL);
-    extractTagAttribute_ADD(s, &i, head);
-}
-
-char* extractTagName(char* s, int* i) {
-
-    char* tag_name = malloc(sizeof(char));
-    for(;*i<strlen(s); *i+=1) {
-        if(s[*i] != ' ' && s[*i] != '\n' && s[*i] != '>' && s[*i] != '<') {
-           tag_name = concatenateCharInString(tag_name, s[*i]); 
-        }else{
-            if(s[*i] != '<') {
-                break;
-            }
-        }
-    }
-    printf("voici tag element %s\n", tag_name);
-    return tag_name;
-}
-
-char* extractTagAttributeKey(char* s, int* i) {
-
-    char* attribute_key = malloc(sizeof(char));
-    *attribute_key = NULL;
-    //printf("pointeur -> %p\n", attribute_key);
-    for(;*i<strlen(s); *i+=1) {
-        if(s[*i] != '='){
-            attribute_key = concatenateCharInString(attribute_key, s[*i]);
-        }else {
-            *i+=1;
-            break;
-        }
-        
-    }
-    return attribute_key;
-}
-
-char* extractTagAttributeValue(char* s, int* i) {
-
-    char* attribute_value = malloc(sizeof(char));
-    *attribute_value = NULL;
-    //printf("value -> %s\n", attribute_value);
-    //printf("pointeur -> %p\n", attribute_value);
-
-    int count_mark = 0;
-    for(;*i<strlen(s); *i+=1) {
-        if(s[*i] != '"'){
-            attribute_value = concatenateCharInString(attribute_value, s[*i]);
-        }else if(count_mark < 1){
-            count_mark+=1;
-        }else {
-            *i+=1;
-            break;
-        }
-    }
-
-    return attribute_value;
-}
-
-void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
-
-    char* attribute_key;
-    char* attribute_value;
-    int count = 0;
-    printf("extractTagAttribute_ADD name %s\n", head->name);
-
-    while(s[*i] != '>'){
-
-        if(count%2==0) {
-            // présence espace ou retour chariot après attribut ou tagName
-            regexSpaceBackSlachMultiple(s, i);
-        }else {
-            attribute_key = extractTagAttributeKey(s, i);
-            attribute_value = extractTagAttributeValue(s, i);
-            printf("key -> %s\n", attribute_key);
-            printf("value -> %s\n", attribute_value);
-            addLinkedListAttribute(attribute_key, attribute_value, head);
-            printf("\n---------------------------------------\n");
-        }
-
-        count+=1;
-    }
-
-}
+int extractTagName_close(char* s, LinkedListTag* head);
 
 // gcc -o write write.c structure.c
 int main() {
@@ -190,12 +103,19 @@ int main() {
 
     printf("\n---------------------------------------\n");
     valid = readAllOtherTags(pt_fichier, head);
-    printf("valid -> %d\n", valid);
     if(valid == 0) {
-        printf("problème avec la balise xml");
+        printf("ERROR");
         return -1;
     }
 
+    printTags(head);
+
+    printf("\n---------------------------------------\n");
+    valid = verifyAllTagsClosed(head);
+    if(valid == 0) {
+        printf("ERROR toutes les balises ne sont pas fermées");
+        return -1;
+    }
 
     return 0;
 }
@@ -231,8 +151,13 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 valid = verifTagCloseSynthaxe(close_tag);
                 printf("balise fermée ->%s\n", close_tag);
                 if(valid == 0) {
-                    printf("problème avec la balise close tag");
-                    return -1;
+                    printf("problème avec la balise close tag\n");
+                    break;
+                }
+                valid = extractTagName_close(close_tag, head);
+                if(valid == 0) {
+                    printf("problème avec la balise close tag -> %s\n", close_tag);
+                    break;
                 }
                 *close_tag = NULL;
                 free(close_tag);
@@ -246,11 +171,10 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 valid = verifTagSynthaxe(open_tag);
                 printf("balise ouverte ->%s\n", open_tag);
                 if(valid == 0) {
-                    printf("problème avec la balise open tag");
-                    return -1;
+                    printf("problème avec la balise open tag\n");
+                    break;
                 }
                 extractTagNameAndAttrbute_ADD(open_tag, head);
-                break;
                 *open_tag = NULL;
                 free(open_tag);
                 // on a besoin de faire ça sinon un carrac trop bas dans les autres fonctions
@@ -263,12 +187,11 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 //verif de la synthaxe de text
                 valid = verifyTextSynthaxe(text);
                 if(valid == 0) {
-                    printf("problème avec la balise text tag");
-                    return -1;
+                    printf("problème avec la balise text tag\n");
+                    break;
                 }
+                extractText_ADD(text, head);
                 printf("text ->%s\n", text);
-                *text = NULL;
-                free(text);
 
             }
         }
@@ -282,7 +205,8 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
         }
 
     }
-    return 1;
+    
+    return valid;
 }
 
 char* concatenateCharInString(char* s, char char_file) {
@@ -917,3 +841,120 @@ char* getCarracText(FILE* pt_fichier) {
     return text;
 }
 
+void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head) {
+
+    int i = 0;
+    //LinkedListTag* newNode = malloc(sizeof(LinkedListTag));
+    char* tag_name;
+    tag_name = extractTagName(s, &i);
+    printf("tag_name -> %s\n", tag_name);
+    addLinkedListTags(tag_name, NULL,0, searchCurrentTag(head), NULL);
+    extractTagAttribute_ADD(s, &i, head);
+}
+
+char* extractTagName(char* s, int* i) {
+
+    char* tag_name = malloc(sizeof(char));
+    *tag_name = NULL;
+    for(;*i<strlen(s); *i+=1) {
+        if(s[*i] != ' ' && s[*i] != '\n' && s[*i] != '>' && s[*i] != '<') {
+           tag_name = concatenateCharInString(tag_name, s[*i]); 
+        }else{
+            if(s[*i] != '<') {
+                break;
+            }
+        }
+    }
+    printf("voici tag element %s\n", tag_name);
+    return tag_name;
+}
+
+char* extractTagAttributeKey(char* s, int* i) {
+
+    char* attribute_key = malloc(sizeof(char));
+    *attribute_key = NULL;
+    //printf("pointeur -> %p\n", attribute_key);
+    for(;*i<strlen(s); *i+=1) {
+        if(s[*i] != '='){
+            attribute_key = concatenateCharInString(attribute_key, s[*i]);
+        }else {
+            *i+=1;
+            break;
+        }
+        
+    }
+    return attribute_key;
+}
+
+char* extractTagAttributeValue(char* s, int* i) {
+
+    char* attribute_value = malloc(sizeof(char));
+    *attribute_value = NULL;
+
+    int count_mark = 0;
+    for(;*i<strlen(s); *i+=1) {
+        if(s[*i] != '"'){
+            attribute_value = concatenateCharInString(attribute_value, s[*i]);
+        }else if(count_mark < 1){
+            count_mark+=1;
+        }else {
+            *i+=1;
+            break;
+        }
+    }
+
+    return attribute_value;
+}
+
+void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
+
+    char* attribute_key;
+    char* attribute_value;
+    int count = 0;
+    printf("extractTagAttribute_ADD name %s\n", head->name);
+
+    while(s[*i] != '>'){
+
+        if(count%2==0) {
+            // présence espace ou retour chariot après attribut ou tagName
+            regexSpaceBackSlachMultiple(s, i);
+        }else {
+            attribute_key = extractTagAttributeKey(s, i);
+            attribute_value = extractTagAttributeValue(s, i);
+            printf("key -> %s\n", attribute_key);
+            printf("value -> %s\n", attribute_value);
+            addLinkedListAttribute(attribute_key, attribute_value, head);
+            printf("\n---------------------------------------\n");
+        }
+
+        count+=1;
+    }
+}
+
+
+void extractText_ADD(char* s,LinkedListTag* head) {
+    // on a les espaces d'après la chaine mais pas d'avant
+    addTextToLinkedListTag(s, head);
+    printf("extractText_ADD text -> %s\n", s);
+}
+
+int extractTagName_close(char* s, LinkedListTag* head) {
+
+    char* tag_name_close = malloc(sizeof(char));
+    *tag_name_close = NULL;
+    for(int i = 0;i<strlen(s);i+=1) {
+        if(s[i] != ' ' && s[i] != '\n' && s[i] != '>' && s[i] != '<' && s[i] != '/') {
+           tag_name_close = concatenateCharInString(tag_name_close, s[i]); 
+        }else{
+            if(s[i] != '<' && s[i] != '/') {
+                break;
+            }
+        }
+    }
+    //printf("extractTagName_close %s\n", tag_name_close);
+    if(closeTag(tag_name_close, searchCurrentTag(head)) == -1) {
+        return 0;
+    }else {
+        return 1;
+    }
+}

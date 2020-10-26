@@ -224,6 +224,10 @@ void printTags(LinkedListTag* head) {
     }
 
     LinkedListTag* child = head->childTags;
+    if(child == NULL) {
+        printf("</%s>\n", head->name);
+    }
+
     //printf("la balise parent est <%s>\n", head->name);
     int pass=0;
     int flagChildToParent = 0;
@@ -231,7 +235,7 @@ void printTags(LinkedListTag* head) {
         if(flagChildToParent != 1) {
             printf("<%s>\n", child->name);
             if(child->text != NULL) {
-            printf("\ttext -> %s\n", child->text);
+                printf("\ttext -> %s\n", child->text);
             }
 
             if(child->attribute != NULL) {
@@ -241,6 +245,39 @@ void printTags(LinkedListTag* head) {
         if(child->childTags == NULL || flagChildToParent == 1){
             flagChildToParent = 0;
             printf("</%s>\n", child->name);
+            if(child->brotherTags != NULL) {
+                child = child->brotherTags;
+            }else {
+                // si parentTag est pas NUll ça continue sinon stop
+                child = child->parentTag;
+                flagChildToParent = 1;
+            }
+        // cas balise ouverte
+        }else{ 
+            child = child->childTags;
+        }
+    }
+}
+
+int verifyAllTagsClosed(LinkedListTag* head) {
+
+    if(head->close != 1) {
+        return 0;
+    }
+
+    LinkedListTag* child = head->childTags; 
+    int pass=0;
+    int flagChildToParent = 0;
+    while(child != NULL){
+
+        if(flagChildToParent != 1) {
+            printf("\tje dois apparaitre le nombre de balise -1 pour tout vérifier\n");
+            if(child->close != 1) {
+                return -1;
+            }
+        }
+        if(child->childTags == NULL || flagChildToParent == 1){
+            flagChildToParent = 0;
             if(child->brotherTags != NULL) {
                 child = child->brotherTags;
             }else {
