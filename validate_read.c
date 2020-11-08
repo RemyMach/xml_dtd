@@ -85,7 +85,6 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     return 1;
 }
 
-// gcc -o write write.c structure.c
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
 

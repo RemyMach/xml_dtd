@@ -5,7 +5,6 @@
 #include "validate_read.h"
 
 
-//gcc -o main main.c validate_read.c structure.c
 int main() {
 
     int valid;
