@@ -146,6 +146,27 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
     printf("nom -> %s et value %s\n", attribute->nextAttribute->key, attribute->nextAttribute->value);
 }
 
+int verifyLinkedListAttribute(char* attribute_key, LinkedListTag* head){
+
+    LinkedListTag* currentTag = searchCurrentTag(head);
+    if(currentTag->attribute == NULL) {
+        
+        return 1;
+    }
+
+    LinkedListAttribute* attribute = currentTag->attribute;
+    while(attribute != NULL){
+        if(strcmp(attribute->key, attribute_key) == 0) {
+
+            return 0;
+        }
+
+        attribute = attribute->nextAttribute;
+    }
+
+    return 1;
+}
+
 void addTextToLinkedListTag(char* text, LinkedListTag* head) {
 
     LinkedListTag* currentTag = searchCurrentTag(head);
@@ -274,6 +295,7 @@ int verifyAllTagsClosed(LinkedListTag* head) {
         }
     }
 }
+
 
 /*int main() {
 

@@ -68,7 +68,11 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     head->name[strlen(root_tag_name_or_attribute)] = '\0';
     
     //on extrait les attribut et on les ajoute.
-    extractTagAttribute_ADD(root_tag, &i, head);
+    if(extractTagAttribute_ADD(root_tag, &i, head) == 0) {
+        printf("ERROR ATTRIBUTE");
+        return 0;
+    }
+        
     *root_tag = NULL;
     free(root_tag);
 
@@ -815,7 +819,7 @@ char* getCarracText(FILE* pt_fichier) {
     return text;
 }
 
-void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head) {
+int extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head) {
 
     int i = 0;
     //LinkedListTag* newNode = malloc(sizeof(LinkedListTag));
@@ -823,7 +827,10 @@ void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head) {
     tag_name = extractTagName(s, &i);
     printf("tag_name -> %s\n", tag_name);
     addLinkedListTags(tag_name, NULL,0, searchCurrentTag(head), NULL);
-    extractTagAttribute_ADD(s, &i, head);
+    if(extractTagAttribute_ADD(s, &i, head) == 0)
+        return 0;
+    
+    return 1;
 }
 
 char* extractTagName(char* s, int* i) {
@@ -880,7 +887,7 @@ char* extractTagAttributeValue(char* s, int* i) {
     return attribute_value;
 }
 
-void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
+int extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
 
     char* attribute_key;
     char* attribute_value;
@@ -897,12 +904,17 @@ void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
             attribute_value = extractTagAttributeValue(s, i);
             printf("key -> %s\n", attribute_key);
             printf("value -> %s\n", attribute_value);
+            if(verifyLinkedListAttribute(attribute_key, head) == 0)
+                return 0;
+            
             addLinkedListAttribute(attribute_key, attribute_value, head);
             printf("\n---------------------------------------\n");
         }
 
         count+=1;
     }
+
+    return 1;
 }
 
 

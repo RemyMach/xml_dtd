@@ -22,9 +22,10 @@ char* getCarracTagClose(FILE* pt_fichier);
 char* getCarracText(FILE* pt_fichier);
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head);
 
-void extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head);
+int extractTagNameAndAttrbute_ADD(char* s, LinkedListTag* head);
 char* extractTagName(char* s, int* i);
-void extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head);
+int extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head);
+int verifyLinkedListAttribute(char* attribute_key, LinkedListTag* head);
 char* extractTagAttributeKey(char* s, int* i);
 char* extractTagAttributeValue(char* s, int* i);
 
