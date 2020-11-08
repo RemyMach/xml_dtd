@@ -10,7 +10,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     // ouverture du fichier en lecture
     FILE* pt_fichier = openFile(pathFile);
     if(pt_fichier == NULL) {
-        return -1;
+        return 0;
     }
     char* xml_tag = malloc(sizeof(char));
     int char_file;
@@ -21,8 +21,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     // verif validation balise xml
     good_balise_xml = verifyBaliseXML(xml_tag);
     if(good_balise_xml == 0){
-        printf("problème avec la balise xml");
-        return -1;
+        printf("problème avec la balise xml\n");
+        return 0;
     }
     *xml_tag = NULL;
     free(xml_tag);
@@ -34,8 +34,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //verif que avant la balise root on a pas autre chose que espace et backSlash
     valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
     if(valid == 0) {
-        printf("problème avec la balise xml");
-        return -1;
+        printf("problème avec la balise xml\n");
+        return 0;
     }
     *xml_tag_next_tag = NULL;
     free(xml_tag_next_tag);
@@ -43,14 +43,18 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //on prend la première balise avec tous ses attributs
     char* root_tag = malloc(sizeof(char));
     root_tag = getCarracTag(pt_fichier);
+    if(root_tag == 0) {
+        printf("problème avec la balise xml\n");
+        return 0;
+    }
 
     //printf("root_tag -> %s\n", root_tag);
 
     //verif de la balise root
     valid = verifTagSynthaxe(root_tag);
     if(valid == 0) {
-        printf("problème avec la balise xml");
-        return -1;
+        printf("problème avec la balise xml\n");
+        return 0;
     }
 
     // on extrait le nom de l'élément
@@ -72,14 +76,14 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = readAllOtherTags(pt_fichier, head);
     if(valid == 0) {
         printf("ERROR");
-        return -1;
+        return 0;
     }
 
     printf("\n---------------------------------------\n");
     valid = verifyAllTagsClosed(head);
     if(valid == 0) {
-        printf("ERROR toutes les balises ne sont pas fermées");
-        return -1;
+        printf("ERROR toutes les balises ne sont pas fermées\n");
+        return 0;
     }
 
     return 1;
@@ -133,6 +137,9 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 //open tag
                 char* open_tag = malloc(sizeof(char));
                 open_tag = getCarracTag(pt_fichier);
+                if(open_tag == 0) {
+                    return 0;
+                }
 
                 //verif de la balise open tag
                 valid = verifTagSynthaxe(open_tag);
@@ -747,7 +754,7 @@ char* getCarracTag(FILE* pt_fichier) {
             count_crochet_open +=1;
             if(count_crochet_open == 2){
                 printf("vous ne pouvez pas utilisez le carractère < après %s", root_tag);
-                return NULL;
+                return 0;
                 break;
             }else{
                 root_tag = concatenateCharInString(root_tag, char_file);

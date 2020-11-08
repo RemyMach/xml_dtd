@@ -15,7 +15,6 @@ LinkedListTag* intialisation(char* name) {
     ll->childTags = NULL;
     ll->brotherTags = NULL;
     ll->attribute = NULL;
-    printf("ll->name %s\n", ll->name);
 
     return ll;
 }
