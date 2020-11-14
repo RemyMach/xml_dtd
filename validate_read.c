@@ -944,3 +944,15 @@ int extractTagName_close(char* s, LinkedListTag* head) {
         return 1;
     }
 }
+
+int validate_depth_one(LinkedListTag* head) {
+
+    int count_depth_xml = count_depth(head);
+    printf("voici count_depth -> %d\n", count_depth_xml);
+    return count_depth_xml;
+}
+int validate_no_attributes() {
+
+
+    return 1;
+}

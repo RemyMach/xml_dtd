@@ -24,3 +24,4 @@ void addLinkedListBrother(char* name, char* text, LinkedListTag* brotherBefore, 
 void printAttribute(LinkedListAttribute* firstAttribute);
 void printTags(LinkedListTag* head);
 int verifyAllTagsClosed(LinkedListTag* head);
+int count_depth(LinkedListTag* head);

@@ -33,3 +33,6 @@ void extractText_ADD(char* s, LinkedListTag* head);
 
 int extractTagName_close(char* s, LinkedListTag* head);
 int validateRead(LinkedListTag* head, char* pathFile);
+
+int validate_depth_one();
+int validate_no_attributes();
