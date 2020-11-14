@@ -292,7 +292,7 @@ int count_depth(LinkedListTag* head) {
                     flagChildToParent = 1;
                     current_depth -= 1;
                     printf("j'enlève 1 %s\n", child->name);
-                }   
+                }
             }
         // cas balise ouverte
         }else{
