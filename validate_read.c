@@ -93,6 +93,51 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     return 1;
 }
 
+int validateFirstPart(LinkedListTag* head, char* pathFile) {
+
+    if(validateRead(head, pathFile) == 0) {
+        printf("le fichier xml a une structure non valide\n");
+        return 0;
+    }else {
+        printf("le fichier xml a une structure valide\n");
+    }
+    
+    if(validateDepthSpecify(head, 1) == 1) {
+        printf("la profondeur est valide\n");
+    }else {
+        printf("la profondeur n'est pas valdide\n");
+        return 0;
+    }
+
+    if(validateNoAttributes(head) == 1) {
+        printf("le fichier n'a pas d'attributes\n");
+    }else {
+        printf("le fichier a des attributes ce qui le rend invalide\n");
+        return 0;
+    }
+
+    return 1;
+}
+
+int validateSecoundPart(LinkedListTag* head, char* pathFile) {
+
+    if(validateRead(head, pathFile) == 0) {
+        printf("le fichier xml a une structure non valide\n");
+        return 0;
+    }else {
+        printf("le fichier xml a une structure valide\n");
+    }
+    
+    if(validateDepthSpecify(head, 1) == 1) {
+        printf("la profondeur est valide\n");
+    }else {
+        printf("la profondeur n'est pas valdide\n");
+        return 0;
+    }
+
+    return 1;
+}
+
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
 
@@ -945,14 +990,18 @@ int extractTagName_close(char* s, LinkedListTag* head) {
     }
 }
 
-int validate_depth_one(LinkedListTag* head) {
+int validateDepthSpecify(LinkedListTag* head, int depth_max) {
 
-    int count_depth_xml = count_depth(head);
-    printf("voici count_depth -> %d\n", count_depth_xml);
-    return count_depth_xml;
+    if(count_depth(head) > depth_max) {
+        return 0;
+    }
+
+    return 1;
 }
-int validate_no_attributes() {
+int validateNoAttributes(LinkedListTag* head) {
 
+    if(present_attribute(head) == 1)
+        return 0;
 
     return 1;
 }

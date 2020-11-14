@@ -34,5 +34,7 @@ void extractText_ADD(char* s, LinkedListTag* head);
 int extractTagName_close(char* s, LinkedListTag* head);
 int validateRead(LinkedListTag* head, char* pathFile);
 
-int validate_depth_one();
-int validate_no_attributes();
+int validateDepthSpecify(LinkedListTag* head, int depth_max);
+int validateNoAttributes(LinkedListTag* head);
+int validateFirstPart(LinkedListTag* head, char* pathFile);
+int validateSecoundPart(LinkedListTag* head, char* pathFile);

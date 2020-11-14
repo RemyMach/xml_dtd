@@ -287,6 +287,10 @@ int count_depth(LinkedListTag* head) {
             }else {
                 // si parentTag est pas NUll ça continue sinon stop
                 child = child->parentTag;
+                flagChildToParent = 1;
+                if(child != NULL)
+                    current_depth -= 1;
+                
             }
         // cas balise ouverte
         }else{
@@ -300,6 +304,44 @@ int count_depth(LinkedListTag* head) {
         }
     }
     return count_depth_xml;
+}
+
+int present_attribute(LinkedListTag* head) {
+
+
+    if(head->attribute != NULL) {
+        return 1;
+    }
+
+    LinkedListTag* child = head->childTags;
+
+    //printf("la balise parent est <%s>\n", head->name);
+    int pass=0;
+    int flagChildToParent = 0;
+    while(child != NULL){
+        if(flagChildToParent != 1) {
+
+            if(child->attribute != NULL) {
+                return 1;
+            }
+        }
+        if(child->childTags == NULL || flagChildToParent == 1){
+            flagChildToParent = 0;
+
+            if(child->brotherTags != NULL) {
+                child = child->brotherTags;
+            }else {
+                // si parentTag est pas NUll ça continue sinon stop
+                child = child->parentTag;
+                flagChildToParent = 1;
+            }
+        // cas balise ouverte
+        }else{ 
+            child = child->childTags;
+        }
+    }
+
+    return 0;
 }
 
 int verifyAllTagsClosed(LinkedListTag* head) {
@@ -334,50 +376,3 @@ int verifyAllTagsClosed(LinkedListTag* head) {
         }
     }
 }
-
-
-/*int main() {
-
-    LinkedListTag* head = intialisation("message");
-    addLinkedListAttribute("name", "jean de la message", head);
-    addLinkedListAttribute("value", "histoire de message", head);
-    
-    addLinkedListTags("nom", NULL,0, searchCurrentTag(head), NULL);
-    addLinkedListAttribute("name", "jean de la pomme", head);
-    addLinkedListAttribute("value", "histoire", head);
-    closeTag("nom", searchCurrentTag(head));
-
-    addLinkedListTags("prenom",NULL,0, searchCurrentTag(head), NULL);
-    addTextToLinkedListTag("jean", head);
-    closeTag("prenom", searchCurrentTag(head));
-
-    addLinkedListTags("adresse",NULL,0, searchCurrentTag(head), NULL);
-    addLinkedListTags("cp", NULL,0, searchCurrentTag(head), NULL);
-    addTextToLinkedListTag("95120", head);
-    closeTag("cp", searchCurrentTag(head));
-
-    addLinkedListTags("ville", NULL,0, searchCurrentTag(head), NULL);
-    addTextToLinkedListTag("Taverny", head);
-    closeTag("ville", searchCurrentTag(head));
-    closeTag("adresse", searchCurrentTag(head));
-
-    closeTag("message", searchCurrentTag(head));
-
-
-    /*if(closeTag("cp", searchCurrentTag(head)) == -1){
-        printf("votre fichier xml est corrompu balise qui ne se ferme pas au bon endroit");
-        return -1;
-    }*/
-    //addLinkedListAttribute("clé", "valeur", searchCurrentTag(head));
-    //addLinkedListAttribute("pomme", "tom", searchCurrentTag(head));
-    //addLinkedListAttribute("jean", "de la", searchCurrentTag(head));
-
-    //addLinkedListBrother("cp", NULL, head->childTags, head->childTags->brotherTags);
-    //printf("%s\n", head->name);
-    //printf("%d\n", head->childTags->brotherTags->close);
-
-    //LinkedListTag* current = searchCurrentTag(head);
-    //printf("%s\n", current->name);
-    /*printTags(head);
-    return 0;
-}*/

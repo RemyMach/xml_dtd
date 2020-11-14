@@ -25,3 +25,4 @@ void printAttribute(LinkedListAttribute* firstAttribute);
 void printTags(LinkedListTag* head);
 int verifyAllTagsClosed(LinkedListTag* head);
 int count_depth(LinkedListTag* head);
+int present_attribute(LinkedListTag* head);
