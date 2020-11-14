@@ -282,34 +282,23 @@ int count_depth(LinkedListTag* head) {
         
         if(child->childTags == NULL || flagChildToParent == 1){
             flagChildToParent = 0;
-            //printf("</%s>\n", child->name);
             if(child->brotherTags != NULL) {
                 child = child->brotherTags;
             }else {
                 // si parentTag est pas NUll ça continue sinon stop
                 child = child->parentTag;
-                if(child != NULL) {
-                    flagChildToParent = 1;
-                    current_depth -= 1;
-                    printf("j'enlève 1 %s\n", child->name);
-                }
             }
         // cas balise ouverte
         }else{
             child = child->childTags;
 
             current_depth += 1;
-            printf("j'ajoute 1 %s\n", child->name);
             if(current_depth > count_depth_xml){ 
 
                 count_depth_xml = current_depth;
-                printf("count_depth_xml -> %d\n", count_depth_xml);
-                printf("current_depth_xml -> %d\n", current_depth);
             }
         }
     }
-    printf("result -> %d\n", count_depth_xml);
-
     return count_depth_xml;
 }
 
