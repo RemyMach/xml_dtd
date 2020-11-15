@@ -6,6 +6,7 @@ typedef struct LinkedListAttribute {
 
 typedef struct LinkedListTag {
     int close;
+    int present_in_dtd;
     char* name;
     char* text;
     struct LinkedListTag* parentTag;
@@ -26,3 +27,6 @@ void printTags(LinkedListTag* head);
 int verifyAllTagsClosed(LinkedListTag* head);
 int count_depth(LinkedListTag* head);
 int present_attribute(LinkedListTag* head);
+int presentTagInXml(LinkedListTag* head, char* name_parent_tag, char* name_tag, char operator);
+void printTagsDtd(LinkedListTag* head);
+int verifyAllTagsDTD(LinkedListTag* head);

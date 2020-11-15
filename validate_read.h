@@ -37,4 +37,4 @@ int validateRead(LinkedListTag* head, char* pathFile);
 int validateDepthSpecify(LinkedListTag* head, int depth_max);
 int validateNoAttributes(LinkedListTag* head);
 int validateFirstPart(LinkedListTag* head, char* pathFile);
-int validateSecoundPart(LinkedListTag* head, char* pathFile);
+int validateSecondPart(LinkedListTag* head, char* pathFile);

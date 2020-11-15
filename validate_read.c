@@ -30,7 +30,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     // de la fin de la balise XML au début de la balise root '<'
     char* xml_tag_next_tag = malloc(sizeof(char));
     xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
-
+    printf("%s",xml_tag_next_tag);
     //verif que avant la balise root on a pas autre chose que espace et backSlash
     valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
     if(valid == 0) {
@@ -119,7 +119,7 @@ int validateFirstPart(LinkedListTag* head, char* pathFile) {
     return 1;
 }
 
-int validateSecoundPart(LinkedListTag* head, char* pathFile) {
+int validateSecondPart(LinkedListTag* head, char* pathFile) {
 
     if(validateRead(head, pathFile) == 0) {
         printf("le fichier xml a une structure non valide\n");
