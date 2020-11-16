@@ -237,6 +237,7 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
     newAttribut->value = malloc(sizeof(char) * strlen(value));
     newAttribut->value = value;
     newAttribut->nextAttribute = NULL;
+    newAttribut->present_in_dtd = NULL;
 
     if(currentTag->attribute == NULL) {
         currentTag->attribute = newAttribut;
@@ -251,6 +252,32 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
     }
     attribute->nextAttribute = newAttribut;
     printf("nom -> %s et value %s\n", attribute->nextAttribute->key, attribute->nextAttribute->value);
+}
+
+void addLinkedListAttributeDtd(char* key, char* parent_tag_dtd, char operator, LinkedListDtd* head) {
+
+    LinkedListDtd* currentTag = searchParent(head, parent_tag_dtd);
+    printf("pomme\n");
+    printf("currentTagname -> %s\n", currentTag->name);
+    LinkedListAttributeDtd* newAttribut = malloc(sizeof(LinkedListAttributeDtd));
+    newAttribut->key = malloc(sizeof(char) * strlen(key));
+    newAttribut->key = key;
+    newAttribut->operator = operator;
+    newAttribut->nextAttribute = NULL;
+    newAttribut->present_in_xml = NULL;
+
+    if(currentTag->attribute == NULL) {
+        currentTag->attribute = newAttribut;
+        return;
+    }
+
+    LinkedListAttributeDtd* attribute = currentTag->attribute;
+    while(attribute->nextAttribute != NULL){
+
+        attribute = attribute->nextAttribute;
+    }
+    attribute->nextAttribute = newAttribut;
+    printf("nom -> %s et operator %c\n", attribute->nextAttribute->key, attribute->nextAttribute->operator);
 }
 
 int verifyLinkedListAttribute(char* attribute_key, LinkedListTag* head){
@@ -318,6 +345,15 @@ void printAttribute(LinkedListAttribute* firstAttribute) {
     while(firstAttribute != NULL){
 
         printf("\tattribut / Key: %s -> Value: %s\n", firstAttribute->key, firstAttribute->value);
+        firstAttribute = firstAttribute->nextAttribute;
+    }
+}
+
+void printAttributeDtd(LinkedListAttributeDtd* firstAttribute) {
+
+    while(firstAttribute != NULL){
+
+        printf("\tattribut / Key: %s -> Operator: %c / present_in_xml %d\n", firstAttribute->key, firstAttribute->operator, firstAttribute->present_in_xml);
         firstAttribute = firstAttribute->nextAttribute;
     }
 }
@@ -554,8 +590,12 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
     head->present_in_dtd = 1;
     head_dtd->present_in_xml = 1;
 
+    if(head->attribute != NULL && head_dtd->attribute != NULL) {
+        matchXmlDtdAttribute(head, head_dtd);
+    }
+
     LinkedListTag* child = head->childTags;
-    LinkedListDtd* child_dtd = head_dtd->childTags;
+    LinkedListDtd* child_dtd = head_dtd->childTags; 
 
     if(child == NULL || child_dtd == NULL) {
         printf("</%s>\n", head->name);
@@ -576,6 +616,12 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
                 child->present_in_dtd = 1;
                 child_dtd->present_in_xml = 1;
                 flag_plus_multiple_dtd = 0;
+
+                //comparaison des attributs
+                if(child->attribute != NULL && child_dtd->attribute != NULL) {
+                    matchXmlDtdAttribute(child, child_dtd);
+                }    
+
             }else {
                 printf("normal -> %s\n", child->name);
 
@@ -621,6 +667,27 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
     return 1;
 }
 
+void matchXmlDtdAttribute(LinkedListTag* child, LinkedListDtd* child_dtd) {
+
+    LinkedListAttribute* attribute = child->attribute;
+    LinkedListAttributeDtd* attribute_dtd = child_dtd->attribute;
+    
+    while(attribute != NULL && attribute_dtd != NULL){
+        if(strcmp(attribute->key, attribute_dtd->key) == 0) {
+
+            attribute->present_in_dtd = 1;
+            attribute_dtd->present_in_xml = 1;
+        }else {
+            if(attribute_dtd->operator == '?') {
+                attribute_dtd = attribute_dtd->nextAttribute;
+            }
+        }
+
+        attribute = attribute->nextAttribute;
+        attribute_dtd = attribute_dtd->nextAttribute;
+    }
+}
+
 void printTagsDtd(LinkedListDtd* head) {
 
     printf("<%s>\n", head->name);
@@ -630,7 +697,7 @@ void printTagsDtd(LinkedListDtd* head) {
     }
 
     if(head->attribute != NULL) {
-        //printAttribute(head->attribute);
+        printAttributeDtd(head->attribute);
     }
 
     LinkedListDtd* child = head->childTags;
@@ -645,6 +712,10 @@ void printTagsDtd(LinkedListDtd* head) {
             printf("<%s>\n", child->name);
             if(child->text != NULL) {
                 printf("\ttext -> %s\n", child->text);
+            }
+
+            if(child->attribute != NULL) {
+                printAttributeDtd(child->attribute);
             }
 
             if(child->operator != NULL) {
@@ -674,6 +745,12 @@ int verifyAllTagsDTD(LinkedListTag* head) {
         return 0;
     }
 
+    if(head->attribute != NULL) {
+        if(verifyAllAttributesTagInXml(head->attribute) != 1) {
+            return 0;
+        }
+    }
+
     LinkedListTag* child = head->childTags; 
     int flagChildToParent = 0;
     while(child != NULL){
@@ -682,6 +759,12 @@ int verifyAllTagsDTD(LinkedListTag* head) {
 
             if(child->present_in_dtd != 1) {
                 return 0;
+            }
+
+            if(child->attribute != NULL) {
+                if(verifyAllAttributesTagInXml(child->attribute) != 1) {
+                    return 0;
+                }
             }
         }
         if(child->childTags == NULL || flagChildToParent == 1){
@@ -708,6 +791,12 @@ int verifyAllTagsPresentDtdInXML(LinkedListDtd* head) {
         return 0;
     }
 
+    if(head->attribute != NULL) {
+        if(verifyAllAttributesTagInDtd(head->attribute) != 1) {
+            return 0;
+        }
+    }
+
     LinkedListDtd* child = head->childTags; 
     int flagChildToParent = 0;
     while(child != NULL){
@@ -716,6 +805,12 @@ int verifyAllTagsPresentDtdInXML(LinkedListDtd* head) {
 
             if(child->present_in_xml != 1 && child->operator != '?' && child->operator != '*') {
                 return 0;
+            }
+
+            if(child->attribute != NULL) {
+                if(verifyAllAttributesTagInDtd(child->attribute) != 1) {
+                    return 0;
+                }
             }
         }
         if(child->childTags == NULL || flagChildToParent == 1){
@@ -731,6 +826,32 @@ int verifyAllTagsPresentDtdInXML(LinkedListDtd* head) {
         }else{ 
             child = child->childTags;
         }
+    }
+
+    return 1;
+}
+
+int verifyAllAttributesTagInDtd(LinkedListAttributeDtd* firstAttribute) {
+
+    while(firstAttribute != NULL){
+
+        if(firstAttribute->present_in_xml != 1 && firstAttribute->operator != '?') {
+            return 0;
+        }
+        firstAttribute = firstAttribute->nextAttribute;
+    }
+
+    return 1;
+}
+
+int verifyAllAttributesTagInXml(LinkedListAttribute* firstAttribute) {
+
+    while(firstAttribute != NULL){
+
+        if(firstAttribute->present_in_dtd != 1) {
+            return 0;
+        }
+        firstAttribute = firstAttribute->nextAttribute;
     }
 
     return 1;

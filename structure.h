@@ -1,6 +1,7 @@
 typedef struct LinkedListAttribute {
     char* key;
     char* value;
+    int present_in_dtd;
     struct LinkedListAttribute* nextAttribute;
 }LinkedListAttribute;
 
@@ -23,8 +24,15 @@ typedef struct LinkedListDtd {
     struct LinkedListDtd* parentTag;
     struct LinkedListDtd* childTags;
     struct LinkedListDtd* brotherTags;
-    struct LinkedListAttribute* attribute;
+    struct LinkedListAttributeDtd* attribute;
 }LinkedListDtd;
+
+typedef struct LinkedListAttributeDtd {
+    char* key;
+    char operator;
+    int present_in_xml;
+    struct LinkedListAttributeDtd* nextAttribute;
+}LinkedListAttributeDtd;
 
 LinkedListTag* intialisation(char* name);
 LinkedListTag* searchCurrentTag(LinkedListTag* head);
@@ -46,5 +54,11 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 LinkedListDtd* intialisationDtd(char* name);
 LinkedListDtd* searchParent(LinkedListDtd* head, char* parent_name);
 int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd);
-//LinkedListTag* searchCurrentTagDtd(LinkedListDtd* head);
 int verifyAllTagsPresentDtdInXML(LinkedListDtd* head);
+
+void addLinkedListAttributeDtd(char* key, char* parent_tag_dtd, char operator, LinkedListDtd* head_dtd);
+void matchXmlDtdAttribute(LinkedListTag* child, LinkedListDtd* child_dtd);
+void printAttributeDtd(LinkedListAttributeDtd* firstAttribute);
+
+int verifyAllAttributesTagInDtd(LinkedListAttributeDtd* firstAttribute);
+int verifyAllAttributesTagInXml(LinkedListAttribute* firstAttribute);
