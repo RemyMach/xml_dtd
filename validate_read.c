@@ -140,9 +140,6 @@ int validateSecondPart(LinkedListTag* head, char* pathFile) {
 
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
-
-    printf("head %s\n", head->name);
-    printf("ouloulou %d\n", head->childTags);
     
     int char_file= fgetc(pt_fichier);
     int char_file_next;
@@ -151,7 +148,6 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
     int tour = 0;
     // on fait revenir le pointeur un rank en arrière
     while(char_file != EOF){
-
         if(tour%2 == 0){
             fseek(pt_fichier, -1, SEEK_CUR);
             getCarracBeforeDelimiter(pt_fichier, '<', 1);
@@ -220,7 +216,9 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
         }
         tour+=1;
         //test si fin fichier
+        //printf("yo %c\n", char_file);
         char_file = fgetc(pt_fichier);
+        //printf("yo %c\n", char_file);
         if(char_file == EOF){
             break;
         }else {
@@ -713,7 +711,7 @@ int verifyTextSynthaxe(char* s) {
     int valid;
 
     //vérifie les carractère qui forme le nom de la balise à part le premier
-    char special_characters1[] = "éèùàç.:-_$%ù!§|>/ \n";
+    char special_characters1[] = "éèùàç.:-_$%ù!§|>/@ \n";
     valid = regexBracketNumberSpecialMultiple(s, &i, -1, -1,'<', special_characters1);
     //printf("\ntour i -> %d\n", i);
 
@@ -783,8 +781,10 @@ char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter, int verifyCarra
         char_file = fgetc(pt_fichier);
     }
     printf("balise avant le p ->%c\n", char_file);
+    if(char_file != EOF) {
+        fseek(pt_fichier, -1, SEEK_CUR);
+    }
     // on fait revenir le pointeur un rank en arrière
-    fseek(pt_fichier, -1, SEEK_CUR);
     printf("balise après le p ->%c\n", char_file); 
 
     return xml_tag_next_tag;

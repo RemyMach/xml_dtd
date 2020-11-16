@@ -3,6 +3,9 @@
     <pomme>
         test
     </pomme>
+    <pomme>
+        tom
+    </pomme>
     <jean>
         <balise>
             testi
