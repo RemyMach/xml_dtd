@@ -9,7 +9,10 @@
         <ville>Taverny</ville>
     </adresse>
     <adresse>
-        
+        <type></type>
     </adresse>
-    <prenom>jean</prenom>
+    <adresse>
+        <cp></cp>
+        <type></type>
+    </adresse>
 </message>

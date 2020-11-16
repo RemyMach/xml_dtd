@@ -20,6 +20,23 @@ LinkedListTag* intialisation(char* name) {
     return ll;
 }
 
+LinkedListDtd* intialisationDtd(char* name) {
+
+    LinkedListDtd* ll = malloc(sizeof(LinkedListDtd));
+
+    ll->name = malloc(sizeof(char) * strlen(name));
+    ll->name = name;
+    ll->text = NULL;
+    ll->present_in_xml = NULL;
+    ll->operator = NULL;
+    ll->parentTag = NULL;
+    ll->childTags = NULL;
+    ll->brotherTags = NULL;
+    ll->attribute = NULL;
+
+    return ll;
+}
+
 LinkedListTag* searchCurrentTag(LinkedListTag* head) {
     
     if(head->close == 1) {
@@ -122,6 +139,92 @@ void addLinkedListTags(char* name, char* text, int close, LinkedListTag* parent,
             brother = brother->brotherTags;
         }
     }
+}
+
+void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, char* brotherAfter, LinkedListDtd* head) {
+
+    LinkedListDtd* ll = malloc(sizeof(LinkedListDtd));
+    ll->name = malloc(sizeof(char) * strlen(name));
+    ll->name = name;
+
+    // ajout de la valeur dans la balise
+    if(text != NULL){
+        ll->text = malloc(sizeof(char) * strlen(text));
+        ll->text = text;
+    }else{
+        ll->text = malloc(sizeof(char));
+        ll->text = NULL;
+    }
+
+    // ajout de la liasion sur la balise d'après
+    if(brotherAfter != NULL){
+        ll->brotherTags = brotherAfter;
+    }else {
+        ll->brotherTags = NULL;
+    }
+
+    //operator
+    ll->operator = operator;
+
+    //present_in_xml
+    ll->present_in_xml = NULL;
+
+    //attributs
+    ll->attribute = NULL;
+
+    //ajout de la liaison sur la balise parent
+    ll->parentTag = searchParent(head, parent_name);
+
+    ll->childTags = NULL;
+
+    // ajout de la liaison sur la balise d'avant
+    if(ll->parentTag->childTags == NULL) {
+        ll->parentTag->childTags = ll;
+    }else {
+        LinkedListDtd* brother = ll->parentTag->childTags;
+        while(brother != NULL){
+
+            if(brother->brotherTags == NULL) {
+                brother->brotherTags = ll;
+                brother = ll;
+            }
+            brother = brother->brotherTags;
+        }
+    }
+}
+
+LinkedListDtd* searchParent(LinkedListDtd* head, char* parent_name) {
+    
+    if(strcmp(head->name, parent_name) == 0) {
+        //printf("head childTags NULL -> %d\n", head->childTags);
+        return head;
+    }
+
+    LinkedListDtd* child = head->childTags;
+
+    //printf("la balise parent est <%s>\n", head->name);
+    int flagChildToParent = 0;
+    while(child != NULL){
+        if(flagChildToParent != 1) {
+            if(strcmp(child->name, parent_name) == 0) {
+                return child;
+            }
+        }
+        if(child->childTags == NULL || flagChildToParent == 1){
+            flagChildToParent = 0;
+            if(child->brotherTags != NULL) {
+                child = child->brotherTags;
+            }else {
+                // si parentTag est pas NUll ça continue sinon stop
+                child = child->parentTag;
+                flagChildToParent = 1;
+            }
+        // cas balise ouverte
+        }else{ 
+            child = child->childTags;
+        }
+    }
+    return head;
 }
 
 void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
@@ -240,7 +343,7 @@ void printTags(LinkedListTag* head) {
     int flagChildToParent = 0;
     while(child != NULL){
         if(flagChildToParent != 1) {
-            printf("<%s>\n", child->name);
+            printf("<%s> present -> %d\n", child->name, child->present_in_dtd);
             if(child->text != NULL) {
                 printf("\ttext -> %s\n", child->text);
             }
@@ -434,7 +537,91 @@ int presentTagInXml(LinkedListTag* head, char* name_parent_tag, char* name_tag, 
     return present;
 }
 
-void printTagsDtd(LinkedListTag* head) {
+int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
+
+    // parcourir le XML
+    // parcourir la DTD
+    // faire match la DTD et le XML pour chaque balise puis passé à la suivante
+    // sauf quand childTag == NULL et que brotherTag != NULL
+    // sauf quand on remonte sur parentTag et que brotherTag != NULL et que operator == + ou *
+    // dans ces cas on passe un flag à 1 et on fait change la valeur du xml mais pas de la DTD
+    // si au prochain tout les deux ne sont pas égales alors on change la DTD mais pas le XML
+
+    printf("<%s>\n", head->name);
+    if(strcmp(head->name, head_dtd->name) != 0) {
+        return 0;
+    }
+    head->present_in_dtd = 1;
+    head_dtd->present_in_xml = 1;
+
+    LinkedListTag* child = head->childTags;
+    LinkedListDtd* child_dtd = head_dtd->childTags;
+
+    if(child == NULL || child_dtd == NULL) {
+        printf("</%s>\n", head->name);
+        return 1;
+    }
+
+    //printf("la balise parent est <%s>\n", head->name);
+    int flagChildToParent = 0;
+    int flag_plus_multiple_dtd = 0;
+    while(child != NULL && child_dtd != NULL){
+        if(child == NULL) {
+            //printf("c'est pas possible\n");
+        }
+        printf("<%s>\n", child->name);
+        printf("dtd -> <%s>\n", child_dtd->name);
+        if(flagChildToParent != 1) {
+            if(strcmp(child->name, child_dtd->name) == 0) {
+                child->present_in_dtd = 1;
+                child_dtd->present_in_xml = 1;
+                flag_plus_multiple_dtd = 0;
+            }else {
+                printf("normal -> %s\n", child->name);
+
+                printf("dtd -> %s\n", child_dtd->name);
+                // si l'option du + ou * n'a pas match
+                if(flag_plus_multiple_dtd == 1 || child_dtd->operator == '*' || child_dtd->operator == '?') {
+                    child_dtd = child_dtd->brotherTags;
+                    flag_plus_multiple_dtd = 0;
+                    continue;
+                }
+
+                if(child_dtd->operator == '+' || child_dtd->operator == NULL) {
+                    return 0;
+                }
+            }
+        }
+        if(child->childTags == NULL || flagChildToParent == 1){
+            //flagChildToParent = 0;
+            printf("</%s>\n", child->name);
+            if(child->brotherTags != NULL) {
+                // le cas ou brotherTag pas Null et que un + ou un moins dans dtd
+                if(child_dtd->operator == '+' || child_dtd->operator == '*') {
+                    flag_plus_multiple_dtd = 1;
+                }else {
+                    child_dtd = child_dtd->brotherTags;
+                }
+                child = child->brotherTags;
+                flagChildToParent = 0;
+            }else {
+                // si parentTag est pas NUll ça continue sinon stop
+                child = child->parentTag;
+                child_dtd = child_dtd->parentTag;
+                flagChildToParent = 1;
+            }
+        // cas balise ouverte
+        }else{
+            child = child->childTags;
+            child_dtd = child_dtd->childTags;
+        }
+    }
+
+
+    return 1;
+}
+
+void printTagsDtd(LinkedListDtd* head) {
 
     printf("<%s>\n", head->name);
 
@@ -443,10 +630,10 @@ void printTagsDtd(LinkedListTag* head) {
     }
 
     if(head->attribute != NULL) {
-        printAttribute(head->attribute);
+        //printAttribute(head->attribute);
     }
 
-    LinkedListTag* child = head->childTags;
+    LinkedListDtd* child = head->childTags;
     if(child == NULL) {
         printf("</%s>\n", head->name);
     }
@@ -460,13 +647,13 @@ void printTagsDtd(LinkedListTag* head) {
                 printf("\ttext -> %s\n", child->text);
             }
 
-            if(child->attribute != NULL) {
-                printAttribute(child->attribute);
+            if(child->operator != NULL) {
+                printf("operator -> %c\n", child->operator);
             }
         }
         if(child->childTags == NULL || flagChildToParent == 1){
             flagChildToParent = 0;
-            printf("</%s> -> %d\n", child->name, child->present_in_dtd);
+            printf("</%s>\n", child->name);
             if(child->brotherTags != NULL) {
                 child = child->brotherTags;
             }else {
@@ -494,6 +681,40 @@ int verifyAllTagsDTD(LinkedListTag* head) {
         if(flagChildToParent != 1) {
 
             if(child->present_in_dtd != 1) {
+                return 0;
+            }
+        }
+        if(child->childTags == NULL || flagChildToParent == 1){
+            flagChildToParent = 0;
+            if(child->brotherTags != NULL) {
+                child = child->brotherTags;
+            }else {
+                // si parentTag est pas NUll ça continue sinon stop
+                child = child->parentTag;
+                flagChildToParent = 1;
+            }
+        // cas balise ouverte
+        }else{ 
+            child = child->childTags;
+        }
+    }
+
+    return 1;
+}
+
+int verifyAllTagsPresentDtdInXML(LinkedListDtd* head) {
+
+    if(head->present_in_xml != 1) {
+        return 0;
+    }
+
+    LinkedListDtd* child = head->childTags; 
+    int flagChildToParent = 0;
+    while(child != NULL){
+
+        if(flagChildToParent != 1) {
+
+            if(child->present_in_xml != 1 && child->operator != '?' && child->operator != '*') {
                 return 0;
             }
         }

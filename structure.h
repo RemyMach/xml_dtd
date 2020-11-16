@@ -15,6 +15,17 @@ typedef struct LinkedListTag {
     struct LinkedListAttribute* attribute;
 }LinkedListTag;
 
+typedef struct LinkedListDtd {
+    char* name;
+    char operator;
+    char* text;
+    int present_in_xml;
+    struct LinkedListDtd* parentTag;
+    struct LinkedListDtd* childTags;
+    struct LinkedListDtd* brotherTags;
+    struct LinkedListAttribute* attribute;
+}LinkedListDtd;
+
 LinkedListTag* intialisation(char* name);
 LinkedListTag* searchCurrentTag(LinkedListTag* head);
 int closeTag(char* name, LinkedListTag* currentTag);
@@ -28,5 +39,12 @@ int verifyAllTagsClosed(LinkedListTag* head);
 int count_depth(LinkedListTag* head);
 int present_attribute(LinkedListTag* head);
 int presentTagInXml(LinkedListTag* head, char* name_parent_tag, char* name_tag, char operator);
-void printTagsDtd(LinkedListTag* head);
+void printTagsDtd(LinkedListDtd* head);
 int verifyAllTagsDTD(LinkedListTag* head);
+
+void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, char* brotherAfter, LinkedListDtd* head);
+LinkedListDtd* intialisationDtd(char* name);
+LinkedListDtd* searchParent(LinkedListDtd* head, char* parent_name);
+int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd);
+//LinkedListTag* searchCurrentTagDtd(LinkedListDtd* head);
+int verifyAllTagsPresentDtdInXML(LinkedListDtd* head);
