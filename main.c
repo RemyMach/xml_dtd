@@ -9,13 +9,14 @@ int main() {
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateRead(head, "xml_test/valid_9.xml");
+    valid = validateRead(head, "xml_test/valid_10.xml");
     if(valid == 0) {
         printf("le fichier xml n'est pas valide\n");
         return 0;
     }else {
         printf("le fichier est valide\n");
     }
+    printTags(head);
     return 0;
     //presentTagInXml(head, 0, "message", 1);
     //presentTagInXml(head, "message", "pomme", '+');

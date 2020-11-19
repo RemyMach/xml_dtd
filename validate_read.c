@@ -44,7 +44,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     char* root_tag = malloc(sizeof(char));
     root_tag = getCarracTag(pt_fichier);
     if(root_tag == 0) {
-        printf("problème avec la balise xml\n");
+        printf("problème avec la balise xml1\n");
         return 0;
     }
 
@@ -53,7 +53,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //verif de la balise root
     valid = verifTagSynthaxe(root_tag);
     if(valid == 0) {
-        printf("problème avec la balise xml\n");
+        printf("problème avec la balise root\n");
         return 0;
     }
 
@@ -184,29 +184,53 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 fseek(pt_fichier, 1, SEEK_CUR);
             }else if(char_file == '<' && char_file_next == '!') {
                 //balise commentaire
-                printf("char -> %c\n", char_file);
                 valid = getCarracComment(pt_fichier, char_file);
                 if(valid == 0) {
                     printf("problème avec la balise comment\n");
                     break;
                 }
-                printf("char -> %c\n", char_file);
+                fseek(pt_fichier, 1, SEEK_CUR);
             }else if(char_file == '<') {
                 //open tag
                 char* open_tag = malloc(sizeof(char));
                 open_tag = getCarracTag(pt_fichier);
+                
                 if(open_tag == 0) {
+                    *open_tag = NULL;
+                    free(open_tag);
                     return 0;
                 }
 
                 //verif de la balise open tag
                 valid = verifTagSynthaxe(open_tag);
-                printf("balise ouverte ->%s\n", open_tag);
+               
                 if(valid == 0) {
                     printf("problème avec la balise open tag\n");
+                    *open_tag = NULL;
+                    free(open_tag);
                     break;
                 }
-                extractTagNameAndAttrbute_ADD(open_tag, head);
+                // si c'est une balise unique
+                /*if(valid == 2)
+                    open_tag[strlen(open_tag)] = '>';
+                    open_tag[strlen(open_tag)+1] = '\0';*/
+
+                printf("attributs -> %s\n",open_tag);
+
+                if(extractTagNameAndAttrbute_ADD(open_tag, head) == 0) {
+                    printf("ERROR ATTRIBUTE OR TAG NAME\n");
+                    return 0;
+                }
+                // si c'est une balise unique
+                if(valid == 2) {
+                    valid = extractTagName_close(open_tag, head);
+                    if(valid == 0) {
+                        printf("problème avec la balise open_tag close_tag -> %s\n", open_tag);
+                        *open_tag = NULL;
+                        free(open_tag);
+                        break;
+                    }
+                }
                 *open_tag = NULL;
                 free(open_tag);
                 // on a besoin de faire ça sinon un carrac trop bas dans les autres fonctions
@@ -342,16 +366,13 @@ void regexSpaceBackSlachMultiple(char* s,int* i) {
 
 int regexRequiredBloc(char* s,int* i, char* bloc) {
 
-    //printf("ça bloque -> %c\n", s[*i+1]);
     int valid=1;
     int bloc_count=0;
     for(;*i<strlen(s);*i+=1) {
 
         if(s[*i] == bloc[bloc_count]) {
-            //printf("%c", s[*i]);
             bloc_count+=1;
         }else {
-            //printf("pomme \n%c", s[*i]);
             valid = 0;
             break;
         }
@@ -383,7 +404,6 @@ int regexBracketPlus(char* s,int* i) {
     char special_characters[] = "éèùàç.:-_";
     for(;*i<strlen(s);*i+=1) {
 
-        //if(s[i] >)
     }
     return 0;
 }
@@ -391,7 +411,6 @@ int regexBracketPlus(char* s,int* i) {
 int regexBracketOne(char* s,int* i) {
 
     int valid=1;
-    //printf("carrac -> %c", s[*i]);
     if(s[*i] < 65 || s[*i] > 122){
         valid=0;
     }else if(s[*i] > 90 && s[*i] < 97){
@@ -425,7 +444,6 @@ int regexBracketNumberSpecialMultiple(char* s,int* i, char delimiter1, char deli
             }
         }
     }
-    printf("\ncarracter -> %c\n",s[*i]);
 
     return valid;
 }
@@ -537,7 +555,6 @@ int verifTagSynthaxe(char* s) {
     //vérifie le premier charactère après <
     valid = regexBracketOne(s,&i);
     //printf("\ntour i -> %d\n", i);
-    printf("valid -> %d", valid);
     if(valid == 0){
         return 0;
     }
@@ -546,6 +563,11 @@ int verifTagSynthaxe(char* s) {
     char special_characters1[] = "éèùàç.:-_\"";
     valid = regexBracketNumberSpecialMultiple(s, &i,' ', '\n','>', special_characters1);
     //printf("\ntour i -> %d\n", i);
+
+    valid = determinateUniqueTag(valid, s, &i);
+    if(valid == 2) {
+        return 2;
+    }
 
     if(valid == 0){
         return 0;
@@ -559,6 +581,10 @@ int verifTagSynthaxe(char* s) {
             space_for_attribut = 0;
             // présence espace ou retour chariot après balise
             space_for_attribut = regexSpaceBackSlachPlus(s, &i);
+            if(determinateUniqueTag(0, s, &i) == 2) {
+                
+                return 2;
+            }
         }else {
             if(space_for_attribut != 1) {
                 return 0;
@@ -601,75 +627,15 @@ int verifTagSynthaxe(char* s) {
             }
         }
 
+        valid = determinateUniqueTag(valid, s, &i);
+        printf("valid -> %d\n", valid);
+        if(valid == 2) {
+            return 2;
+        }
+
         tour+=1;
     }
 
-    return 1;
-
-    //on verifie si le carractère ferme la balise > alors fin de balise
-    //printf("\ntour i -> %d\n", i);
-    if(s[i] == '>'){
-        //printf("balise valide\n");
-        return 1;
-    }
-
-    // présence espace ou retour chariot après balise
-    regexSpaceBackSlachMultiple(s, &i);
-
-    //on verifie si le carractère ferme la balise > alors fin de balise
-    //printf("\ntour i -> %d\n", i);
-    if(s[i] == '>'){
-        //printf("balise valide\n");
-        return 1;
-    }
-
-    //le prochain carractère doit-être la première lettre de l'attribut
-    valid = regexBracketOne(s,&i);
-    //printf("\ntour i -> %d\n", i);
-
-    if(valid == 0){
-        return 0;
-    }
-
-    //vérifie les carractère qui forme le nom de l'attribut
-    char special_characters2[] = "éèùàç.-_";
-    valid = regexBracketNumberSpecialMultiple(s, &i,'=', -1, -1, special_characters2);
-    //printf("\ntour i -> %d\n", i);
-    // faire passer au carractère après le égale
-    i+=1;
-
-    if(valid == 0){
-        return 0;
-    }
-
-    //vérifie les guillements
-    valid = regexRequiredBloc(s,&i, attribut_bloc);
-    //printf("\ntour i -> %d\n", i);
-
-    if(valid == 0){
-        return 0;
-    }
-
-    //vérifie les carractère qui forme la valeur de l'attribut
-    char special_characters3[] = "éèùàç.-_>!?;\%ù*\\$°()§^ê£";
-    valid = regexBracketNumberSpecialMultiple(s, &i,'"', -1, -1, special_characters3);
-    //printf("\ntour i -> %d\n", i);
-    // faire passer au carractère après le égale
-    i+=1;
-
-    if(valid == 0){
-        return 0;
-    }
-
-    // présence espace ou retour chariot après fin attribut
-    regexSpaceBackSlachMultiple(s, &i);
-
-    if(s[i] == '>'){
-        //printf("balise valide\n");
-        return 1;
-    }
-
-    
     return 1;
 }
 
@@ -901,7 +867,7 @@ char* extractTagName(char* s, int* i) {
     char* tag_name = malloc(sizeof(char));
     *tag_name = NULL;
     for(;*i<strlen(s); *i+=1) {
-        if(s[*i] != ' ' && s[*i] != '\n' && s[*i] != '>' && s[*i] != '<') {
+        if(s[*i] != ' ' && s[*i] != '\n' && s[*i] != '>' && s[*i] != '<' && s[*i] != '/') {
            tag_name = concatenateCharInString(tag_name, s[*i]); 
         }else{
             if(s[*i] != '<') {
@@ -909,7 +875,6 @@ char* extractTagName(char* s, int* i) {
             }
         }
     }
-    printf("voici tag element %s\n", tag_name);
     return tag_name;
 }
 
@@ -956,12 +921,18 @@ int extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
     char* attribute_value;
     int count = 0;
     printf("extractTagAttribute_ADD name %s\n", head->name);
-
     while(s[*i] != '>'){
 
         if(count%2==0) {
             // présence espace ou retour chariot après attribut ou tagName
             regexSpaceBackSlachMultiple(s, i);
+            if(s[*i] != '>') {
+                //printf("tyruei -> %c after -> %c\n", s[*i], s[*i+1]);
+                if(determinateUniqueTag(0, s, i) == 2) {
+                
+                    return 1;
+                }
+            }
         }else {
             attribute_key = extractTagAttributeKey(s, i);
             attribute_value = extractTagAttributeValue(s, i);
@@ -1026,7 +997,6 @@ int validateNoAttributes(LinkedListTag* head) {
 
 int getCarracComment(FILE* pt_fichier,char char_file) {
 
-    //printf("ici %c\n",char_file);
     char_file = fgetc(pt_fichier);
     int i=0;
     char actual_miness_3 = char_file;
@@ -1035,11 +1005,6 @@ int getCarracComment(FILE* pt_fichier,char char_file) {
     while(char_file != EOF) {
         if(i == 3) {
             if(actual_miness_3 != '<' || actual_miness_2 != '!' || actual_miness_1 != '-'  || char_file != '-') {
-                printf("actual_miness_3 -> %c\n", actual_miness_3);
-                printf("actual_miness_2 -> %c\n", actual_miness_2);
-                printf("actual_miness_1 -> %c\n", actual_miness_1);
-                printf("char_file -> %c\n", char_file);
-                
                 return 0;
             }
         }else if(i >= 7) {
@@ -1056,9 +1021,17 @@ int getCarracComment(FILE* pt_fichier,char char_file) {
     }
 
     if(i<3) {
-        printf("i < 3\n");
         return 0;
     }
 
     return 1;
+}
+
+int determinateUniqueTag(int valid,char* s,int* i) {
+
+    if(valid == 0 && s[*i] == '/' && s[*i+1] == '>') {
+        return 2;
+    }
+
+    return valid;
 }
