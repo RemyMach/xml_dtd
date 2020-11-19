@@ -384,6 +384,10 @@ int regexBracketOne(char* s,int* i) {
     }else if(s[*i] > 90 && s[*i] < 97){
         valid=0;
     }
+
+    if(s[*i] == '_') {
+        valid = 1;
+    }
     *i+=1;
     return valid;
 }
@@ -408,6 +412,7 @@ int regexBracketNumberSpecialMultiple(char* s,int* i, char delimiter1, char deli
             }
         }
     }
+    printf("\ncarracter -> %c\n",s[*i]);
 
     return valid;
 }
@@ -519,13 +524,13 @@ int verifTagSynthaxe(char* s) {
     //vérifie le premier charactère après <
     valid = regexBracketOne(s,&i);
     //printf("\ntour i -> %d\n", i);
-
+    printf("valid -> %d", valid);
     if(valid == 0){
         return 0;
     }
 
     //vérifie les carractère qui forme le nom de la balise à part le premier
-    char special_characters1[] = "éèùàç.:-_";
+    char special_characters1[] = "éèùàç.:-_\"";
     valid = regexBracketNumberSpecialMultiple(s, &i,' ', '\n','>', special_characters1);
     //printf("\ntour i -> %d\n", i);
 
@@ -711,7 +716,7 @@ int verifyTextSynthaxe(char* s) {
     int valid;
 
     //vérifie les carractère qui forme le nom de la balise à part le premier
-    char special_characters1[] = "éèùàç.:-_$%ù!§|>/@ \n";
+    char special_characters1[] = "&^*\\;!?éèùàç.:-_$%ù!§|>/,@[{()`}']\"#+=~ \n";
     valid = regexBracketNumberSpecialMultiple(s, &i, -1, -1,'<', special_characters1);
     //printf("\ntour i -> %d\n", i);
 
