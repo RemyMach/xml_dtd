@@ -38,3 +38,4 @@ int validateDepthSpecify(LinkedListTag* head, int depth_max);
 int validateNoAttributes(LinkedListTag* head);
 int validateFirstPart(LinkedListTag* head, char* pathFile);
 int validateSecondPart(LinkedListTag* head, char* pathFile);
+int getCarracComment(FILE* pt_fichier,char char_file);

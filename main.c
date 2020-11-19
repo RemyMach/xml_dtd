@@ -9,7 +9,7 @@ int main() {
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateRead(head, "xml_test/valid_8.xml");
+    valid = validateRead(head, "xml_test/valid_9.xml");
     if(valid == 0) {
         printf("le fichier xml n'est pas valide\n");
         return 0;

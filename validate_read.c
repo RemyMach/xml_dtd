@@ -168,16 +168,29 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 printf("balise fermée ->%s\n", close_tag);
                 if(valid == 0) {
                     printf("problème avec la balise close tag\n");
+                    *close_tag = NULL;
+                    free(close_tag);
                     break;
                 }
                 valid = extractTagName_close(close_tag, head);
                 if(valid == 0) {
                     printf("problème avec la balise close tag -> %s\n", close_tag);
+                    *close_tag = NULL;
+                    free(close_tag);
                     break;
                 }
                 *close_tag = NULL;
                 free(close_tag);
                 fseek(pt_fichier, 1, SEEK_CUR);
+            }else if(char_file == '<' && char_file_next == '!') {
+                //balise commentaire
+                printf("char -> %c\n", char_file);
+                valid = getCarracComment(pt_fichier, char_file);
+                if(valid == 0) {
+                    printf("problème avec la balise comment\n");
+                    break;
+                }
+                printf("char -> %c\n", char_file);
             }else if(char_file == '<') {
                 //open tag
                 char* open_tag = malloc(sizeof(char));
@@ -1007,6 +1020,45 @@ int validateNoAttributes(LinkedListTag* head) {
 
     if(present_attribute(head) == 1)
         return 0;
+
+    return 1;
+}
+
+int getCarracComment(FILE* pt_fichier,char char_file) {
+
+    //printf("ici %c\n",char_file);
+    char_file = fgetc(pt_fichier);
+    int i=0;
+    char actual_miness_3 = char_file;
+    char actual_miness_2 = char_file;
+    char actual_miness_1= char_file;
+    while(char_file != EOF) {
+        if(i == 3) {
+            if(actual_miness_3 != '<' || actual_miness_2 != '!' || actual_miness_1 != '-'  || char_file != '-') {
+                printf("actual_miness_3 -> %c\n", actual_miness_3);
+                printf("actual_miness_2 -> %c\n", actual_miness_2);
+                printf("actual_miness_1 -> %c\n", actual_miness_1);
+                printf("char_file -> %c\n", char_file);
+                
+                return 0;
+            }
+        }else if(i >= 7) {
+            if(actual_miness_2 == '-' && actual_miness_1 == '-'  && char_file == '>') {
+                break;
+            }
+
+        }
+        actual_miness_3 = actual_miness_2;
+        actual_miness_2 = actual_miness_1;
+        actual_miness_1 = char_file;
+        char_file = fgetc(pt_fichier);
+        i+=1;
+    }
+
+    if(i<3) {
+        printf("i < 3\n");
+        return 0;
+    }
 
     return 1;
 }
