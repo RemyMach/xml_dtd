@@ -10,6 +10,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     // ouverture du fichier en lecture
     FILE* pt_fichier = openFile(pathFile);
     if(pt_fichier == NULL) {
+        closeFile(pt_fichier);
         return 0;
     }
     char* xml_tag = malloc(sizeof(char));
@@ -22,6 +23,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     good_balise_xml = verifyBaliseXML(xml_tag);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
+        closeFile(pt_fichier);
         return 0;
     }
     *xml_tag = NULL;
@@ -35,6 +37,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
     if(valid == 0) {
         printf("problème avec la balise xml\n");
+        closeFile(pt_fichier);
         return 0;
     }
     *xml_tag_next_tag = NULL;
@@ -45,6 +48,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     root_tag = getCarracTag(pt_fichier);
     if(root_tag == 0) {
         printf("problème avec la balise xml1\n");
+        closeFile(pt_fichier);
         return 0;
     }
 
@@ -54,6 +58,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifTagSynthaxe(root_tag);
     if(valid == 0) {
         printf("problème avec la balise root\n");
+        closeFile(pt_fichier);
         return 0;
     }
 
@@ -70,6 +75,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //on extrait les attribut et on les ajoute.
     if(extractTagAttribute_ADD(root_tag, &i, head) == 0) {
         printf("ERROR ATTRIBUTE");
+        closeFile(pt_fichier);
         return 0;
     }
         
@@ -80,6 +86,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = readAllOtherTags(pt_fichier, head);
     if(valid == 0) {
         printf("ERROR");
+        closeFile(pt_fichier);
         return 0;
     }
 
@@ -87,9 +94,10 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifyAllTagsClosed(head);
     if(valid == 0) {
         printf("ERROR toutes les balises ne sont pas fermées\n");
+        closeFile(pt_fichier);
         return 0;
     }
-
+    closeFile(pt_fichier);
     return 1;
 }
 
@@ -141,6 +149,8 @@ int validateSecondPart(LinkedListTag* head, char* pathFile) {
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
     
+    printf("je suis dans readAllOtherTags\n");
+
     int char_file= fgetc(pt_fichier);
     int char_file_next;
     int valid = 1;
@@ -194,8 +204,8 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
                 //open tag
                 char* open_tag = malloc(sizeof(char));
                 open_tag = getCarracTag(pt_fichier);
-                
-                if(open_tag == 0) {
+                printf("open_tag -> %s", open_tag);
+                if(strcmp(open_tag, "not_valid") == 0) {
                     *open_tag = NULL;
                     free(open_tag);
                     return 0;
@@ -429,7 +439,7 @@ int regexBracketNumberSpecialMultiple(char* s,int* i, char delimiter1, char deli
     int valid = 1;
     for(;*i<strlen(s);*i+=1) {
 
-        if(s[*i] == delimiter1 || s[*i] == delimiter2 || s[*i] == delimiter3) {
+        if(s[*i] == delimiter1 || s[*i] == delimiter2 || s[*i] == delimiter3) {
             break;
         }else if( s[*i] < 48 || s[*i] > 122 || (s[*i] > 90 && s[*i] < 97) || (s[*i] > 57 && s[*i] < 65) ) {
             int present = 0;
@@ -786,9 +796,12 @@ char* getCarracTag(FILE* pt_fichier) {
         if(char_file == '<') {
             count_crochet_open +=1;
             if(count_crochet_open == 2){
-                printf("vous ne pouvez pas utilisez le carractère < après %s", root_tag);
-                return 0;
-                break;
+                printf("vous ne pouvez pas utilisez le carractère < après le tag %s\n", root_tag);
+                root_tag = NULL;
+                free(root_tag);
+                root_tag = malloc(sizeof(char) * 9);
+                *root_tag = "not_valid";
+                return root_tag;
             }else{
                 root_tag = concatenateCharInString(root_tag, char_file);
             }

@@ -62,3 +62,5 @@ void printAttributeDtd(LinkedListAttributeDtd* firstAttribute);
 
 int verifyAllAttributesTagInDtd(LinkedListAttributeDtd* firstAttribute);
 int verifyAllAttributesTagInXml(LinkedListAttribute* firstAttribute);
+void freeLinkedListTag(LinkedListTag* head);
+void freeLinkedListAttribute(LinkedListAttribute* attribute);

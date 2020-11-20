@@ -514,6 +514,7 @@ int verifyAllTagsClosed(LinkedListTag* head) {
             child = child->childTags;
         }
     }
+    return 1;
 }
 
 int presentTagInXml(LinkedListTag* head, char* name_parent_tag, char* name_tag, char operator) {
@@ -855,4 +856,45 @@ int verifyAllAttributesTagInXml(LinkedListAttribute* firstAttribute) {
     }
 
     return 1;
+}
+
+void freeLinkedListTag(LinkedListTag* head) {
+    if(head->childTags != NULL) {
+        freeLinkedListTag(head->childTags);
+    }
+
+    if(head->brotherTags != NULL) {
+        freeLinkedListTag(head->brotherTags);
+    }
+
+    printf("name free -> %s\n",head->name);
+    if(head->name != NULL) {
+        free(head->name);
+    }
+    if(head->text != NULL) {
+        free(head->text);
+    }
+
+    if(head->attribute != NULL) {
+        freeLinkedListAttribute(head->attribute);
+    }
+
+    free(head);
+}
+
+void freeLinkedListAttribute(LinkedListAttribute* attribute) {
+
+    if(attribute->nextAttribute != NULL) {
+        freeLinkedListAttribute(attribute->nextAttribute);
+    }
+
+    if(attribute->key != NULL) {
+        free(attribute->key);
+    }
+
+    if(attribute->value != NULL) {
+        free(attribute->value);
+    }
+
+    free(attribute);
 }

@@ -17,7 +17,7 @@ int main() {
         sprintf(str, "xml_test/not_valid_%d.xml", i);
         LinkedListTag* head = intialisation("");
         printf("\n---------------------------------------------------------------\n");
-        printf("voila ->%s\n", str);
+        printf("file ->%s\n", str);
         printf("\n---------------------------------------------------------------\n");
         valid = validateRead(head, str);
         if(valid == 0) {
@@ -31,6 +31,9 @@ int main() {
         }
         *str = NULL;
         free(str);
+        if(strcmp(head->name, "") != 0) {
+            freeLinkedListTag(head);
+        }
         //il faut vider la LinkedList head
         //return 0;
     }
@@ -42,7 +45,7 @@ int main() {
         sprintf(str, "xml_test/valid_%d.xml", i);
         LinkedListTag* head = intialisation("");
         printf("\n---------------------------------------------------------------\n");
-        printf("voila ->%s\n", str);
+        printf("file ->%s\n", str);
         printf("\n---------------------------------------------------------------\n");
         valid = validateRead(head, str);
         if(valid == 0) {
@@ -55,9 +58,14 @@ int main() {
         }
         *str = NULL;
         free(str);
+        freeLinkedListTag(head);
         //il faut vider la LinkedList head
         //return 0;
     }
+
+    printf("\n---------------------------------------------------------------\n");
+    printf("********** L'ensemble des tests sont passés **********");
+    printf("\n---------------------------------------------------------------\n");
 
     return 0;
 }
