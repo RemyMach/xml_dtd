@@ -17,13 +17,23 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     int char_file;
 
     //get les carractère qu'il faut pour la balise xml
+    printf("pointeur -> %p\n",strlen(xml_tag) );
+
+    printf("xml_tag before -> %d\n",strlen(xml_tag) );
+    freeChar(xml_tag);
+    //free(xml_tag);
+    printf("xml_tag before -> %s\n",xml_tag);
+    printf("xml_tag before -> %d\n",strlen(xml_tag) );
     xml_tag = getCarracTagXml(pt_fichier);
 
     // verif validation balise xml
+    printf("xml_tag -> %s\n",xml_tag);
     good_balise_xml = verifyBaliseXML(xml_tag);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
         closeFile(pt_fichier);
+        *xml_tag = NULL;
+        free(xml_tag);
         return 0;
     }
     *xml_tag = NULL;
@@ -38,6 +48,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(valid == 0) {
         printf("problème avec la balise xml\n");
         closeFile(pt_fichier);
+        *xml_tag_next_tag = NULL;
+        free(xml_tag_next_tag);
         return 0;
     }
     *xml_tag_next_tag = NULL;
@@ -49,6 +61,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(root_tag == 0) {
         printf("problème avec la balise xml1\n");
         closeFile(pt_fichier);
+        *root_tag = NULL;
+        free(root_tag);
         return 0;
     }
 
@@ -59,6 +73,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(valid == 0) {
         printf("problème avec la balise root\n");
         closeFile(pt_fichier);
+        *root_tag = NULL;
+        free(root_tag);
         return 0;
     }
 
@@ -76,9 +92,15 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(extractTagAttribute_ADD(root_tag, &i, head) == 0) {
         printf("ERROR ATTRIBUTE");
         closeFile(pt_fichier);
+        *root_tag_name_or_attribute = NULL;
+        free(root_tag_name_or_attribute);
+        *root_tag = NULL;
+        free(root_tag);
         return 0;
     }
         
+    *root_tag_name_or_attribute = NULL;
+    free(root_tag_name_or_attribute);
     *root_tag = NULL;
     free(root_tag);
 
@@ -1047,4 +1069,11 @@ int determinateUniqueTag(int valid,char* s,int* i) {
     }
 
     return valid;
+}
+
+void freeChar(char* s) {
+
+    for(int i = 0;i<strlen(s);i++) {
+        s[i] = NULL;
+    }
 }
