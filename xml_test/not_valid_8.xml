@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message pomme="attr1" pomme="attr2" val="attr3">
+<message pomme="attr1" %$mme="attr2" val="attr3">
     <pomme>
         test
     </pomme>

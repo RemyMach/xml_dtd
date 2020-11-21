@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root  jean="pomme" tom="peinture">
     <arnaud jean="pomme"></arnaud>
-    <bali jean="pomme" jean="tom"/>
+    <bali jean="pomme" jean="tom"
   <!-- je suis un comentaire
   <VX special="when">
     <B fought="rock">1158081946</B>
