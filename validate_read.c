@@ -17,9 +17,9 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     int char_file;
 
     //get les carractère qu'il faut pour la balise xml
-    printf("pointeur -> %p\n",strlen(xml_tag) );
+    printf("pointeur -> %d\n",strlen(xml_tag) );
 
-    printf("xml_tag before -> %d\n",strlen(xml_tag) );
+    printf("xml_tag before -> %d\n",xml_tag );
     freeChar(xml_tag);
     //free(xml_tag);
     printf("xml_tag before -> %s\n",xml_tag);
@@ -32,7 +32,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
         closeFile(pt_fichier);
-        *xml_tag = NULL;
+        //*xml_tag = NULL;
         free(xml_tag);
         return 0;
     }

@@ -867,7 +867,7 @@ void freeLinkedListTag(LinkedListTag* head) {
         freeLinkedListTag(head->brotherTags);
     }
 
-    printf("name free -> %s\n",head->name);
+    //printf("name free -> %s\n",head->name);
     if(head->name != NULL) {
         free(head->name);
     }

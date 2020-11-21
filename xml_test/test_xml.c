@@ -10,11 +10,12 @@ int main() {
     int valid;
     printf("not_valid_count -> %d\n", NOT_VALID_COUNT);
 
-    for(int i=1;i<=NOT_VALID_COUNT; i++) {
+    //for(int i=1;i<=NOT_VALID_COUNT; i++) {
+    for(int i=1;i<=2; i++) {
         //char str[strlen(not_valid) + 6];
         //char* str = malloc(sizeof(char) * ( strlen(not_valid) + 6 ) );
-        char* str = malloc(sizeof(char) * 25);
-
+        char* str = malloc(sizeof(char) * 26);
+        
         printf("str -> %s\n", str);
         sprintf(str, "xml_test/not_valid_%d.xml", i);
         str[24] = '\0';
@@ -41,12 +42,14 @@ int main() {
         //return 0;
     }
 
-    for(int i=1;i<=VALID_COUNT; i++) {
+    //for(int i=1;i<=VALID_COUNT; i++) {
+    for(int i=1;i<=0; i++) {
+
         //char str[strlen(not_valid) + 6];
-        char* str = malloc(sizeof(char) * ( 21 ) );
-        str[20] = '\0';
+        char* str = malloc(sizeof(char) * ( 22 ) );
 
         sprintf(str, "xml_test/valid_%d.xml", i);
+        str[21] = '\0';
         LinkedListTag* head = intialisation("");
         printf("\n---------------------------------------------------------------\n");
         printf("file ->%s\n", str);
