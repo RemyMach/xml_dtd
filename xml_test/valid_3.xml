@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message>
+<message  >
     <pomme>
         test
     </pomme>
     <pomme>
         tom
     </pomme>
-    <jean>
+
+    
+    <jean     >
+
         <balise>
-            testi
+            tes ti
         </balise>
     
     </jean>

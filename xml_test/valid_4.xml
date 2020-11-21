@@ -4,8 +4,36 @@
         test
     </pomme>
     <jean>
-        <balise>
-            testi
-        </balise>
-    </jean>
+        <balise  key="attr1" toma="attr2" >
+            te  sti
+        </balise
+        
+        
+        
+        
+             >
+    </jean
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    >
 </message>
