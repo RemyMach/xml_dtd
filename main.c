@@ -3,9 +3,15 @@
 #include <string.h>
 #include "structure.h"
 #include "validate_read.h"
+#include "gtk_functions.h"
 
+int main(int argc, char **argv) {
+    // GTK PARTS
+    char *gladeFilePath = strdup("gui.glade");
 
-int main() {
+    startGTK(&argc, &argv, gladeFilePath);
+
+    free(gladeFilePath);
 
     int valid;
     LinkedListTag* head = intialisation("");

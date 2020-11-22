@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Splas/Documents/GitHub/xml_C/gtk_functions.h
+gtk/gtk.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+
+C:/Users/Splas/Documents/GitHub/xml_C/main.c
+gtk_functions.h
+C:/Users/Splas/Documents/GitHub/xml_C/gtk_functions.h
+
