@@ -875,26 +875,5 @@ void freeLinkedListTag(LinkedListTag* head) {
         free(head->text);
     }
 
-    if(head->attribute != NULL) {
-        freeLinkedListAttribute(head->attribute);
-    }
-
     free(head);
-}
-
-void freeLinkedListAttribute(LinkedListAttribute* attribute) {
-
-    if(attribute->nextAttribute != NULL) {
-        freeLinkedListAttribute(attribute->nextAttribute);
-    }
-
-    if(attribute->key != NULL) {
-        free(attribute->key);
-    }
-
-    if(attribute->value != NULL) {
-        free(attribute->value);
-    }
-
-    free(attribute);
 }

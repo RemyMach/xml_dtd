@@ -8,22 +8,14 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     int good_balise_xml, valid;
 
     // ouverture du fichier en lecture
+    printf("\non commence\n");
     FILE* pt_fichier = openFile(pathFile);
     if(pt_fichier == NULL) {
-        closeFile(pt_fichier);
         return 0;
     }
     char* xml_tag = malloc(sizeof(char));
     int char_file;
 
-    //get les carractère qu'il faut pour la balise xml
-    printf("pointeur -> %d\n",strlen(xml_tag) );
-
-    printf("xml_tag before -> %d\n",xml_tag );
-    freeChar(xml_tag);
-    //free(xml_tag);
-    printf("xml_tag before -> %s\n",xml_tag);
-    printf("xml_tag before -> %d\n",strlen(xml_tag) );
     xml_tag = getCarracTagXml(pt_fichier);
 
     // verif validation balise xml
@@ -31,14 +23,14 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     good_balise_xml = verifyBaliseXML(xml_tag);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
-        closeFile(pt_fichier);
-        //*xml_tag = NULL;
         free(xml_tag);
+        *xml_tag = NULL;
+        printf("xml_tag after free -> %s\n", xml_tag);
         return 0;
     }
-    *xml_tag = NULL;
     free(xml_tag);
-    
+    *xml_tag = NULL;
+    printf("xml_tag after free 2 -> %s\n", xml_tag);
     // de la fin de la balise XML au début de la balise root '<'
     char* xml_tag_next_tag = malloc(sizeof(char));
     xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
@@ -47,22 +39,22 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifyOnlySpaceOrBackSlach(xml_tag_next_tag);
     if(valid == 0) {
         printf("problème avec la balise xml\n");
-        closeFile(pt_fichier);
-        *xml_tag_next_tag = NULL;
         free(xml_tag_next_tag);
+        *xml_tag_next_tag = NULL;
         return 0;
     }
-    *xml_tag_next_tag = NULL;
+    
     free(xml_tag_next_tag);
+    *xml_tag_next_tag = NULL;
 
     //on prend la première balise avec tous ses attributs
     char* root_tag = malloc(sizeof(char));
     root_tag = getCarracTag(pt_fichier);
     if(root_tag == 0) {
         printf("problème avec la balise xml1\n");
-        closeFile(pt_fichier);
         *root_tag = NULL;
         free(root_tag);
+        *root_tag = NULL;
         return 0;
     }
 
@@ -72,9 +64,9 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifTagSynthaxe(root_tag);
     if(valid == 0) {
         printf("problème avec la balise root\n");
-        closeFile(pt_fichier);
         *root_tag = NULL;
         free(root_tag);
+        *root_tag = NULL;
         return 0;
     }
 
@@ -91,7 +83,6 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //on extrait les attribut et on les ajoute.
     if(extractTagAttribute_ADD(root_tag, &i, head) == 0) {
         printf("ERROR ATTRIBUTE");
-        closeFile(pt_fichier);
         *root_tag_name_or_attribute = NULL;
         free(root_tag_name_or_attribute);
         *root_tag = NULL;
@@ -108,18 +99,17 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = readAllOtherTags(pt_fichier, head);
     if(valid == 0) {
         printf("ERROR");
-        closeFile(pt_fichier);
         return 0;
     }
 
     printf("\n---------------------------------------\n");
+    
     valid = verifyAllTagsClosed(head);
     if(valid == 0) {
         printf("ERROR toutes les balises ne sont pas fermées\n");
-        closeFile(pt_fichier);
         return 0;
     }
-    closeFile(pt_fichier);
+
     return 1;
 }
 
@@ -307,7 +297,14 @@ char* concatenateCharInString(char* s, char char_file) {
     strncpy(new_string, s, strlen(s));
     new_string[strlen(s)] = char_file;
     new_string[strlen(s)+1] = '\0';
-    free(s);
+    if(strlen(s) > 0) {
+        *s = NULL;
+        free(s);
+    }
+    /*if(*s != NULL) {
+        *s = NULL;
+    }*/
+    //*s = NULL;
 
     return new_string;
 }
@@ -327,17 +324,14 @@ FILE* openFile(char* filePath) {
     return pt_fichier;
 }
 
-int closeFile(FILE* pt_fichier) {
-    
-    int resultat = fclose(pt_fichier);
+void closeFile(FILE* pt_fichier) {
 
+    int resultat = fclose(pt_fichier);
     if(resultat != 0)
     {
         printf("Erreur lors de la fermeture du fichier\n");
-        return -1;
     }
 
-    return 1;
 }
 
 int regexSpaceBackSlachPlus(char* s,int* i){
@@ -742,18 +736,18 @@ int verifyTextSynthaxe(char* s) {
 char* getCarracTagXml(FILE* pt_fichier) {
 
     int char_file = fgetc(pt_fichier);
-    char* xml_tag = malloc(sizeof(char));
-
+    char *xml_tag1 = malloc(sizeof(char));
+    //printf("xml getCarrac -> %s\n", xml_tag);
     // boucle balise xml
     while(char_file != EOF) {
 
         if(char_file != '>') {
 
-            xml_tag = concatenateCharInString(xml_tag, char_file);
+            xml_tag1 = concatenateCharInString(xml_tag1, char_file);
             //printf("%s\n", xml_tag);
         }else if(char_file == '>') {
 
-            xml_tag = concatenateCharInString(xml_tag, char_file);
+            xml_tag1 = concatenateCharInString(xml_tag1, char_file);
             //printf("%s\n", xml_tag);
             break;
         }
@@ -761,7 +755,7 @@ char* getCarracTagXml(FILE* pt_fichier) {
         char_file = fgetc(pt_fichier);
     }
 
-    return xml_tag;
+    return xml_tag1;
 }
 
 char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter, int verifyCarrac) {
@@ -819,7 +813,7 @@ char* getCarracTag(FILE* pt_fichier) {
             count_crochet_open +=1;
             if(count_crochet_open == 2){
                 printf("vous ne pouvez pas utilisez le carractère < après le tag %s\n", root_tag);
-                root_tag = NULL;
+                *root_tag = NULL;
                 free(root_tag);
                 root_tag = malloc(sizeof(char) * 9);
                 *root_tag = "not_valid";

@@ -1,5 +1,5 @@
 FILE* openFile(char* filePath);
-int closeFile(FILE* pt_fichier);
+void closeFile(FILE* pt_fichier);
 int readBaliseXml(char char_file);
 char* concatenateCharInString(char* s, char char_file);
 int verifyBaliseXML(char* s);

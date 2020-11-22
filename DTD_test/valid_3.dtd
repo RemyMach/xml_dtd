@@ -1,0 +1,5 @@
+<?xml encoding="UTF-8"?>
+<!ELEMENT message (pomme+,jean)>
+<!ELEMENT pomme (#PCDATA)>
+<!ELEMENT jean (balise)>
+<!ELEMENT balise (#PCDATA)>
