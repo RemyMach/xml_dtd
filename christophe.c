@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structure.h"
+#include "validate_read.h"
+#include "christophe.h"
 
-typedef struct LinkedListTag {
+/*typedef struct LinkedListTag {
     int close;
     char* name;
     char* text;
@@ -10,23 +13,33 @@ typedef struct LinkedListTag {
     struct LinkedListTag* childTags;
     struct LinkedListTag* brotherTags;
     struct LinkedListAttribute* attribute;
-}LinkedListTag;
+}LinkedListTag;*/
 
 int calcLignes(char*);
 int calcCarL(char*,int);
 void filterOne(char*,int,int);
+LinkedListDtd* getDtdTag(char* pathfile);
 
-int main() {
+/*int main() {
+
+    LinkedListDtd* head_dtd_1 = getDtdTag("DTD_test/valid_3.dtd");
+    printTagsDtd(head_dtd_1);
+    return 0;
+}*/
+
+LinkedListDtd* getDtdTag(char* pathfile) {
+
+    LinkedListDtd* head_dtd;
 
     /* Calcul nombre de lignes du fichier */
     printf("\n-------------Affichage des donnees du fichier------------- \n\n");
-    int nbLignes=calcLignes("DTD_test/valid_12.dtd");
+    int nbLignes=calcLignes(pathfile);
     printf("Nombre de lignes du fichier =%d\n",nbLignes);
 
     /* Calcul nombre de caractËres par lignes du fichier ainsi que du nombre max de caractËre pour une ligne */
-    int nbCarMax=calcCarL("DTD_test/valid_12.dtd",nbLignes);
+    int nbCarMax=calcCarL(pathfile,nbLignes);
 
-    FILE* f=fopen("DTD_test/valid_12.dtd","r"); //Ouverture du fichier en lecture
+    FILE* f=fopen(pathfile,"r"); //Ouverture du fichier en lecture
     rewind(f);
 
     /* rÈcupÈration des lignes sÈparÈs dans un tableau de strings */
@@ -164,7 +177,7 @@ int main() {
                 }
             }
 
-            char * result = strstr( tempoper, tempnom );
+            char* result = strstr( tempoper, tempnom );
 
             // Affichage reponse operateur.
             if ( result == NULL ) {
@@ -235,18 +248,46 @@ int main() {
                 }
             }
 
+            if(i == 1) {
+                printf("tour -> i -> %d\n", i);
+                printf("je rentre ici\n");
+                head_dtd = intialisationDtd("");
+                head_dtd->name = malloc(sizeof(char)*strlen(tempnom)+1);
+                strncpy(head_dtd->name, tempnom, strlen(tempnom));
+                head_dtd->name[strlen(tempnom)] = '\0';
+                printf("nom LinkedListTag: %s\n",tempnom);
+                printf("child: %s\n",tempchild);
+                printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
+                printf("oper: %s\n\n",tempoper);
+                printTagsDtd(head_dtd);
+                printf("----------------------\n");
+                cpt=0;
+                tmp=0;
+                cptoper=0;
+                continue;
+            }
+            if(tempoper[0] == '0') {
+                addLinkedListDtd(tempnom, NULL, NULL, temparent, NULL, head_dtd);
+            }else {
+                addLinkedListDtd(tempnom, NULL, tempoper[0], temparent, NULL, head_dtd);
+            }
 
             printf("nom LinkedListTag: %s\n",tempnom);
             printf("child: %s\n",tempchild);
-            printf("parent: %s\n",temparent);
+            printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
             printf("oper: %s\n\n",tempoper);
+            printTagsDtd(head_dtd);
+            printf("----------------------\n");
             cpt=0;
             tmp=0;
             cptoper=0;
         }
     }
+
+    printTagsDtd(head_dtd);
+    printf("----------------------\n");
     fclose(f);
-    return EXIT_SUCCESS;
+    return head_dtd;
 }
 
 int calcLignes(char* str){

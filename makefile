@@ -1,5 +1,5 @@
 build:
-	gcc -o main main.c validate_read.c structure.c
+	gcc -o main main.c validate_read.c structure.c christophe.c
 
 test:
 	gcc -o test xml_test/test_xml.c validate_read.c structure.c
@@ -20,4 +20,7 @@ clear_test_2:
 	rm test_2
 
 christophe:
-	gcc -o christophe christophe.c
+	gcc -o christophe christophe.c validate_read.c structure.c
+
+clear_christophe:
+	rm christophe

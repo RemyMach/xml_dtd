@@ -93,11 +93,12 @@ void addLinkedListTags(char* name, char* text, int close, LinkedListTag* parent,
 
     LinkedListTag* ll = malloc(sizeof(LinkedListTag));
     ll->name = malloc(sizeof(char) * strlen(name));
-    ll->name = name;
+    strcpy(ll->name, name);
 
     // ajout de la valeur dans la balise
     if(text != NULL){
         ll->text = malloc(sizeof(char) * strlen(text));
+        strcpy(ll->text, text);
         ll->text = text;
     }else{
         ll->text = malloc(sizeof(char));
@@ -145,12 +146,12 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
     LinkedListDtd* ll = malloc(sizeof(LinkedListDtd));
     ll->name = malloc(sizeof(char) * strlen(name));
-    ll->name = name;
+    strcpy(ll->name, name);
 
     // ajout de la valeur dans la balise
     if(text != NULL){
         ll->text = malloc(sizeof(char) * strlen(text));
-        ll->text = text;
+        strcpy(ll->text, text);
     }else{
         ll->text = malloc(sizeof(char));
         ll->text = NULL;
@@ -165,6 +166,7 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
     //operator
     ll->operator = operator;
+    printf("operator -> %c\n", ll->operator);
 
     //present_in_xml
     ll->present_in_xml = NULL;
@@ -174,6 +176,7 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
     //ajout de la liaison sur la balise parent
     ll->parentTag = searchParent(head, parent_name);
+    printf("parentTag -> %s\n", ll->parentTag->name);
 
     ll->childTags = NULL;
 
@@ -186,7 +189,8 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
             if(brother->brotherTags == NULL) {
                 brother->brotherTags = ll;
-                brother = ll;
+                //brother = ll;
+                break;
             }
             brother = brother->brotherTags;
         }
@@ -197,6 +201,7 @@ LinkedListDtd* searchParent(LinkedListDtd* head, char* parent_name) {
     
     if(strcmp(head->name, parent_name) == 0) {
         //printf("head childTags NULL -> %d\n", head->childTags);
+        
         return head;
     }
 

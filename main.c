@@ -3,23 +3,35 @@
 #include <string.h>
 #include "structure.h"
 #include "validate_read.h"
+#include "christophe.h"
 
 
 int main() {
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateRead(head, "xml_test/valid_9.xml");
-    freeLinkedListTag(head);
+    valid = validateRead(head, "xml_test/valid_12.xml");
+    //freeLinkedListTag(head);
     if(valid == 0) {
         printf("le fichier xml n'est pas valide\n");
         return 0;
     }else {
         printf("le fichier est valide\n");
     }
+
+    printTags(head);
+
+    LinkedListDtd* head_dtd1 = getDtdTag("DTD_test/valid_12.dtd");
+    printTagsDtd(head_dtd1);
+
+    int first_verification_1 = matchXmlDtd(head, head_dtd1);
+    if(first_verification_1 != 1) {
+        printf("le fichier DTD n'est pas valide\n");
+    }
+
+    printf("verification -> %d\n", verifyAllTagsDTD(head));
+    printf("verification dtd_xml -> %d\n", verifyAllTagsPresentDtdInXML(head_dtd1));
     return 0;
-    //printTags(head);
-    
     //presentTagInXml(head, 0, "message", 1);
     //presentTagInXml(head, "message", "pomme", '+');
     //presentTagInXml(head, "message", "jean", '+');
@@ -27,7 +39,6 @@ int main() {
 
     //printTagsDtd(head);
     //printf("verification -> %d\n",verifyAllTagsDTD(head));
-
     LinkedListDtd* head_dtd = intialisationDtd("");
     char* name_head_dtd = "message";
     head_dtd->name = malloc(sizeof(char)*strlen(name_head_dtd)+1);
@@ -63,7 +74,8 @@ int main() {
     addLinkedListAttributeDtd("value", "nom", '+', head_dtd);
     addLinkedListAttributeDtd("tom", "nom", '+', head_dtd);
     addLinkedListAttributeDtd("jean", "nom", '?', head_dtd);
-    
+    printTagsDtd(head_dtd);
+    return 0;
 
     //exemple fichier 1
     /*addLinkedListDtd("pomme", NULL, '+', "message", NULL, head_dtd);
