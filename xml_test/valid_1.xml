@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message  face="jean de la pomme" value="histoire">
+    <nom name="tam" value="2" tom="3">Pomme</nom>
+    <adresse>
+        <cp>96059120</cp>
+        <type>
+            <maison>pavillon</maison>
+        </type>
+        <ville>Taverny</ville>
+    </adresse>
+    <adresse>
+        
+    </adresse>
+    <prenom>jean</prenom>
+</message>

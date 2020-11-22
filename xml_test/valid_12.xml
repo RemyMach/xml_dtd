@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<college>
+    <student>
+        jean
+    </student>
+    <student>
+        rodolphe
+    </student>
+    <student>
+        pomme
+    </student>
+    <student>
+        edouard
+    </student>
+    <student>
+        Caroline
+    </student>
+    <student>
+        Marine
+    </student>
+</college>
