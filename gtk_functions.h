@@ -8,19 +8,23 @@
 
 static GtkBuilder *builder;
 
-//gchar *fileExtension;
-
 typedef struct {
     GtkWindow *window;
     GtkLabel *is_conform;
     GtkLabel *filename_label;
-    GtkEntry *file_name;
+    GtkLabel *filename_dtd;
+    GtkLabel *filename_xml_save;
+    GtkLabel *filename_dtd_save;
     GtkTextView *text_view;
+    GtkTextView *dtd_text_view;
     GtkButton *read;
     GtkButton *create;
     GtkButton *edit;
-    GtkButton *validate;
+    GtkButton *new;
+    GtkButton *dtd;
+    GtkButton *verify;
     GtkFileChooserDialog *fileChooserDialog;
+    GtkFileChooser *chooser;
 } App_widgets;
 
 static App_widgets *widgets;
@@ -29,31 +33,44 @@ static App_widgets *widgets;
 #if defined(__WIN32) || defined(WIN32)
 
 G_MODULE_EXPORT void on_button_read_clicked();
-G_MODULE_EXPORT void on_button_create_clicked();
-G_MODULE_EXPORT void on_button_edit_clicked();
-G_MODULE_EXPORT void on_button_validate_clicked();
+G_MODULE_EXPORT void on_button_save_clicked();
+G_MODULE_EXPORT void on_button_new_clicked();
+G_MODULE_EXPORT void on_button_dtd_clicked();
+G_MODULE_EXPORT void on_button_verify_clicked();
 
 #endif
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void onDestroy();
+int verify_xml_off_dtd();
 
-void startGTK(int *argc, char ***argv, char *gladeFile);
+const gchar *read_file(App_widgets *file_name, int type); // 1 => XML 2 => DTD
 
-void connectWidgets();
+void write_file(gchar **contents);
+
+void open_file();
+
+void save_file();
+
+void hide_filename_label();
+
+void show_filename_label();
+
+void save_filename(App_widgets *file_name, const char **filename);
+
+void set_filename_label(App_widgets *file_name, const char **filename);
+
+const gchar *get_filename_label(App_widgets *file_name);
+
+void set_text_view_text(App_widgets *text_view, gchar **text);
+
+const gchar *get_text_view_text(App_widgets *text_view);
+
+void start_GTK(int *argc, char ***argv, char *gladeFile);
 
 void gtk_init_ui();
 
-void action_button_hide_and_show();
+void connect_widgets();
 
-void read_button_hide_and_show();
-
-void writeFile(const char **filename, gchar **contents);
-
-static void open_dialog(GtkWidget* button, gpointer window);
-
-gchar readFile(const char **filename);
-
-GtkWidget* createConsoleBox();
+void on_destroy();
 
 #endif //GTK_TP_GTK_FUNCTIONS_H
