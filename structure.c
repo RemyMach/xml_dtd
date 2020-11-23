@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "structure.h"
+#include "christophe.h"
 
 LinkedListTag* intialisation(char* name) {
 
@@ -665,7 +666,6 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
         }
     }
 
-
     return 1;
 }
 
@@ -877,4 +877,19 @@ void freeLinkedListTag(LinkedListTag* head) {
     }
 
     free(head);
+}
+
+int verifymatchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
+
+    if( matchXmlDtd(head, head_dtd) != 1 ) {
+        printf("le fichier DTD n'est pas valide\n");
+        return 0;
+    }
+
+    if( (verifyAllTagsDTD(head) != 1) && (verifyAllTagsPresentDtdInXML(head_dtd) != 1) ) {
+        printf("le fichier DTD et le fichier XML ne correspondent pas\n");
+        return 0;
+    }
+
+    return 1;
 }

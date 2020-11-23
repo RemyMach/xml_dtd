@@ -10,9 +10,9 @@ int main() {
     int valid;
 
     LinkedListTag* head2 = intialisation("");
-    valid = validateSecondPart(head2, "xml_test/valid_10.xml");
+    valid = validateSecondPart(head2, "xml_test/valid_12.xml");
     if(strcmp(head2->name, "") != 0) 
-        freeLinkedListTag(head2);
+        //freeLinkedListTag(head2);
     if(valid == 0) {
         printf("le fichier xml n'est pas valide pour la partie 2\n");
         return 0;
@@ -24,7 +24,17 @@ int main() {
     LinkedListDtd* head_dtd1 = getDtdTag("DTD_test/valid_12.dtd");
     printTagsDtd(head_dtd1);
 
-    int first_verification_1 = matchXmlDtd(head, head_dtd1);
+    if( verifymatchXmlDtd(head2, head_dtd1) != 1 ) {
+        printf("\n**********************************\n");
+        printf("le XML ne correspond pas à la DTD\n");
+    }else {
+        printf("\n**********************************\n");
+        printf("le XML correspond bien à la DTD\n");
+    }
+    printf("**********************************\n");
+    return 0;
+
+    /*int first_verification_1 = matchXmlDtd(head2, head_dtd1);
     if(first_verification_1 != 1) {
         printf("le fichier DTD n'est pas valide\n");
     }
@@ -39,5 +49,5 @@ int main() {
         printf("le XML ne correspond pas à la DTD\n");
     }
     printf("**********************************\n");
-    return 0;
+    return 0;*/
 }

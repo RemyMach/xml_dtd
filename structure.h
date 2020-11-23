@@ -64,3 +64,5 @@ int verifyAllAttributesTagInDtd(LinkedListAttributeDtd* firstAttribute);
 int verifyAllAttributesTagInXml(LinkedListAttribute* firstAttribute);
 void freeLinkedListTag(LinkedListTag* head);
 void freeLinkedListAttribute(LinkedListAttribute* attribute);
+
+int verifymatchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd);
