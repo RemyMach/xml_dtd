@@ -31,6 +31,14 @@ int main() {
 
     printf("verification -> %d\n", verifyAllTagsDTD(head));
     printf("verification dtd_xml -> %d\n", verifyAllTagsPresentDtdInXML(head_dtd1));
+
+    printf("\n**********************************\n");
+    if(verifyAllTagsDTD(head) == 1 && verifyAllTagsPresentDtdInXML(head_dtd1) == 1) {
+        printf("le XML correspond bien à la DTD\n");
+    }else {
+        printf("le XML ne correspond pas à la DTD\n");
+    }
+    printf("**********************************\n");
     return 0;
     //presentTagInXml(head, 0, "message", 1);
     //presentTagInXml(head, "message", "pomme", '+');

@@ -8,7 +8,7 @@ LinkedListTag* intialisation(char* name) {
     LinkedListTag* ll = malloc(sizeof(LinkedListTag));
 
     ll->name = malloc(sizeof(char) * strlen(name));
-    ll->name = name;
+    strcpy(ll->name, name);
     ll->close = NULL;
     ll->present_in_dtd = NULL;
     ll->text = NULL;
@@ -25,7 +25,7 @@ LinkedListDtd* intialisationDtd(char* name) {
     LinkedListDtd* ll = malloc(sizeof(LinkedListDtd));
 
     ll->name = malloc(sizeof(char) * strlen(name));
-    ll->name = name;
+    strcpy(ll->name, name);
     ll->text = NULL;
     ll->present_in_xml = NULL;
     ll->operator = NULL;
@@ -166,7 +166,6 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
     //operator
     ll->operator = operator;
-    printf("operator -> %c\n", ll->operator);
 
     //present_in_xml
     ll->present_in_xml = NULL;
@@ -176,7 +175,6 @@ void addLinkedListDtd(char* name, char* text, char operator, char* parent_name, 
 
     //ajout de la liaison sur la balise parent
     ll->parentTag = searchParent(head, parent_name);
-    printf("parentTag -> %s\n", ll->parentTag->name);
 
     ll->childTags = NULL;
 
@@ -238,9 +236,9 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
 
     LinkedListAttribute* newAttribut = malloc(sizeof(LinkedListAttribute));
     newAttribut->key = malloc(sizeof(char) * strlen(key));
-    newAttribut->key = key;
+    strcpy(newAttribut->key, key);
     newAttribut->value = malloc(sizeof(char) * strlen(value));
-    newAttribut->value = value;
+    strcpy(newAttribut->value, value);
     newAttribut->nextAttribute = NULL;
     newAttribut->present_in_dtd = NULL;
 
@@ -262,11 +260,9 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
 void addLinkedListAttributeDtd(char* key, char* parent_tag_dtd, char operator, LinkedListDtd* head) {
 
     LinkedListDtd* currentTag = searchParent(head, parent_tag_dtd);
-    printf("pomme\n");
-    printf("currentTagname -> %s\n", currentTag->name);
     LinkedListAttributeDtd* newAttribut = malloc(sizeof(LinkedListAttributeDtd));
     newAttribut->key = malloc(sizeof(char) * strlen(key));
-    newAttribut->key = key;
+    strcpy(newAttribut->key, key);
     newAttribut->operator = operator;
     newAttribut->nextAttribute = NULL;
     newAttribut->present_in_xml = NULL;
@@ -312,7 +308,7 @@ void addTextToLinkedListTag(char* text, LinkedListTag* head) {
     currentTag->text = NULL;
     free(currentTag->text);
     currentTag->text = malloc(sizeof(char) * strlen(text));
-    currentTag->text = text;
+    strcpy(currentTag->text, text);
     printf("nom de balise -> %s et text: %s\n", currentTag->name, currentTag->text);
 }
 
@@ -320,12 +316,12 @@ void addLinkedListBrother(char* name, char* text, LinkedListTag* brotherBefore, 
 
     LinkedListTag* ll = malloc(sizeof(LinkedListTag));
     ll->name = malloc(sizeof(char) * strlen(name));
-    ll->name = name;
+    strcpy(ll->name, name);
 
     // ajout de la valeur dans la balise
     if(text != NULL){
         ll->text = malloc(sizeof(char) * strlen(text));
-        ll->text = text;
+        strcpy(ll->text, text);
     }else{
         ll->text = NULL;
     }
