@@ -20,13 +20,13 @@ int main() {
         printf("le fichier est valide\n");
     }
 
-    LinkedListDtd* head_dtd1;
+    LinkedListDtd* head_dtd = intialisationDtd("");
     int valid_dtd;
-    valid_dtd = getDtdTag(head_dtd1, "DTD_test/valid_1.dtd");
+    valid_dtd = getDtdTag(head_dtd, "DTD_test/valid_13.dtd");
     if(valid_dtd == 0)
-        return 0;
+        return 0; 
     
-    if( verifymatchXmlDtd(head, head_dtd1) != 1 ) {
+    if( verifymatchXmlDtd(head, head_dtd) != 1 ) {
         printf("\n**********************************\n");
         printf("le XML ne correspond pas à la DTD\n");
     }else {
@@ -34,7 +34,7 @@ int main() {
         printf("le XML correspond bien à la DTD\n");
     }
     printf("**********************************\n");
-    printTagsDtd(head_dtd1);
+    printTagsDtd(head_dtd);
     printf("**********************************\n");
     printf("**********************************\n");
     printTags(head);
