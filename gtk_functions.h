@@ -43,7 +43,7 @@ G_MODULE_EXPORT void on_button_verify_clicked();
 
 int verify_xml_off_dtd();
 
-const gchar *read_file(App_widgets *file_name, int type); // 1 => XML 2 => DTD
+const gchar *read_file(App_widgets *file_name, int type);
 
 void write_file(gchar **contents);
 

@@ -66,13 +66,13 @@ void on_button_save_clicked() {
 
 int verify_xml_off_dtd(){
     /*
-     * 0 xml invalide
-     * 1 dtd invalide
-     * 2 = non conforme
-     * 3 = all ok
+     * 0 : xml invalide
+     * 1 : dtd invalide
+     * 2 : non conforme
+     * 3 : all ok
      */
 
-    int valid = 1;
+    /*int valid = 1;
     LinkedListTag* head = intialisation("");
     valid = validateFirstPart(head, widgets->filename_xml_save);
     if(strcmp(head->name, "") != 0)
@@ -91,10 +91,15 @@ int verify_xml_off_dtd(){
         return 2;
     }
 
-    return 3;
+    return 3;*/
 }
 
 const gchar *read_file(App_widgets *file_name, int type){
+    /*
+     * 1 : XML
+     * 2 : DTD
+     */
+
     open_file();
 
     gchar *buffer = NULL;
@@ -108,36 +113,27 @@ const gchar *read_file(App_widgets *file_name, int type){
 
         filename = gtk_file_chooser_get_filename (widgets->chooser);
 
-        /*char *str = filename;
+        char name[strlen(filename)];
+        char temp[50]={0};
+        int i, len;
 
-        const char * separators = "\\";
+        strcpy(name,filename);
 
-        char * strToken = strtok ( str, separators );
-        while ( strToken != NULL ) {
-            printf ( "%s\n", strToken );
-            strToken = strtok ( NULL, separators );
-        }
-        char *temp = malloc(100 * sizeof(char));
-        int i;
-        char *filename = widgets->filename_xml_save;
-
-        for(i=strlen(filename); i>0; i--){
-            if(filename[i] == '\\'){
+        for(i=strlen(name); i>0; i--){
+            if(name[i] == '\\'){
+                i +=1;
+                len = strlen(name)-i;
+                for(int j=0; j<len && i < strlen(name)+1; j++, i++)
+                {
+                    temp[j] = name[i];
+                }
                 break;
             }
         }
+        //printf("%s\n",temp);
 
-        int nameLen = strlen(filename) - i;
+        set_filename_label(file_name,temp);
 
-        for(int j=0; j<nameLen && i<strlen(filename); j++, i++){
-            strcat(temp[j],filename[i]);
-        }
-
-
-        printf("%s",strlen(temp));
-        free(temp);*/
-
-        set_filename_label(file_name,filename);
         if(type == 1){
             save_filename(widgets->filename_xml_save,filename);
         }
@@ -149,7 +145,7 @@ const gchar *read_file(App_widgets *file_name, int type){
         {
             g_warning ("%s", error->message);
             g_clear_error (&error);
-            return "null";
+            return "Erreur lors de la lecture.";
         }
 
         g_free(filename);
@@ -281,6 +277,8 @@ void gtk_init_ui(){
     gtk_window_set_default_size (widgets->window, 950, 500);
     gtk_widget_show_all (GTK_WIDGET(widgets->window));
     gtk_widget_hide(widgets->filename_label);
+    gtk_widget_hide(widgets->filename_xml_save);
+    gtk_widget_hide(widgets->filename_dtd_save);
 }
 
 void connect_widgets() {
