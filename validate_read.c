@@ -8,7 +8,6 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     int good_balise_xml, valid;
 
     // ouverture du fichier en lecture
-    printf("\non commence\n");
     FILE* pt_fichier = openFile(pathFile);
     if(pt_fichier == NULL) {
         return 0;
@@ -30,7 +29,6 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     }
     free(xml_tag);
     *xml_tag = NULL;
-    printf("xml_tag after free 2 -> %s\n", xml_tag);
     // de la fin de la balise XML au début de la balise root '<'
     char* xml_tag_next_tag = malloc(sizeof(char));
     xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);

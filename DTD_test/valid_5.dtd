@@ -1,0 +1,14 @@
+<?xml encoding="UTF-8"?>
+<!ELEMENT message (nom,adresse+,prenom)>
+<!ATTLIST message face CDATA #REQUIRED>
+<!ATTLIST message value CDATA #REQUIRED>
+<!ELEMENT nom (#PCDATA)>
+<!ATTLIST nom name CDATA #REQUIRED>
+<!ATTLIST nom value CDATA #REQUIRED>
+<!ATTLIST nom tom CDATA #REQUIRED>
+<!ELEMENT adresse (cp?,type,ville?)>
+<!ELEMENT prenom EMPTY>
+<!ELEMENT cp (#PCDATA)>
+<!ELEMENT type (maison)?>
+<!ELEMENT ville (#PCDATA)>
+<!ELEMENT maison (#PCDATA)>

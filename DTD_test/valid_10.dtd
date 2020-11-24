@@ -1,0 +1,8 @@
+<?xml encoding="UTF-8"?>
+<!ELEMENT root (arnaud,bali)>
+<!ATTLIST root jean CDATA #REQUIRED>
+<!ATTLIST root tom CDATA #REQUIRED>
+<!ELEMENT arnaud (#PCDATA)>
+<!ATTLIST arnaud jean CDATA #REQUIRED>
+<!ELEMENT bali EMPTY>
+<!ATTLIST bali jean CDATA #REQUIRED>

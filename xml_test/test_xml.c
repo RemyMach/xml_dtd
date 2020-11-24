@@ -3,20 +3,20 @@
 #include <string.h>
 #include "../structure.h"
 #include "../validate_read.h"
-#include "test_xml.h"
 
 int main() {
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateRead(head, "xml_test/valid_12.xml");
+    valid = validateRead(head, "xml_test/valid_8.xml");
     if(strcmp(head->name, "") != 0) 
-        freeLinkedListTag(head);
+        //freeLinkedListTag(head);
     if(valid == 0) {
         printf("le fichier xml n'est pas valide pour la partie 3 et 4\n");
     }else {
         printf("le fichier est valide\n");
     }
+    printTags(head);
 
     /*LinkedListTag* head1 = intialisation("");
     valid = validateFirstPart(head1, "xml_test/not_valid_4.xml");

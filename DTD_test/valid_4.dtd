@@ -1,0 +1,10 @@
+<?xml encoding="UTF-8"?>
+<!ELEMENT message (pomme,jean)>
+<!ATTLIST message pomme CDATA #REQUIRED>
+<!ATTLIST message jean CDATA #REQUIRED>
+<!ATTLIST message val CDATA #REQUIRED>
+<!ELEMENT pomme (#PCDATA)>
+<!ELEMENT jean (balise)>
+<!ELEMENT balise (#PCDATA)>
+<!ATTLIST balise key CDATA #REQUIRED>
+<!ATTLIST balise toma CDATA #REQUIRED>
