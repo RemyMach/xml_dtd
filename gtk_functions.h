@@ -43,7 +43,7 @@ G_MODULE_EXPORT void on_button_verify_clicked();
 
 int verify_xml_off_dtd();
 
-const gchar *read_file(App_widgets *file_name, int type);
+const gchar *read_file(App_widgets *file_name_label, int type);
 
 void write_file(gchar **contents);
 
@@ -55,11 +55,13 @@ void hide_filename_label();
 
 void show_filename_label();
 
+void clean_filename(App_widgets *file_name_label, char **filename);
+
 void save_filename(App_widgets *file_name, const char **filename);
 
-void set_filename_label(App_widgets *file_name, const char **filename);
+void set_filename_label(App_widgets *file_name_label, const char **filename);
 
-const gchar *get_filename_label(App_widgets *file_name);
+const gchar *get_filename_label(App_widgets *file_name_label);
 
 void set_text_view_text(App_widgets *text_view, gchar **text);
 

@@ -94,7 +94,7 @@ int verify_xml_off_dtd(){
     return 3;*/
 }
 
-const gchar *read_file(App_widgets *file_name, int type){
+const gchar *read_file(App_widgets *file_name_label, int type){
     /*
      * 1 : XML
      * 2 : DTD
@@ -113,26 +113,7 @@ const gchar *read_file(App_widgets *file_name, int type){
 
         filename = gtk_file_chooser_get_filename (widgets->chooser);
 
-        char name[strlen(filename)];
-        char temp[50]={0};
-        int i, len;
-
-        strcpy(name,filename);
-
-        for(i=strlen(name); i>0; i--){
-            if(name[i] == '\\'){
-                i +=1;
-                len = strlen(name)-i;
-                for(int j=0; j<len && i < strlen(name)+1; j++, i++)
-                {
-                    temp[j] = name[i];
-                }
-                break;
-            }
-        }
-        //printf("%s\n",temp);
-
-        set_filename_label(file_name,temp);
+        clean_filename(file_name_label,filename);
 
         if(type == 1){
             save_filename(widgets->filename_xml_save,filename);
@@ -169,7 +150,7 @@ void write_file(gchar **contents) {
 
         filename = gtk_file_chooser_get_filename (widgets->chooser);
 
-        set_filename_label(widgets->filename_label,filename);
+        clean_filename(widgets->filename_label,filename);
 
         if(g_file_set_contents (filename, contents, strlen(contents), &error) == FALSE)
         {
@@ -230,16 +211,42 @@ void show_filename_label(){
     gtk_widget_show(widgets->filename_label);
 }
 
+void clean_filename(App_widgets *file_name_label, char **filename){
+
+    char temp[strlen(filename)];
+    char name[50]={0};
+
+    strcpy(temp,filename);
+
+    int i, nameLen, file_nameLen = strlen(temp);
+
+    for(i=file_nameLen; i>0; i--){
+
+        if(temp[i] == '\\'){
+
+            i +=1;
+            nameLen = file_nameLen - i;
+
+            for(int j=0; j<nameLen && i < file_nameLen + 1; j++, i++)
+            {
+                name[j] = temp[i];
+            }
+            break;
+        }
+    }
+    set_filename_label(file_name_label,name);
+}
+
 void save_filename(App_widgets *file_name, const char **filename){
     gtk_label_set_text(file_name,filename);
 }
 
-void set_filename_label(App_widgets *file_name, const char **filename){
-    gtk_label_set_text(file_name,filename);
+void set_filename_label(App_widgets *file_name_label, const char **filename){
+    gtk_label_set_text(file_name_label,filename);
 }
 
-const gchar *get_filename_label(App_widgets *file_name){
-    return gtk_label_get_text (file_name);
+const gchar *get_filename_label(App_widgets *file_name_label){
+    return gtk_label_get_text (file_name_label);
 }
 
 void set_text_view_text(App_widgets *text_view, gchar **text){
