@@ -4,11 +4,19 @@
 #include "../structure.h"
 #include "../validate_read.h"
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    if(argc != 2) {
+        displayArgXML();
+        return 0;
+    }
+    char xml_prev[] = "xml_test/";
+    char name_xml[strlen(xml_prev) + strlen(argv[1]) +1];
+    sprintf(name_xml,"%s%s",xml_prev, argv[1]);
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateRead(head, "xml_test/valid_8.xml");
+    valid = validateRead(head, name_xml);
     if(strcmp(head->name, "") != 0) 
         //freeLinkedListTag(head);
     if(valid == 0) {
@@ -16,7 +24,7 @@ int main() {
     }else {
         printf("le fichier est valide\n");
     }
-    printTags(head);
+    //printTags(head);
 
     /*LinkedListTag* head1 = intialisation("");
     valid = validateFirstPart(head1, "xml_test/not_valid_4.xml");

@@ -39,9 +39,9 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
         int cptoper=0;
 
         /* Calcul nombre de lignes du fichier */
-        printf("\n-------------Affichage des donnees du fichier------------- \n\n");
+        //printf("\n-------------Affichage des donnees du fichier------------- \n\n");
         int nbLignes=calcLignes(pathfile);
-        printf("Nombre de lignes du fichier =%d\n",nbLignes);
+        //printf("Nombre de lignes du fichier =%d\n",nbLignes);
 
         /* Calcul nombre de caractËres par lignes du fichier ainsi que du nombre max de caractËre pour une ligne */
         int nbCarMax=calcCarL(pathfile,nbLignes);
@@ -304,20 +304,20 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
             if(i == 0) {
                 head_dtd->name = malloc(sizeof(char)*strlen(tempnom)+1);
                 strcpy(head_dtd->name, tempnom);
-                printf("nom LinkedListTag: %s\n",tempnom);
+                /*printf("nom LinkedListTag: %s\n",tempnom);
                 printf("child: %s\n",tempchild);
                 printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
                 printf("oper: %s\n\n",tempoper);
                 printTagsDtd(head_dtd);
-                printf("----------------------\n");
+                printf("----------------------\n");*/
                 cpt=0;
                 tmp=0;
                 cptoper=0;
-                printf("----------------------\n");
+                /*printf("----------------------\n");
                 printf("----------------------\n");
                 printTagsDtd(head_dtd);
                 printf("----------------------\n");
-                printf("----------------------\n");
+                printf("----------------------\n");*/
                 continue;
             }
             char *p_backSlash = strchr(tempnom, '\n');
@@ -337,25 +337,25 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
                 addLinkedListDtd(tempnom, NULL, tempoper[0], temparent, NULL, head_dtd);
             }
 
-            printf("nom LinkedListTag: %s\n",tempnom);
+            /*printf("nom LinkedListTag: %s\n",tempnom);
             printf("child: %s\n",tempchild);
             printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
             printf("oper: %s\n\n",tempoper);
             printTagsDtd(head_dtd);
-            printf("----------------------\n");
+            printf("----------------------\n");*/
             cpt=0;
             tmp=0;
             cptoper=0;
-            printf("----------------------\n");
+            /*printf("----------------------\n");
             printf("----------------------\n");
             printTagsDtd(head_dtd);
             printf("----------------------\n");
-            printf("----------------------\n");
+            printf("----------------------\n");*/
 
         }
         /*------------------------------------------------ATTLIST------------------------------------------------------------*/
-        printf("\n-------------Affichage ATTLIST ------------- \n\n");
-        printf("\n");
+        /*printf("\n-------------Affichage ATTLIST ------------- \n\n");
+        printf("\n");*/
         for(int i=0;i<cptA;i++){
             printf("StringA: %s\n",stringA[i]);
         }
@@ -460,9 +460,9 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
 
             addLinkedListAttributeDtd(attnom, attparent, attoper, head_dtd);
 
-            printf("nom de l'attribut: %s\n",attnom);
+            /*printf("nom de l'attribut: %s\n",attnom);
             printf("parent: %s\n",attparent);
-            printf("oper: %c\n\n",attoper);
+            printf("oper: %c\n\n",attoper);*/
         }
     }else{
         // On affiche un message d'erreur si on veut
@@ -517,7 +517,7 @@ int calcCarL(char* str,int nLignes){
     }
     int nbCarMax=0;
     for(int i=0;i<nLignes;i++){
-        printf("Nombre de caractere a la ligne %d: %d\n",i+1,nbCar[i][0]);
+        //printf("Nombre de caractere a la ligne %d: %d\n",i+1,nbCar[i][0]);
         if(nbCar[i][0]>nbCarMax){
             nbCarMax=nbCar[i][0];
         }

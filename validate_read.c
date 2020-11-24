@@ -16,19 +16,20 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     int char_file;
 
     xml_tag = getCarracTagXml(pt_fichier);
-
+    
     // verif validation balise xml
     printf("xml_tag -> %s\n",xml_tag);
     good_balise_xml = verifyBaliseXML(xml_tag);
+    printf("good_balise -> %d\n",good_balise_xml);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
         free(xml_tag);
-        *xml_tag = NULL;
+        xml_tag = NULL;
         printf("xml_tag after free -> %s\n", xml_tag);
         return 0;
     }
     free(xml_tag);
-    *xml_tag = NULL;
+    xml_tag = NULL;
     // de la fin de la balise XML au début de la balise root '<'
     char* xml_tag_next_tag = malloc(sizeof(char));
     xml_tag_next_tag = getCarracBeforeDelimiter(pt_fichier, '<', -1);
@@ -38,21 +39,20 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     if(valid == 0) {
         printf("problème avec la balise xml\n");
         free(xml_tag_next_tag);
-        *xml_tag_next_tag = NULL;
+        xml_tag_next_tag = NULL;
         return 0;
     }
     
     free(xml_tag_next_tag);
-    *xml_tag_next_tag = NULL;
+    xml_tag_next_tag = NULL;
 
     //on prend la première balise avec tous ses attributs
     char* root_tag = malloc(sizeof(char));
     root_tag = getCarracTag(pt_fichier);
     if(root_tag == 0) {
         printf("problème avec la balise xml1\n");
-        *root_tag = NULL;
         free(root_tag);
-        *root_tag = NULL;
+        root_tag = NULL;
         return 0;
     }
 
@@ -62,9 +62,8 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     valid = verifTagSynthaxe(root_tag);
     if(valid == 0) {
         printf("problème avec la balise root\n");
-        *root_tag = NULL;
         free(root_tag);
-        *root_tag = NULL;
+        root_tag = NULL;
         return 0;
     }
 
@@ -81,17 +80,16 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     //on extrait les attribut et on les ajoute.
     if(extractTagAttribute_ADD(root_tag, &i, head) == 0) {
         printf("ERROR ATTRIBUTE");
-        *root_tag_name_or_attribute = NULL;
         free(root_tag_name_or_attribute);
-        *root_tag = NULL;
+        root_tag = NULL;
         free(root_tag);
         return 0;
     }
         
-    *root_tag_name_or_attribute = NULL;
     free(root_tag_name_or_attribute);
-    *root_tag = NULL;
+    root_tag_name_or_attribute = NULL;
     free(root_tag);
+    root_tag = NULL;
 
     printf("\n---------------------------------------\n");
     valid = readAllOtherTags(pt_fichier, head);

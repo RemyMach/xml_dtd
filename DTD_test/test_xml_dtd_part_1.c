@@ -6,11 +6,19 @@
 #include "../christophe.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    if(argc != 3) {
+        displayArgDTD();
+        return 0;
+    }
+    char xml_prev[] = "xml_test/";
+    char name_xml[strlen(xml_prev) + strlen(argv[1]) +1];
+    sprintf(name_xml,"%s%s",xml_prev, argv[1]);
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateFirstPart(head, "xml_test/valid_5.xml");
+    valid = validateFirstPart(head, name_xml);
     if(strcmp(head->name, "") != 0) 
         //freeLinkedListTag(head);
     if(valid == 0) {
@@ -20,9 +28,13 @@ int main() {
         printf("le fichier est valide\n");
     }
 
+    char dtd_prev[] = "DTD_test/";
+    char name_dtd[strlen(dtd_prev) + strlen(argv[2]) +1];
+    sprintf(name_dtd,"%s%s",dtd_prev, argv[2]);
+
     LinkedListDtd* head_dtd = intialisationDtd("");
     int valid_dtd;
-    valid_dtd = getDtdTag(head_dtd, "DTD_test/valid_13.dtd");
+    valid_dtd = getDtdTag(head_dtd, name_dtd);
     if(valid_dtd == 0)
         return 0; 
     

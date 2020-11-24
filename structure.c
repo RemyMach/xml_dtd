@@ -893,3 +893,19 @@ int verifymatchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
 
     return 1;
 }
+
+void displayArgDTD() {
+
+    printf("Ce fichier accepte deux et seulement deux arguements\n");
+    printf("nomFichierXML nomFichierDTD\n");
+    printf("\nExemple: \n");
+    printf("\t./dtd valid_1.xml valid_1.dtd\n");
+}
+
+void displayArgXML() {
+
+    printf("Ce fichier accepte un et seulement un argument\n");
+    printf("nomFichierXML\n");
+    printf("\nExemple: \n");
+    printf("\t./dtd valid_1.xml\n");
+}
