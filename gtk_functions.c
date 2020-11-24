@@ -23,20 +23,31 @@ void on_button_read_clicked() {
     g_free(text);
 }
 
-void on_button_dtd_clicked() {
-    gchar *text = NULL;
+void on_button_save_clicked() {
 
-    text = read_file(widgets->filename_dtd, 2);
+    gchar *text;
 
-    set_text_view_text(widgets->dtd_text_view,text);
+    text = get_text_view_text(widgets->text_view);
+
+    write_file(text);
 
     g_free(text);
 }
 
-void on_button_verify_clicked() {
-    int conformity;
+void on_button_read_dtd_clicked() {
+    gchar *text = NULL;
 
-    conformity = verify_xml_off_dtd();
+    text = read_file(widgets->filename_dtd, 2);
+
+    set_text_view_text(widgets->text_view_dtd,text);
+
+    g_free(text);
+}
+
+void on_button_verify_conformity_clicked() {
+    int conformity;
+    conformity = verify_conformity();
+
     if(conformity == 0){
         gtk_label_set_text (widgets->is_conform, "XML invalide.");
     }
@@ -49,22 +60,32 @@ void on_button_verify_clicked() {
     else if(conformity == 3){
         gtk_label_set_text (widgets->is_conform, "XML conforme DTD.");
     }
+    gtk_label_set_text (widgets->is_conform, "Choisir les fichiers.");
 }
 
-void on_button_save_clicked() {
+void on_button_verify_xml_clicked(){
+    if(verify_xml() == 0){
+        gtk_label_set_text (widgets->is_conform, "XML invalide.");
+    }
+    else if(verify_xml() == 1){
+        gtk_label_set_text (widgets->is_conform, "XML valide.");
+    }
+    gtk_label_set_text (widgets->is_conform, "Choisir un fichier XML.");
+}
 
-    gchar *text;
-
-    text = get_text_view_text(widgets->text_view);
-
-    write_file(text);
-
-    g_free(text);
+void on_button_verify_dtd_clicked(){
+    if(verify_dtd() == 0){
+        gtk_label_set_text (widgets->is_conform, "DTD invalide.");
+    }
+    else if(verify_dtd() == 1){
+        gtk_label_set_text (widgets->is_conform, "DTD valide.");
+    }
+    gtk_label_set_text (widgets->is_conform, "Choisir une DTD.");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-int verify_xml_off_dtd(){
+int verify_conformity(){
     /*
      * 0 : xml invalide
      * 1 : dtd invalide
@@ -72,26 +93,38 @@ int verify_xml_off_dtd(){
      * 3 : all ok
      */
 
-    /*int valid = 1;
-    LinkedListTag* head = intialisation("");
-    valid = validateFirstPart(head, widgets->filename_xml_save);
-    if(strcmp(head->name, "") != 0)
-        if(valid == 0) {
-            return 0;
+    /*if(verify_xml() == 0) {
+        return 0;
     }
 
-    LinkedListDtd* head_dtd1 = getDtdTag(widgets->filename_dtd_save);
-    int first_verification_1 = matchXmlDtd(head, head_dtd1);
-
-    if(first_verification_1 != 1) {
+    if(verify_dtd() == 0) {
         return 1;
     }
 
-    if(verifyAllTagsDTD(head) != 1 && verifyAllTagsPresentDtdInXML(head_dtd1) != 1) {
+    if(verifyAllTagsDTD(head) == 0
+        && verifyAllTagsPresentDtdInXML(head_dtd1) == 0) {
         return 2;
     }
 
     return 3;*/
+}
+
+int verify_xml(){
+    /*
+     * 0 : invalide
+     * 1 : valide
+     */
+    /*LinkedListTag* head = intialisation("");
+    return validateFirstPart(head, widgets->filename_xml_save);*/
+}
+
+int verify_dtd(){
+    /*
+    * 0 : invalide
+    * 1 : valide
+    */
+    /*LinkedListDtd* head_dtd1 = getDtdTag(widgets->filename_dtd_save);
+    return matchXmlDtd(head, head_dtd1);*/
 }
 
 const gchar *read_file(App_widgets *file_name_label, int type){
@@ -262,7 +295,7 @@ const gchar *get_text_view_text(App_widgets *text_view){
     return gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
-void start_GTK(int *argc, char ***argv, char *gladeFile) {
+void start_GTK(int *argc, char ***argv, char *gladeFile){
     gtk_init(argc, argv);
     builder = gtk_builder_new_from_file(gladeFile);
 
@@ -286,29 +319,31 @@ void gtk_init_ui(){
     gtk_widget_hide(widgets->filename_label);
     gtk_widget_hide(widgets->filename_xml_save);
     gtk_widget_hide(widgets->filename_dtd_save);
+    gtk_text_view_set_editable(widgets->text_view_dtd, FALSE);
 }
 
-void connect_widgets() {
+void connect_widgets(){
     widgets = g_slice_new(App_widgets);
 
     widgets->window = GTK_WINDOW(gtk_builder_get_object(builder, "window"));
     widgets->text_view = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
-    widgets->dtd_text_view = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "dtd_text_view"));
+    widgets->text_view_dtd = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view_dtd"));
     widgets->is_conform = GTK_LABEL(gtk_builder_get_object(builder, "is_conform"));
     widgets->filename_label = GTK_LABEL(gtk_builder_get_object(builder, "filename_label"));
     widgets->filename_dtd = GTK_LABEL(gtk_builder_get_object(builder, "filename_dtd"));
     widgets->filename_xml_save = GTK_LABEL(gtk_builder_get_object(builder, "filename_xml_save"));
     widgets->filename_dtd_save = GTK_LABEL(gtk_builder_get_object(builder, "filename_dtd_save"));
     widgets->read = GTK_BUTTON(gtk_builder_get_object(builder, "read"));
-    widgets->create = GTK_BUTTON(gtk_builder_get_object(builder, "create"));
-    widgets->edit = GTK_BUTTON(gtk_builder_get_object(builder, "edit"));
+    widgets->save = GTK_BUTTON(gtk_builder_get_object(builder, "save"));
     widgets->new = GTK_BUTTON(gtk_builder_get_object(builder, "validate"));
-    widgets->dtd = GTK_BUTTON(gtk_builder_get_object(builder, "dtd"));
-    widgets->verify = GTK_BUTTON(gtk_builder_get_object(builder, "verify"));
+    widgets->read_dtd = GTK_BUTTON(gtk_builder_get_object(builder, "read_dtd"));
+    widgets->verify_conformity = GTK_BUTTON(gtk_builder_get_object(builder, "verify_conformity"));
+    widgets->verify_xml = GTK_BUTTON(gtk_builder_get_object(builder, "verify_xml"));
+    widgets->verify_dtd = GTK_BUTTON(gtk_builder_get_object(builder, "verify_dtd"));
     widgets->fileChooserDialog = GTK_DIALOG(gtk_builder_get_object(builder, "fileChooserDialog"));
     widgets->chooser = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "chooser"));
 }
 
-void on_destroy() {
+void on_destroy(){
     gtk_main_quit();
 }

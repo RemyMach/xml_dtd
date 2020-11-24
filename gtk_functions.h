@@ -8,7 +8,7 @@
 
 static GtkBuilder *builder;
 
-typedef struct {
+typedef struct{
     GtkWindow *window;
     GtkLabel *is_conform;
     GtkLabel *filename_label;
@@ -16,32 +16,39 @@ typedef struct {
     GtkLabel *filename_xml_save;
     GtkLabel *filename_dtd_save;
     GtkTextView *text_view;
-    GtkTextView *dtd_text_view;
-    GtkButton *read;
-    GtkButton *create;
-    GtkButton *edit;
+    GtkTextView *text_view_dtd;
     GtkButton *new;
-    GtkButton *dtd;
-    GtkButton *verify;
+    GtkButton *read;
+    GtkButton *save;
+    GtkButton *read_dtd;
+    GtkButton *verify_conformity;
+    GtkButton *verify_xml;
+    GtkButton *verify_dtd;
     GtkFileChooserDialog *fileChooserDialog;
     GtkFileChooser *chooser;
-} App_widgets;
+}App_widgets;
 
 static App_widgets *widgets;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 #if defined(__WIN32) || defined(WIN32)
 
+G_MODULE_EXPORT void on_button_new_clicked();
 G_MODULE_EXPORT void on_button_read_clicked();
 G_MODULE_EXPORT void on_button_save_clicked();
-G_MODULE_EXPORT void on_button_new_clicked();
-G_MODULE_EXPORT void on_button_dtd_clicked();
-G_MODULE_EXPORT void on_button_verify_clicked();
+G_MODULE_EXPORT void on_button_read_dtd_clicked();
+G_MODULE_EXPORT void on_button_verify_conformity_clicked();
+G_MODULE_EXPORT void on_button_verify_xml_clicked();
+G_MODULE_EXPORT void on_button_verify_dtd_clicked();
 
 #endif
 ///////////////////////////////////////////////////////////////////////////////////////
 
-int verify_xml_off_dtd();
+int verify_conformity();
+
+int verify_xml();
+
+int verify_dtd();
 
 const gchar *read_file(App_widgets *file_name_label, int type);
 

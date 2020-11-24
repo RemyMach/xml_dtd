@@ -38,7 +38,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="save">
+          <object class="GtkButton" id="enregistrer">
             <property name="label" translatable="yes">Enregistrer</property>
             <property name="width-request">80</property>
             <property name="height-request">40</property>
@@ -100,29 +100,29 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="verify_conformity">
-            <property name="label" translatable="yes">Conformité</property>
+          <object class="GtkButton" id="verify">
+            <property name="label" translatable="yes">Vérifier</property>
             <property name="width-request">80</property>
             <property name="height-request">40</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <signal name="clicked" handler="on_button_verify_conformity_clicked" swapped="no"/>
+            <signal name="clicked" handler="on_button_verify_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">430</property>
+            <property name="x">435</property>
             <property name="y">15</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="read_dtd">
+          <object class="GtkButton" id="dtd">
             <property name="label" translatable="yes">Lire DTD</property>
             <property name="width-request">80</property>
             <property name="height-request">40</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <signal name="clicked" handler="on_button_read_dtd_clicked" swapped="no"/>
+            <signal name="clicked" handler="on_button_dtd_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="x">660</property>
@@ -137,7 +137,7 @@
             <property name="can-focus">True</property>
             <property name="shadow-type">in</property>
             <child>
-              <object class="GtkTextView" id="text_view_dtd">
+              <object class="GtkTextView" id="dtd_text_view">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>
@@ -182,36 +182,6 @@
           <packing>
             <property name="x">810</property>
             <property name="y">10</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="verify_xml">
-            <property name="label" translatable="yes">XML</property>
-            <property name="width-request">50</property>
-            <property name="height-request">40</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <signal name="clicked" handler="on_button_verify_xml_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">370</property>
-            <property name="y">15</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="verify_dtd">
-            <property name="label" translatable="yes">DTD</property>
-            <property name="width-request">50</property>
-            <property name="height-request">40</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <signal name="clicked" handler="on_button_verify_dtd_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">525</property>
-            <property name="y">15</property>
           </packing>
         </child>
       </object>
