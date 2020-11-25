@@ -48,6 +48,8 @@ int main(int argc, char *argv[]) {
     printf("**********************************\n");
     printf("**********************************\n");
     printTags(head);*/
+    if(strcmp(head->name, "") != 0) 
+        freeLinkedListTag(head);
 
     return 0;
 }

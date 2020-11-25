@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     
     if(valid == 0) {
         printf("le fichier xml n'est pas valide pour la partie 2\n");
+        return 0;
     }else {
         printf("le fichier est valide\n");
     }
