@@ -2,6 +2,8 @@
 #define GTK_TP_GTK_FUNCTIONS_H
 
 #include <gtk/gtk.h>
+#include "validate_read.h"
+#include "christophe.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

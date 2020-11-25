@@ -8,7 +8,6 @@ void on_button_new_clicked(){
     GtkTextBuffer *buffer2 = gtk_text_view_get_buffer (widgets->text_view);
     gtk_text_buffer_set_text (buffer2, "", -1);
     gtk_text_view_set_buffer (widgets->text_view, buffer2);
-    printf("%s",gtk_text_view_get_input_purpose (widgets->text_view));
 }
 
 void on_button_read_clicked() {
@@ -92,21 +91,20 @@ int verify_conformity(){
      * 2 : non conforme
      * 3 : all ok
      */
-
-    /*if(verify_xml() == 0) {
+    if(verify_xml() == 0) {
         return 0;
     }
 
     if(verify_dtd() == 0) {
         return 1;
     }
-
+    LinkedListTag* head = intialisation("");
+    LinkedListDtd* head_dtd = intialisationDtd("");
     if(verifyAllTagsDTD(head) == 0
-        && verifyAllTagsPresentDtdInXML(head_dtd1) == 0) {
+        && verifyAllTagsPresentDtdInXML(head_dtd) == 0) {
         return 2;
     }
-
-    return 3;*/
+    return 3;
 }
 
 int verify_xml(){
@@ -114,8 +112,8 @@ int verify_xml(){
      * 0 : invalide
      * 1 : valide
      */
-    /*LinkedListTag* head = intialisation("");
-    return validateFirstPart(head, widgets->filename_xml_save);*/
+    LinkedListTag* head = intialisation("");
+    return validateFirstPart(head, get_filename_label(widgets->filename_xml_save));
 }
 
 int verify_dtd(){
@@ -123,8 +121,8 @@ int verify_dtd(){
     * 0 : invalide
     * 1 : valide
     */
-    /*LinkedListDtd* head_dtd1 = getDtdTag(widgets->filename_dtd_save);
-    return matchXmlDtd(head, head_dtd1);*/
+    LinkedListDtd* head_dtd = intialisationDtd("");
+    return getDtdTag(head_dtd, &(widgets->filename_dtd));
 }
 
 const gchar *read_file(App_widgets *file_name_label, int type){

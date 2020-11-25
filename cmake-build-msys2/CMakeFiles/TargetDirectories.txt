@@ -1,0 +1,3 @@
+C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir
+C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/edit_cache.dir
+C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/rebuild_cache.dir

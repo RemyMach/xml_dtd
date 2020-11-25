@@ -13,12 +13,6 @@ LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 
 ADD_DEFINITIONS(${GTK3_CFLAGS_OTHER})
 
-file(GLOB_RECURSE REMOVE_CMAKE "cmake-build-debug/*")
-list(REMOVE_ITEM structure.c
-        validate_read.c
-        christophe.c
-        ${REMOVE_CMAKE})
-
 if (UNIX)
     set(CMAKE_EXE_LINKER_FLAGS "-Wl,-export-dynamic")
 endif (UNIX)
