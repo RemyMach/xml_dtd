@@ -32,7 +32,7 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
         rewind(f);
 
         /* rÈcupÈration des lignes sÈparÈs dans un tableau de strings */
-        printf("\n-------------Affichage des chaines de caracteres du tableau strings avant modifications------------- \n\n");
+        //printf("\n-------------Affichage des chaines de caracteres du tableau strings avant modifications------------- \n\n");
         char strings[nbLignes][nbCarMax];
         for(int i=0;i<nbLignes;i++){
             fgets(strings[i],nbCarMax,f);
@@ -72,7 +72,7 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
         }
 
         for(int i=0;i<cptE;i++){
-            printf("StringE: %s\n",stringE[i]);
+            //printf("StringE: %s\n",stringE[i]);
         }
 
 
@@ -140,13 +140,12 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
         }
 
         /*Affichage des chaines de caracteres du tableau strings */
-        printf("\n-------------Affichage des chaines de caracteres du tableau strings apres modifications------------- \n\n");
-
+        //printf("\n-------------Affichage des chaines de caracteres du tableau strings apres modifications------------- \n\n");
         /* Stockage des donnÈes dans les listes */
         printf("\n-------------Affichage ELEMENT ------------- \n\n");
 
         for(int i=0;i<cptE;i++){
-
+            
             /* extraction nom  */
             while(stringE[i][cpt]!='(' && stringE[i][cpt]!='>' ){
                 tempnom[cpt]=stringE[i][cpt];
@@ -203,7 +202,7 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
                     j=0;
                 }
             }
-
+            
             char * result = strstr( tempoper, tempnom );
             // Affichage reponse operateur.
             if ( result == NULL ) {
@@ -276,14 +275,15 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
 
 
             if(i == 0) {
+                
                 head_dtd->name = malloc(sizeof(char)*strlen(tempnom)+1);
                 strcpy(head_dtd->name, tempnom);
-                /*printf("nom LinkedListTag: %s\n",tempnom);
+                printf("nom LinkedListTag: %s\n",tempnom);
                 printf("child: %s\n",tempchild);
-                printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
+                printf("parent: %s \n",temparent);
                 printf("oper: %s\n\n",tempoper);
-                printTagsDtd(head_dtd);
-                printf("----------------------\n");*/
+                //printTagsDtd(head_dtd);
+                printf("----------------------\n");
                 cpt=0;
                 tmp=0;
                 cptoper=0;
@@ -294,6 +294,7 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
                 printf("----------------------\n");*/
                 continue;
             }
+            
             char *p_backSlash = strchr(tempnom, '\n');
             if (p_backSlash != NULL) {
                 int e = 0;
@@ -311,12 +312,12 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
                 addLinkedListDtd(tempnom, NULL, tempoper[0], temparent, NULL, head_dtd);
             }
 
-            /*printf("nom LinkedListTag: %s\n",tempnom);
+            printf("nom LinkedListTag: %s\n",tempnom);
             printf("child: %s\n",tempchild);
-            printf("parent: %s strlen -> %d\n",temparent, strlen(temparent));
+            printf("parent: %s \n",temparent);
             printf("oper: %s\n\n",tempoper);
-            printTagsDtd(head_dtd);
-            printf("----------------------\n");*/
+            //printTagsDtd(head_dtd);
+            printf("----------------------\n");
             cpt=0;
             tmp=0;
             cptoper=0;
@@ -328,10 +329,10 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
 
         }
         /*------------------------------------------------ATTLIST------------------------------------------------------------*/
-        /*printf("\n-------------Affichage ATTLIST ------------- \n\n");
-        printf("\n");*/
+        printf("\n-------------Affichage ATTLIST ------------- \n\n");
+        printf("\n");
         for(int i=0;i<cptA;i++){
-            printf("StringA: %s\n",stringA[i]);
+            //printf("StringA: %s\n",stringA[i]);
         }
 
         /* suppression des < > !*/
@@ -388,7 +389,7 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
         }
 
         for(int i=0;i<cptA;i++){
-            printf("StringA modified: %s\n",stringA[i]);
+            //printf("StringA modified: %s\n",stringA[i]);
         }
 
         for(int i=0;i<cptA;i++){
@@ -434,16 +435,16 @@ int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
 
             addLinkedListAttributeDtd(attnom, attparent, attoper, head_dtd);
 
-            /*printf("nom de l'attribut: %s\n",attnom);
+            printf("nom de l'attribut: %s\n",attnom);
             printf("parent: %s\n",attparent);
-            printf("oper: %c\n\n",attoper);*/
+            printf("oper: %c\n\n",attoper);
         }
     }else{
         // On affiche un message d'erreur si on veut
         printf("Impossible d'ouvrir le fichier %s\n", pathfile);
         return 0;
     }
-    
+
     fclose(f);
 
     return 1;

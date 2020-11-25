@@ -21,7 +21,7 @@ clear_test_1_x:
 clear_test_2_x:
 	rm xml_2
 
-# Test correspondance dtd et xml
+# Test correspondance dtd et xml MAC
 
 test_d:
 	gcc -o dtd DTD_test/test_xml_dtd.c validate_read.c structure.c christophe.c
@@ -40,6 +40,26 @@ clear_test_1_d:
 
 clear_test_2_d:
 	rm dtd_2
+
+# Test correspondance dtd et xml Linux
+
+linux_test_d:
+	gcc -o linux_dtd DTD_test/test_xml_dtd.c validate_read.c structure.c christophe.c
+
+linux_test_1_d:
+	gcc -o linux_dtd_1 DTD_test/test_xml_dtd_part_1.c validate_read.c structure.c christophe.c
+
+linux_test_2_d:
+	gcc -o linux_dtd_2 DTD_test/test_xml_dtd_part_2.c validate_read.c structure.c christophe.c
+
+linux_clear_test_d:
+	rm linux_dtd
+
+linux_clear_test_1_d:
+	rm linux_dtd_1
+
+linux_clear_test_2_d:
+	rm linux_dtd_2
 
 # partie christophe parsing DTD
 

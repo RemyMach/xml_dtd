@@ -242,7 +242,7 @@ void addLinkedListAttribute(char* key, char* value, LinkedListTag* head) {
 
     if(currentTag->attribute == NULL) {
         currentTag->attribute = newAttribut;
-        printf("nom -> %s et value ->  %s\n", currentTag->attribute->key, currentTag->attribute->value);
+        printf("key -> %s et value ->  %s\n", currentTag->attribute->key, currentTag->attribute->value);
         return;
     }
 
@@ -583,7 +583,7 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
     // dans ces cas on passe un flag à 1 et on fait change la valeur du xml mais pas de la DTD
     // si au prochain tout les deux ne sont pas égales alors on change la DTD mais pas le XML
 
-    printf("<%s>\n", head->name);
+    //printf("<%s>\n", head->name);
     if(strcmp(head->name, head_dtd->name) != 0) {
         return 0;
     }
@@ -598,7 +598,7 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
     LinkedListDtd* child_dtd = head_dtd->childTags;
 
     if(child == NULL || child_dtd == NULL) {
-        printf("</%s>\n", head->name);
+        //printf("</%s>\n", head->name);
         return 1;
     }
 
@@ -609,8 +609,8 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
         if(child == NULL) {
             //printf("c'est pas possible\n");
         }
-        printf("<%s>\n", child->name);
-        printf("dtd -> <%s>\n", child_dtd->name);
+        //printf("<%s>\n", child->name);
+        //printf("dtd -> <%s>\n", child_dtd->name);
         if(flagChildToParent != 1) {
             if(strcmp(child->name, child_dtd->name) == 0) {
                 child->present_in_dtd = 1;
@@ -623,9 +623,9 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
                 }    
 
             }else {
-                printf("normal -> %s\n", child->name);
+                //printf("normal -> %s\n", child->name);
 
-                printf("dtd -> %s\n", child_dtd->name);
+                //printf("dtd -> %s\n", child_dtd->name);
                 // si l'option du + ou * n'a pas match
                 if(flag_plus_multiple_dtd == 1 || child_dtd->operator == '*' || child_dtd->operator == '?') {
                     child_dtd = child_dtd->brotherTags;
@@ -640,7 +640,7 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
         }
         if(child->childTags == NULL || flagChildToParent == 1){
             //flagChildToParent = 0;
-            printf("</%s>\n", child->name);
+            //printf("</%s>\n", child->name);
             if(child->brotherTags != NULL) {
                 // le cas ou brotherTag pas Null et que un + ou un moins dans dtd
                 if(child_dtd->operator == '+' || child_dtd->operator == '*') {

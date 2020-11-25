@@ -151,7 +151,6 @@ int validateSecondPart(LinkedListTag* head, char* pathFile) {
 
 int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
     
-    printf("je suis dans readAllOtherTags\n");
 
     int char_file= fgetc(pt_fichier);
     int char_file_next;
@@ -166,7 +165,8 @@ int readAllOtherTags(FILE* pt_fichier, LinkedListTag* head) {
         }else{
             char_file = fgetc(pt_fichier);
             char_file_next = fgetc(pt_fichier);
-            printf("\n%c%c\n", char_file, char_file_next);
+            //printf("\n%c%c\n", char_file, char_file_next);
+            printf("\n\n");
             fseek(pt_fichier, -1, SEEK_CUR);
             fseek(pt_fichier, -1, SEEK_CUR);
 
@@ -644,7 +644,6 @@ int verifTagSynthaxe(char* s) {
         }
 
         valid = determinateUniqueTag(valid, s, &i);
-        printf("valid -> %d\n", valid);
         if(valid == 2) {
             return 2;
         }
@@ -780,12 +779,12 @@ char* getCarracBeforeDelimiter(FILE* pt_fichier, char delimiter, int verifyCarra
         }
         char_file = fgetc(pt_fichier);
     }
-    printf("balise avant le p ->%c\n", char_file);
+    //printf("balise avant le p ->%c\n", char_file);
     if(char_file != EOF) {
         fseek(pt_fichier, -1, SEEK_CUR);
     }
     // on fait revenir le pointeur un rank en arrière
-    printf("balise après le p ->%c\n", char_file); 
+    //printf("balise après le p ->%c\n", char_file); 
 
     return xml_tag_next_tag;
 }
@@ -939,7 +938,7 @@ int extractTagAttribute_ADD(char* s,int* i, LinkedListTag* head) {
     char* attribute_key;
     char* attribute_value;
     int count = 0;
-    printf("extractTagAttribute_ADD name %s\n", head->name);
+    //printf("extractTagAttribute_ADD name %s\n", head->name);
     while(s[*i] != '>'){
 
         if(count%2==0) {
