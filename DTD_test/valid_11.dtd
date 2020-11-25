@@ -1,2 +1,3 @@
 <?xml encoding="UTF-8"?>
-<!ELEMENT root EMPTY>
+<!ELEMENT root (balise)>
+<!ELEMENT balise (#PCDATA)>

@@ -1,5 +1,10 @@
 # MENU TEST
 
+## not_valid
+
+## **6**
+- lastname prend un s alors qu'il ne devrait pas
+
 ## **11**
 - les balises xml ne correspondent pas aux balises DTD
 
@@ -30,14 +35,6 @@
 
 ### **7**
 - fichier avec profondeur de plus de un, attributs, tests de carractères spéciaux
-- valide pour la partie 3 et 4
-
-### **8**
-- fichier avec profondeur de plus de un, attributs, tests de carractères spéciaux, balise unique etc...
-- valide pour la partie 3 et 4
-
-### **9**
-- fichier avec profondeur de plus de un, attributs, tests de carractères spéciaux, balise unique et beaucoup de carractères.
 - valide pour la partie 3 et 4
 
 ### **10**
