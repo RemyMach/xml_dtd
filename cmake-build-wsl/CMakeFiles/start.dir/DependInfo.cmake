@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/christophe.c" "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-wsl/CMakeFiles/start.dir/christophe.c.o"
-  "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.c" "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-wsl/CMakeFiles/start.dir/gtk_functions.c.o"
-  "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/main.c" "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-wsl/CMakeFiles/start.dir/main.c.o"
-  "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/structure.c" "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-wsl/CMakeFiles/start.dir/structure.c.o"
-  "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.c" "/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-wsl/CMakeFiles/start.dir/validate_read.c.o"
+  "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/christophe.c" "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-wsl/CMakeFiles/start.dir/christophe.c.o"
+  "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.c" "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-wsl/CMakeFiles/start.dir/gtk_functions.c.o"
+  "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/main.c" "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-wsl/CMakeFiles/start.dir/main.c.o"
+  "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.c" "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-wsl/CMakeFiles/start.dir/structure.c.o"
+  "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.c" "/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-wsl/CMakeFiles/start.dir/validate_read.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

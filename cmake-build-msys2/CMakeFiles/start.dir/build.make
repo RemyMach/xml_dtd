@@ -62,10 +62,10 @@ RM = C:\Users\Splas\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.7660.37\
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP
+CMAKE_SOURCE_DIR = C:\Users\Splas\Downloads\xml_dtd-fix_master
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2
+CMAKE_BINARY_DIR = C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/start.dir/depend.make
@@ -79,72 +79,72 @@ include CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/main.c.obj: CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/main.c.obj: CMakeFiles/start.dir/includes_C.rsp
 CMakeFiles/start.dir/main.c.obj: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/start.dir/main.c.obj"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\main.c.obj   -c C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/start.dir/main.c.obj"
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\main.c.obj   -c C:\Users\Splas\Downloads\xml_dtd-fix_master\main.c
 
 CMakeFiles/start.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/start.dir/main.c.i"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\main.c > CMakeFiles\start.dir\main.c.i
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Downloads\xml_dtd-fix_master\main.c > CMakeFiles\start.dir\main.c.i
 
 CMakeFiles/start.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/start.dir/main.c.s"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\main.c -o CMakeFiles\start.dir\main.c.s
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Downloads\xml_dtd-fix_master\main.c -o CMakeFiles\start.dir\main.c.s
 
 CMakeFiles/start.dir/gtk_functions.c.obj: CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/gtk_functions.c.obj: CMakeFiles/start.dir/includes_C.rsp
 CMakeFiles/start.dir/gtk_functions.c.obj: ../gtk_functions.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/start.dir/gtk_functions.c.obj"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\gtk_functions.c.obj   -c C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\gtk_functions.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/start.dir/gtk_functions.c.obj"
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\gtk_functions.c.obj   -c C:\Users\Splas\Downloads\xml_dtd-fix_master\gtk_functions.c
 
 CMakeFiles/start.dir/gtk_functions.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/start.dir/gtk_functions.c.i"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\gtk_functions.c > CMakeFiles\start.dir\gtk_functions.c.i
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Downloads\xml_dtd-fix_master\gtk_functions.c > CMakeFiles\start.dir\gtk_functions.c.i
 
 CMakeFiles/start.dir/gtk_functions.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/start.dir/gtk_functions.c.s"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\gtk_functions.c -o CMakeFiles\start.dir\gtk_functions.c.s
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Downloads\xml_dtd-fix_master\gtk_functions.c -o CMakeFiles\start.dir\gtk_functions.c.s
 
 CMakeFiles/start.dir/structure.c.obj: CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/structure.c.obj: CMakeFiles/start.dir/includes_C.rsp
 CMakeFiles/start.dir/structure.c.obj: ../structure.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/start.dir/structure.c.obj"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\structure.c.obj   -c C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\structure.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/start.dir/structure.c.obj"
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\structure.c.obj   -c C:\Users\Splas\Downloads\xml_dtd-fix_master\structure.c
 
 CMakeFiles/start.dir/structure.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/start.dir/structure.c.i"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\structure.c > CMakeFiles\start.dir\structure.c.i
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Downloads\xml_dtd-fix_master\structure.c > CMakeFiles\start.dir\structure.c.i
 
 CMakeFiles/start.dir/structure.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/start.dir/structure.c.s"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\structure.c -o CMakeFiles\start.dir\structure.c.s
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Downloads\xml_dtd-fix_master\structure.c -o CMakeFiles\start.dir\structure.c.s
 
 CMakeFiles/start.dir/validate_read.c.obj: CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/validate_read.c.obj: CMakeFiles/start.dir/includes_C.rsp
 CMakeFiles/start.dir/validate_read.c.obj: ../validate_read.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/start.dir/validate_read.c.obj"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\validate_read.c.obj   -c C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\validate_read.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/start.dir/validate_read.c.obj"
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\validate_read.c.obj   -c C:\Users\Splas\Downloads\xml_dtd-fix_master\validate_read.c
 
 CMakeFiles/start.dir/validate_read.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/start.dir/validate_read.c.i"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\validate_read.c > CMakeFiles\start.dir\validate_read.c.i
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Downloads\xml_dtd-fix_master\validate_read.c > CMakeFiles\start.dir\validate_read.c.i
 
 CMakeFiles/start.dir/validate_read.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/start.dir/validate_read.c.s"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\validate_read.c -o CMakeFiles\start.dir\validate_read.c.s
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Downloads\xml_dtd-fix_master\validate_read.c -o CMakeFiles\start.dir\validate_read.c.s
 
 CMakeFiles/start.dir/christophe.c.obj: CMakeFiles/start.dir/flags.make
 CMakeFiles/start.dir/christophe.c.obj: CMakeFiles/start.dir/includes_C.rsp
 CMakeFiles/start.dir/christophe.c.obj: ../christophe.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/start.dir/christophe.c.obj"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\christophe.c.obj   -c C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\christophe.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/start.dir/christophe.c.obj"
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\start.dir\christophe.c.obj   -c C:\Users\Splas\Downloads\xml_dtd-fix_master\christophe.c
 
 CMakeFiles/start.dir/christophe.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/start.dir/christophe.c.i"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\christophe.c > CMakeFiles\start.dir\christophe.c.i
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Splas\Downloads\xml_dtd-fix_master\christophe.c > CMakeFiles\start.dir\christophe.c.i
 
 CMakeFiles/start.dir/christophe.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/start.dir/christophe.c.s"
-	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\christophe.c -o CMakeFiles\start.dir\christophe.c.s
+	C:\msys64\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\Splas\Downloads\xml_dtd-fix_master\christophe.c -o CMakeFiles\start.dir\christophe.c.s
 
 # Object files for target start
 start_OBJECTS = \
@@ -166,7 +166,7 @@ start.exe: CMakeFiles/start.dir/build.make
 start.exe: CMakeFiles/start.dir/linklibs.rsp
 start.exe: CMakeFiles/start.dir/objects1.rsp
 start.exe: CMakeFiles/start.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable start.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable start.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\start.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -179,6 +179,6 @@ CMakeFiles/start.dir/clean:
 .PHONY : CMakeFiles/start.dir/clean
 
 CMakeFiles/start.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2 C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2 C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles\start.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Splas\Downloads\xml_dtd-fix_master C:\Users\Splas\Downloads\xml_dtd-fix_master C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2 C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2 C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles\start.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/start.dir/depend
 

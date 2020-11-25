@@ -59,7 +59,6 @@ void on_button_verify_conformity_clicked() {
     else if(conformity == 3){
         gtk_label_set_text (widgets->is_conform, "XML conforme DTD.");
     }
-    gtk_label_set_text (widgets->is_conform, "Choisir les fichiers.");
 }
 
 void on_button_verify_xml_clicked(){
@@ -69,7 +68,6 @@ void on_button_verify_xml_clicked(){
     else if(verify_xml() == 1){
         gtk_label_set_text (widgets->is_conform, "XML valide.");
     }
-    gtk_label_set_text (widgets->is_conform, "Choisir un fichier XML.");
 }
 
 void on_button_verify_dtd_clicked(){
@@ -79,7 +77,6 @@ void on_button_verify_dtd_clicked(){
     else if(verify_dtd() == 1){
         gtk_label_set_text (widgets->is_conform, "DTD valide.");
     }
-    gtk_label_set_text (widgets->is_conform, "Choisir une DTD.");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -100,8 +97,8 @@ int verify_conformity(){
     }
     LinkedListTag* head = intialisation("");
     LinkedListDtd* head_dtd = intialisationDtd("");
-    if(verifyAllTagsDTD(head) == 0
-        && verifyAllTagsPresentDtdInXML(head_dtd) == 0) {
+
+    if(verifymatchXmlDtd(head, head_dtd) == 0){
         return 2;
     }
     return 3;
@@ -122,7 +119,7 @@ int verify_dtd(){
     * 1 : valide
     */
     LinkedListDtd* head_dtd = intialisationDtd("");
-    return getDtdTag(head_dtd, &(widgets->filename_dtd));
+    return getDtdTag(head_dtd, get_filename_label(widgets->filename_dtd_save));
 }
 
 const gchar *read_file(App_widgets *file_name_label, int type){

@@ -67,10 +67,10 @@ RM = C:\Users\Splas\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.7660.37\
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP
+CMAKE_SOURCE_DIR = C:\Users\Splas\Downloads\xml_dtd-fix_master
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2
+CMAKE_BINARY_DIR = C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Splas\Documents\GitHub\GTK-Cours-et-TP\cmake-build-msys2\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Splas\Downloads\xml_dtd-fix_master\cmake-build-msys2\CMakeFiles 0
 .PHONY : all
 
 # The main clean target

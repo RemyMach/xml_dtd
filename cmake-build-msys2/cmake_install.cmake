@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP
+# Install script for directory: C:/Users/Splas/Downloads/xml_dtd-fix_master
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

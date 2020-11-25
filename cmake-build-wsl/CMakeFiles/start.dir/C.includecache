@@ -6,23 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/christophe.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/christophe.c
+christophe.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/christophe.h
+
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/christophe.h
 structure.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/structure.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.h
 validate_read.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.h
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.c
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.c
 gtk_functions.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.h
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.h
 gtk/gtk.h
 -
 validate_read.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.h
 christophe.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/christophe.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/christophe.h
 stdio.h
 -
 stdlib.h
@@ -30,11 +34,15 @@ stdlib.h
 string.h
 -
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/main.c
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/main.c
 gtk_functions.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.h
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/structure.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.c
+structure.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.h
+
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.h
 stdio.h
 -
 stdlib.h
@@ -42,13 +50,13 @@ stdlib.h
 string.h
 -
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.c
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.c
 validate_read.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.h
 
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.h
 structure.h
-/mnt/c/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/structure.h
+/mnt/c/Users/Splas/Downloads/xml_dtd-fix_master/structure.h
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h
