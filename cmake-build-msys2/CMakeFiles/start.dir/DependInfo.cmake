@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/christophe.c" "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir/christophe.c.obj"
-  "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/gtk_functions.c" "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir/gtk_functions.c.obj"
-  "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/main.c" "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir/main.c.obj"
-  "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/structure.c" "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir/structure.c.obj"
-  "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/validate_read.c" "C:/Users/Splas/Documents/GitHub/GTK-Cours-et-TP/cmake-build-msys2/CMakeFiles/start.dir/validate_read.c.obj"
+  "C:/Users/Splas/Downloads/xml_dtd-fix_master/christophe.c" "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/CMakeFiles/start.dir/christophe.c.obj"
+  "C:/Users/Splas/Downloads/xml_dtd-fix_master/gtk_functions.c" "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/CMakeFiles/start.dir/gtk_functions.c.obj"
+  "C:/Users/Splas/Downloads/xml_dtd-fix_master/main.c" "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/CMakeFiles/start.dir/main.c.obj"
+  "C:/Users/Splas/Downloads/xml_dtd-fix_master/structure.c" "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/CMakeFiles/start.dir/structure.c.obj"
+  "C:/Users/Splas/Downloads/xml_dtd-fix_master/validate_read.c" "C:/Users/Splas/Downloads/xml_dtd-fix_master/cmake-build-msys2/CMakeFiles/start.dir/validate_read.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
