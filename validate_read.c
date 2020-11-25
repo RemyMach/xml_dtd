@@ -564,7 +564,7 @@ int verifTagSynthaxe(char* s) {
     char secound_bloc[] = ">";
     char attribut_bloc[] = "\"";
     int tour = 0;
-    //printf("chaine ->%s\n", s);
+    printf("chaine ->%s\n", s);
 
     // verification premier_bloc
     valid = regexRequiredBloc(s,&i, first_bloc);

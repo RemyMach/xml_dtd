@@ -5,20 +5,6 @@
 #include "validate_read.h"
 #include "christophe.h"
 
-/*typedef struct LinkedListTag {
-    int close;
-    char* name;
-    char* text;
-    struct LinkedListTag* parentTag;
-    struct LinkedListTag* childTags;
-    struct LinkedListTag* brotherTags;
-    struct LinkedListAttribute* attribute;
-}LinkedListTag;*/
-
-int calcLignes(char*);
-int calcCarL(char*,int);
-void filterOne(char*,int,int);
-
 /*int main() {
 
     LinkedListDtd* head_dtd_1 = getDtdTag("DTD_test/valid_1.dtd");
