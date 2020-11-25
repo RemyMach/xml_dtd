@@ -46,10 +46,10 @@ int main(int argc, char *argv[]) {
         printf("le XML correspond bien à la DTD\n");
     }
     printf("**********************************\n");
-    printTagsDtd(head_dtd);
+    /*rintTagsDtd(head_dtd);
     printf("**********************************\n");
     printf("**********************************\n");
-    printTags(head);
+    printTags(head);*/
 
     return 0;
 

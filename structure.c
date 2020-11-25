@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "structure.h"
-#include "christophe.h"
+
 
 LinkedListTag* intialisation(char* name) {
 
@@ -492,7 +489,7 @@ int verifyAllTagsClosed(LinkedListTag* head) {
         return 0;
     }
 
-    LinkedListTag* child = head->childTags; 
+    LinkedListTag* child = head->childTags;
     int flagChildToParent = 0;
     while(child != NULL){
 
@@ -598,7 +595,7 @@ int matchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
     }
 
     LinkedListTag* child = head->childTags;
-    LinkedListDtd* child_dtd = head_dtd->childTags; 
+    LinkedListDtd* child_dtd = head_dtd->childTags;
 
     if(child == NULL || child_dtd == NULL) {
         printf("</%s>\n", head->name);
@@ -753,7 +750,7 @@ int verifyAllTagsDTD(LinkedListTag* head) {
         }
     }
 
-    LinkedListTag* child = head->childTags; 
+    LinkedListTag* child = head->childTags;
     int flagChildToParent = 0;
     while(child != NULL){
 
@@ -799,7 +796,7 @@ int verifyAllTagsPresentDtdInXML(LinkedListDtd* head) {
         }
     }
 
-    LinkedListDtd* child = head->childTags; 
+    LinkedListDtd* child = head->childTags;
     int flagChildToParent = 0;
     while(child != NULL){
 
@@ -886,7 +883,7 @@ int verifymatchXmlDtd(LinkedListTag* head, LinkedListDtd* head_dtd) {
         return 0;
     }
 
-    if( (verifyAllTagsDTD(head) != 1) && (verifyAllTagsPresentDtdInXML(head_dtd) != 1) ) {
+    if( (verifyAllTagsDTD(head) != 1) || (verifyAllTagsPresentDtdInXML(head_dtd) != 1) ) {
         printf("le fichier DTD et le fichier XML ne correspondent pas\n");
         return 0;
     }

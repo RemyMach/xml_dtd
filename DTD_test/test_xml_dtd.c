@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
         printf("le XML correspond bien à la DTD\n");
     }
     printf("**********************************\n");
-    printTagsDtd(head_dtd);
+    /*printTagsDtd(head_dtd);
     printf("**********************************\n");
     printf("**********************************\n");
     printTags(head);
     if(strcmp(head->name, "") != 0) 
-        //freeLinkedListTag(head);
+        //freeLinkedListTag(head);*/
     return 0;
 }

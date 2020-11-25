@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "structure.h"
 #include "validate_read.h"
 
 int validateRead(LinkedListTag* head, char* pathFile) {
@@ -20,12 +16,10 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     // verif validation balise xml
     printf("xml_tag -> %s\n",xml_tag);
     good_balise_xml = verifyBaliseXML(xml_tag);
-    printf("good_balise -> %d\n",good_balise_xml);
     if(good_balise_xml == 0){
         printf("problème avec la balise xml\n");
         free(xml_tag);
         xml_tag = NULL;
-        printf("xml_tag after free -> %s\n", xml_tag);
         return 0;
     }
     free(xml_tag);
@@ -50,7 +44,7 @@ int validateRead(LinkedListTag* head, char* pathFile) {
     char* root_tag = malloc(sizeof(char));
     root_tag = getCarracTag(pt_fichier);
     if(root_tag == 0) {
-        printf("problème avec la balise xml1\n");
+        printf("problème avec la balise xml\n");
         free(root_tag);
         root_tag = NULL;
         return 0;
@@ -564,7 +558,7 @@ int verifTagSynthaxe(char* s) {
     char secound_bloc[] = ">";
     char attribut_bloc[] = "\"";
     int tour = 0;
-    printf("chaine ->%s\n", s);
+    //printf("chaine ->%s\n", s);
 
     // verification premier_bloc
     valid = regexRequiredBloc(s,&i, first_bloc);

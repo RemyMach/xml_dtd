@@ -1,16 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "structure.h"
-#include "validate_read.h"
 #include "christophe.h"
-
-/*int main() {
-
-    LinkedListDtd* head_dtd_1 = getDtdTag("DTD_test/valid_1.dtd");
-    printTagsDtd(head_dtd_1);
-    return 0;
-}*/
 
 int getDtdTag(LinkedListDtd* head_dtd, char* pathfile) {
     

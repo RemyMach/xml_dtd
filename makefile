@@ -33,7 +33,7 @@ test_2_d:
 	gcc -o dtd_2 DTD_test/test_xml_dtd_part_2.c validate_read.c structure.c christophe.c
 
 clear_test_d:
-	rm dtd dtd_1 dtd_2
+	rm dtd
 
 clear_test_1_d:
 	rm dtd_1

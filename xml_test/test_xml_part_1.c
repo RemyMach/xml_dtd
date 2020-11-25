@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     valid = validateFirstPart(head1, name_xml);
     if(strcmp(head1->name, "") != 0) 
         freeLinkedListTag(head1);
+    
     if(valid == 0) {
         printf("le fichier xml n'est pas valide pour la partie 1\n");
     }else {

@@ -17,9 +17,8 @@ int main(int argc, char *argv[]) {
 
     int valid;
     LinkedListTag* head = intialisation("");
-    valid = validateSecondPart(head2, name_xml);
-    if(strcmp(head2->name, "") != 0) 
-        //freeLinkedListTag(head2);
+    valid = validateSecondPart(head, name_xml);
+    
     if(valid == 0) {
         printf("le fichier xml n'est pas valide pour la partie 2\n");
         return 0;
@@ -45,10 +44,10 @@ int main(int argc, char *argv[]) {
         printf("le XML correspond bien à la DTD\n");
     }
     printf("**********************************\n");
-    printTagsDtd(head_dtd);
+    /*printTagsDtd(head_dtd);
     printf("**********************************\n");
     printf("**********************************\n");
-    printTags(head);
+    printTags(head);*/
 
     return 0;
 }

@@ -1,3 +1,8 @@
+#ifndef VALIDATE_READ_H
+#define VALIDATE_READ_H
+
+#include "structure.h"
+
 FILE* openFile(char* filePath);
 void closeFile(FILE* pt_fichier);
 int readBaliseXml(char char_file);
@@ -41,3 +46,5 @@ int validateSecondPart(LinkedListTag* head, char* pathFile);
 int getCarracComment(FILE* pt_fichier,char char_file);
 int determinateUniqueTag(int valid,char* s,int* i);
 void freeChar(char* s);
+
+#endif
